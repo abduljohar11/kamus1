@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar State & useState - React Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">State & useState</h1>
+        
+        <div class="card">
+            <p>Pada artikel kali ini, kita akan membahas tentang <strong>State</strong> dan <strong>useState</strong>. Konsep ini sangat penting karena dengan state, kita bisa menyimpan dan mengelola data yang interaktif di dalam sebuah component.</p>
+
+            <h2 class="section-title">Apa Itu State?</h2>
+            <p><strong>State</strong> adalah data internal pada sebuah component yang bisa berubah seiring interaksi pengguna. Berbeda dengan <strong>props</strong> yang dikirim dari luar (induk), <strong>state</strong> dikelola langsung oleh component itu sendiri.</p>
+            
+            <p>Jika state berubah, maka React akan otomatis melakukan <strong>re-render</strong> UI agar tampilan selalu sinkron dengan data terbaru.</p>
+
+            
+
+            <h2 class="section-title">Apa Itu useState?</h2>
+            <p><span class="inline-code">useState</span> adalah <strong>Hook</strong> bawaan React yang digunakan untuk menambahkan state ke dalam functional component.</p>
+            <p>Fungsi ini mengembalikan sebuah array dengan 2 nilai:</p>
+            <ul>
+                <li><strong>state</strong>: Nilai data saat ini (current value).</li>
+                <li><strong>setState</strong>: Fungsi untuk memperbarui nilai state.</li>
+            </ul>
+
+            <p>Sintaks dasar:</p>
+            <div class="relative">
+                <pre><code class="language-jsx">const [name, setName] = useState("Nilai Awal");</code></pre>
+            </div>
+
+            <h2 class="section-title">Membuat State Dasar</h2>
+            <p>Mari kita buat contoh sederhana untuk mengubah teks saat tombol ditekan.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import { useState } from "react";
+
+function App() {
+  const [message, setMessage] = useState("Halo, React!");
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;{message}&lt;/h1&gt;
+      &lt;button onClick={() => setMessage("State telah berubah!")}&gt;
+        Ubah Teks
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+            </div>
+
+            <h2 class="section-title">State dengan Angka (Counter)</h2>
+            <p>Contoh paling umum dari penggunaan state adalah membuat sebuah <strong>counter</strong> (penghitung angka).</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Angka saat ini: {count}&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;Tambah&lt;/button&gt;
+      &lt;button onClick={() => setCount(count - 1)}&gt;Kurangi&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">State Menyimpan Array</h2>
+            <p>State tidak hanya bisa menyimpan teks atau angka, tapi juga data kompleks seperti array atau object.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function TodoList() {
+  const [todos, setTodos] = useState(["Belajar React", "Belajar State"]);
+
+  const addTodo = () => {
+    // Gunakan Spread Operator untuk menambah item ke array
+    setTodos([...todos, "Item Baru"]);
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick={addTodo}&gt;Tambah Todo&lt;/button&gt;
+      &lt;ul&gt;
+        {todos.map((todo, index) => (
+          &lt;li key={index}&gt;{todo}&lt;/li&gt;
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Pada artikel ini, kita sudah belajar tentang <strong>State</strong> dan <strong>useState</strong> di React. Kita sudah mencoba membuat state dasar, mengelola angka, hingga menyimpan array di dalam state.</p>
+            <p>Di artikel berikutnya, kita akan membahas tentang <strong>Event Handling</strong>, yaitu bagaimana cara menangani interaksi pengguna seperti klik, input, dan form secara lebih mendalam.</p>
+        </div>
+    </div>
+</body>
+</html>

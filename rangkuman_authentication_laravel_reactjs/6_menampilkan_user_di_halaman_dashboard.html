@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menampilkan User di Dashboard - Laravel & Inertia.js</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Menampilkan User di Halaman Dashboard</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Langkah 1 - Membuat Controller Dashboard</h2>
+            <p>Silahkan teman-teman masuk ke dalam <em>folder</em> <em>project</em> <strong>Laravel</strong>-nya, kemudian jalankan perintah berikut ini di dalam terminal/CMD.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">php artisan make:controller DashboardController -i</code></pre>
+            </div>
+
+            <p>Karena di atas kita menambahkan <em>flag</em> <span class="inline-code">-i</span>, maka secara otomatis <em>controller</em> tersebut akan dijadikan sebagai <strong>Single Action Controller</strong>.</p>
+            
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class DashboardController extends Controller
+{
+    /**
+     * Handle the incoming request.
+     */
+    public function __invoke(Request $request)
+    {
+        return inertia('Dashboard/Index');
+    }
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 2 - Membuat Route Dashboard</h2>
+            <p>Sekarang kita tambahkan <em>route</em> untuk halaman <em>dashboard</em>. Buka <em>file</em> <span class="inline-code">routes/web.php</span> dan tambahkan kode berikut:</p>
+            
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">// route dashboard
+Route::get('/dashboard', \App\Http\Controllers\DashboardController::class)->middleware('auth');</code></pre>
+            </div>
+
+            <p>Untuk memastikan <em>route</em> berhasil ditambahkan, jalankan perintah:</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">php artisan route:list</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 3 - Membuat Halaman Dashboard</h2>
+            <p>Silahkan buat <em>folder</em> baru <span class="inline-code">Dashboard</span> di dalam <span class="inline-code">resources/js/Pages</span>, kemudian buat <em>file</em> <span class="inline-code">Index.jsx</span>:</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import React from 'react';
+import { Head, usePage, router } from '@inertiajs/react';
+
+export default function Dashboard() {
+
+    // destruct props "auth" dari Middleware
+    const { auth } = usePage().props;
+
+    const logout = () => {
+        router.post('/logout');
+    }
+
+    return (
+        &lt;&gt;
+            &lt;Head title="Dashboard - My App" /&gt;
+            &lt;div className="flex items-center justify-center min-h-screen"&gt;
+                &lt;div className="w-full max-w-2xl p-8 bg-white rounded-2xl shadow-xl border border-slate-200"&gt;
+                    &lt;div className="flex justify-between items-center mb-8"&gt;
+                        &lt;h1 className="text-2xl font-black uppercase tracking-tight text-slate-800"&gt;Dashboard&lt;/h1&gt;
+                        &lt;button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded-lg font-bold text-xs hover:bg-red-600 transition"&gt;
+                            LOGOUT
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+
+                    &lt;div className="bg-blue-50 p-6 rounded-xl border border-blue-100"&gt;
+                        &lt;p className="text-slate-600 mb-2"&gt;Selamat Datang,&lt;/p&gt;
+                        &lt;h2 className="text-3xl font-black text-blue-900"&gt;{auth.user.name}&lt;/h2&gt;
+                        &lt;p className="text-blue-700 font-medium"&gt;{auth.user.email}&lt;/p&gt;
+                    &lt;/div&gt;
+
+                    &lt;div className="mt-8 pt-8 border-t border-slate-100 text-center text-slate-500 text-sm"&gt;
+                        Kamu berhasil login menggunakan Laravel + Inertia.js + React
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 4 - Uji Coba Halaman Dashboard</h2>
+            <p>Pastikan <span class="inline-code">npm run dev</span> masih berjalan. Sekarang akses:</p>
+            <p><a href="http://localhost:8000/dashboard" class="text-blue-600 font-bold hover:underline">http://localhost:8000/dashboard</a></p>
+
+            
+
+            <p>Jika berhasil, kamu akan melihat nama dan email kamu yang diambil langsung dari data autentikasi yang dikirim melalui <strong>HandleInertiaRequests</strong> middleware.</p>
+
+            <p>Sampai disini kita telah berhasil membangun alur autentikasi lengkap mulai dari Register, Login, hingga Dashboard. Selamat!</p>
+        </div>
+    </div>
+</body>
+</html>

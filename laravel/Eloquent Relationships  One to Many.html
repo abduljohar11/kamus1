@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eloquent Relationships : One to Many</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; color: #334155; background: #f8fafc; margin: 0; padding: 40px 20px; }
+        .container { max-width: 850px; margin: 0 auto; }
+        .btn-back { display: inline-block; margin-bottom: 20px; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+        .materi-card { background: #fff; padding: 45px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h1 { font-size: 2.5rem; color: #0f172a; margin-top: 0; border-bottom: 4px solid #3b82f6; padding-bottom: 10px; }
+        h3 { margin-top: 35px; color: #1e293b; font-size: 1.5rem; border-left: 5px solid #3b82f6; padding-left: 15px; }
+        pre { background: #1e1e2e; color: #f8f8f2; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 25px 0; }
+        code { font-family: 'Consolas', monospace; background: #fee2e2; color: #991b1b; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; color: inherit; padding: 0; }
+        img { max-width: 100%; border-radius: 12px; margin: 30px 0; display: block; border: 1px solid #e2e8f0; }
+        blockquote { border-left: 5px solid #3b82f6; background: #eff6ff; padding: 15px 25px; border-radius: 0 10px 10px 0; font-style: italic; margin: 25px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="btn-back">← Kembali ke Daftar Isi</a>
+        <article class="materi-card">
+            <main class="flex-1 min-w-0 lg:ml-80 mr-0 xl:mr-64 transition-all duration-300 pt-10 md:pt-0">
+<div class="max-w-full mx-auto px-4 sm:px-6 md:px-8 py-5">
+<h1 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">Eloquent Relationships : One to Many</h1>
+<div class="prose lg:prose-lg prose-a:text-blue-500 dark:prose-a:text-blue-400 dark:prose-invert w-full max-w-full">
+<div x-data="" x-init="let t=document.querySelector('.table-of-contents'),d=document.querySelector('.toc'),m=document.querySelector('.toc-mobile'),b=document.querySelector('.btn-toc');if(t&amp;&amp;t.querySelectorAll('li').length&gt;0){d.appendChild(t.cloneNode(true));m.appendChild(t.cloneNode(true))}else b?.classList.add('hidden');$nextTick(()=&gt;{document.querySelectorAll(`.prose a[href^='http']`).forEach(a=&gt;{a.href.includes(location.hostname)||(a.target='_blank',a.rel='noopener noreferrer')})})">
+</div>
+<ul class="table-of-contents">
+<li><a href="#content-apa-itu-relasi-one-to-many-">Apa itu Relasi One to Many ?</a>
+<ul>
+<li><a href="#content-menyiapkan-table-posts-dan-comments-menggunakan-migration">Menyiapkan Table posts dan comments Menggunakan Migration.</a></li>
+<li><a href="#content-mendefinisikan-method-relasi-di-model-post-dan-comment">Mendefinisikan Method Relasi di Model Post dan Comment</a></li>
+</ul>
+</li>
+</ul>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-apa-itu-relasi-one-to-many-" id="content-apa-itu-relasi-one-to-many-" title="Permalink"></a>Apa itu Relasi <code>One to Many</code> ?</h3>
+<p><code>One-to-many</code> <em>relathionship</em> memiliki struktur relasi yang hampir sama dengan <code>one-to-one</code>, perbedaanya adalah satu <em>data</em> di dalam <em>table</em> <strong>A</strong> boleh memiliki banyak <em>data</em> di dalam <em>table</em> <strong>B</strong>.</p>
+<p>Contoh sederhananya adalah satu <em>data</em> <em>post</em> bisa memiliki banyak komentar.</p>
+<p>Contohnya seperti berikut ini :</p>
+<p><a href="https://raw.githubusercontent.com/maulayyacyber/assets-articles/main/laravel-eloquent-relationships/one-to-many.png"><img alt="img" src="https://raw.githubusercontent.com/maulayyacyber/assets-articles/main/laravel-eloquent-relationships/one-to-many.png"/></a></p>
+<p>Jika kita lihat dari gambar diatas antara relasi <code>one-to-one</code> dan <code>one-to-many</code> tidak ada perbedaan sama sekali, perbedaanya adalah di dalam <em>foreign key</em> pada <em>table</em> <code>comments</code> tidak bersifat <em>unique</em>, sehingga dapat menyimpan data yang sama, kalau di dalam relasi <code>one-to-one</code> <em>foreign key</em> bersifat <em>unique</em>, artinya tidak ada <em>data</em> yang boleh sama.</p>
+<p><em><strong>table <code>posts</code></strong></em></p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th align="left">id</th>
+<th align="left">title</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">1</td>
+<td align="left">Judul Post 1</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Judul Post 2</td>
+</tr>
+</tbody>
+</table></div>
+<p><em><strong>table <code>comments</code></strong></em></p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th align="left">id</th>
+<th align="left">comment</th>
+<th align="left">post_id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">1</td>
+<td align="left">Mantap</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Sukses selalu SantriKoding</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">Terima Kasih</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">Sukses tanpa ada error</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="left">Mantap bener tutorialnya</td>
+<td align="left">1</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>field</em> <em>foreign ke</em>y <code>post_id</code> di dalam <em>table</em> <code>comments</code> dapat menyimpan <code>id</code> yang sama dari <em>table</em> <code>posts</code>, dengan begini maka relasi <code>one-to-many</code> dapat terpenuhi.</p>
+<h4><a aria-hidden="true" class="heading-permalink" href="#content-menyiapkan-table-posts-dan-comments-menggunakan-migration" id="content-menyiapkan-table-posts-dan-comments-menggunakan-migration" title="Permalink"></a>Menyiapkan Table <code>posts</code> dan <code>comments</code> Menggunakan Migration.</h4>
+<p>Berikut ini <em>schema</em> untuk <em>table</em> <code>posts</code>.</p>
+<pre><code>public function up(): void
+{
+    Schema::create('posts', function (Blueprint $table) {
+        $table-&gt;id();
+        $table-&gt;string('title');
+        $table-&gt;text('content');
+    });
+}
+</code></pre>
+<p>Pada penambahan <em>schema</em> <em>table</em> <code>posts</code> di atas tidak ada yang sepesial. Karena yang akan ditambahkan <em>foreign</em> <em>key</em> ada pada <em>table</em> <code>comments</code>.</p>
+<pre><code>public function up(): void
+{
+    Schema::create('comments', function (Blueprint $table) {
+        $table-&gt;id();
+        $table-&gt;text('comment');
+        $table-&gt;foreignId('post_id')-&gt;references('id')-&gt;on('posts');
+    });
+}
+</code></pre>
+<p>Jika kita lihat, memang sama persis dengan yang ada di relasi <code>One to One</code>. Yang membedakan nanti datanya boleh lebih dari 1 <em>record</em> untuk <em>foreign</em> <em>key</em>. Kalau <code>One to One</code> bersifat unik atau tidak boleh ada yang sama.</p>
+<h4><a aria-hidden="true" class="heading-permalink" href="#content-mendefinisikan-method-relasi-di-model-post-dan-comment" id="content-mendefinisikan-method-relasi-di-model-post-dan-comment" title="Permalink"></a>Mendefinisikan Method Relasi di Model <code>Post</code> dan <code>Comment</code></h4>
+<p>Untuk membuat relasi <code>One to Many</code>, maka kita perlu menambahkan <em>method</em> berikut ini di dalam <em>model</em> <code>Post</code>.</p>
+<pre><code>public function comments()
+{
+    return $this-&gt;hasMany(Comment::class);
+}
+</code></pre>
+<p>Di atas, kita membuat <em>method</em> yang di dalamnya melakukan relasi <code>hasMany</code> yang artinya data 1 data post bisa memiliki banyak data <em>comment</em>.</p>
+<blockquote>
+<p><strong>INFORMASI</strong> : penamaan method untuk relasi <code>many</code> harus menggunakan kata jamak.</p>
+</blockquote>
+<p>Setelah itu, kita juga harus membuat <em>method</em> di dalam <em>model</em> <code>Comment</code> untuk relasi <code>BelongsTo</code>.</p>
+<pre><code>public function post()
+{
+    return $this-&gt;belongsTo(Post::class);
+}
+</code></pre>
+<p>Kode di atas artinya kita memberi tahu <strong>Laravel</strong> bahwa <em>model</em> <code>Comment</code> ini terhbung atau dimiliki oleh <em>model</em> <code>Post</code>.</p>
+<p>Sehingga kita bisa memanggil data <code>comments</code> yang dimiliki oleh <code>post</code> menggunakan kode seperti berikut ini.</p>
+<pre><code>//mencari data post dengan ID "1"
+$post = Post::find(1);
+
+//tampilkan semua comments yang terkait dengan data post.
+$post-&gt;comments;
+</code></pre>
+<p><code>$post-&gt;comments</code> di atas akan memiliki jenis data <em>array</em>, karena datanya akan lebih dari satu / jamak. Oleh sebab itu untuk menampilkan kita perlu melakukan perulangan. Contohnya bisa seperti berikut ini.</p>
+<pre><code>//mencari data post dengan ID "1"
+$post = Post::find(1);
+
+//tampilkan semua comments yang terkait dengan data post menggunakan foreach.
+foreach($post-&gt;comments()-&gt;get() as $c) {
+
+	{{ $c-&gt;comment }}
+
+}
+</code></pre>
+</div>
+<!-- Div pembatas dengan content -->
+<div class="border-t border-neutral-200 dark:border-neutral-700 mt-8 pt-6">
+<div class="flex justify-end">
+<a :aria-busy="loading ? 'true' : 'false'" :class="loading ? 'opacity-60 pointer-events-none' : ''" class="inline-flex items-center gap-2 px-6 py-3 bg-red-700 hover:bg-red-800 dark:bg-neutral-600 dark:hover:bg-neutral-700 text-white text-sm font-medium rounded-full transition-colors duration-200" data-id="1572" href="https://santrikoding.com/account/my-courses/laravel-untuk-pemula/1573?version=1.1.0" x-data="lessonComplete(28, '1.1.0', 'https://santrikoding.com/account/my-courses/laravel-untuk-pemula/lesson/completed')" x-on:click.prevent="complete($event)">
+ <span x-text="loading ? 'Processing…' : 'Complete &amp; Continue'"></span>
+ </a>
+</div>
+</div>
+</div>
+</main><aside :class="tocVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'" class="hidden xl:block fixed right-0 top-14 bottom-0 w-64 overflow-y-auto border-l border-neutral-200 dark:border-neutral-700/80 bg-white/95 dark:bg-neutral-900 backdrop-blur-sm transition-all duration-300 z-30" x-cloak="">
+<!-- Header dengan glass effect -->
+<div class="sticky top-0 z-10 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-b border-neutral-200/50 dark:border-neutral-700/50 px-4 py-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="p-1.5 bg-primary/10 rounded-lg">
+
+</div>
+<div>
+<h3 class="text-sm font-semibold text-neutral-900 dark:text-neutral-100">On This Page</h3>
+</div>
+</div>
+
+</div>
+</div>
+<!-- Progress Indicator yang benar-benar visible -->
+<div class="px-4 py-3 border-b border-neutral-200/50 dark:border-neutral-700/50" x-data="{
+            scrollProgress: 0,
+            updateProgress() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                this.scrollProgress = docHeight &gt; 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+            }
+         }" x-init="updateProgress(); $watch('scrollProgress', () =&gt; {}); window.addEventListener('scroll', () =&gt; updateProgress())">
+<div class="flex items-center justify-between text-xs mb-2">
+<span class="text-neutral-600 dark:text-neutral-400">Reading Progress</span>
+<span class="text-primary font-medium" x-text="Math.round(scrollProgress) + '%'"></span>
+</div>
+<!-- Progress Bar dengan warna yang kontras -->
+<div class="w-full bg-neutral-300 dark:bg-neutral-600 rounded-full h-2 shadow-inner">
+<div :style="'width: ' + scrollProgress + '%'" class="bg-gradient-to-r from-emerald-300 to-emerald-600 h-2 rounded-full transition-all duration-300 shadow-sm"></div>
+</div>
+</div>
+<!-- Table of Contents Content -->
+
+<!-- Footer dengan quick actions -->
+<div class="sticky bottom-0 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-t border-neutral-200/50 dark:border-neutral-700/50 p-3">
+<div class="flex items-center justify-between text-xs">
+
+
+</div>
+</div>
+</aside>
+        </article>
+    </div>
+</body>
+</html>

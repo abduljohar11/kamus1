@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Laravel & Inertia - Edit & Update Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; transform: scale(1.05); }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1.2rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        p { margin-bottom: 1.2rem; line-height: 1.8; color: #1e293b; }
+        .utility-tag { background: #cbd5e1; padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 0.85rem; font-weight: bold; color: #0f172a; }
+        
+        .analogy-box { background: #e0f2fe; border-left: 4px solid #0284c7; padding: 1rem; border-radius: 0.5rem; margin: 1.5rem 0; color: #0369a1; font-size: 0.95rem; }
+        
+        .info-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; margin: 1rem 0; }
+        .info-table th { background: #334155; color: white; padding: 12px; text-align: left; }
+        .info-table td { padding: 12px; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Edit & Update Data
+        </h1>
+
+        <div class="card">
+            <div class="analogy-box">
+                <strong>📝 Analogi:</strong> Proses <strong>Edit</strong> adalah seperti mengambil berkas lama dari rak (database) untuk diletakkan di meja kerja (form). Sedangkan <strong>Update</strong> adalah proses menghapus tulisan lama dan menggantinya dengan informasi baru, lalu mengembalikannya kembali ke dalam rak.
+            </div>
+
+            <h2 class="section-title">Langkah 1 - Menambahkan Method Edit & Update</h2>
+            <p>Buka <span class="utility-tag">app/Http/Controllers/PostController.php</span> dan tambahkan method berikut untuk menangani pengambilan data lama dan pemrosesan perubahan.</p>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-php">public function edit(Post $post)
+{
+    // Mengambil data post dan mengirimnya ke view Edit.jsx
+    return inertia('Posts/Edit', [
+        'post' => $post,
+    ]);
+}
+
+public function update(Request $request, Post $post)
+{
+    // 1. Validasi input
+    $request->validate([
+        'title'   => 'required',
+        'content' => 'required',
+    ]);
+
+    // 2. Update data di database
+    $post->update([
+        'title'   => $request->title,
+        'content' => $request->content
+    ]);
+
+    // 3. Redirect ke index dengan pesan sukses
+    return redirect()->route('posts.index')->with('message', 'Data Berhasil Diupdate!');
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 2 - Menambahkan Tombol Edit di Index</h2>
+            <p>Buka <span class="utility-tag">resources/js/Pages/Posts/Index.jsx</span> dan tambahkan tombol Edit di dalam kolom aksi pada tabel:</p>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-jsx">&lt;td className="p-3 text-center"&gt;
+    &lt;Link href={`/posts/${post.id}/edit`} className="bg-blue-500 text-white px-3 py-1 rounded shadow-sm hover:bg-blue-700"&gt;
+        EDIT
+    &lt;/Link&gt;
+&lt;/td&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 3 - Membuat View Edit Data</h2>
+            <p>Buat file baru <span class="utility-tag">resources/js/Pages/Posts/Edit.jsx</span>. Kita akan mengisi state awal dengan data <span class="utility-tag">props.post</span> yang dikirim dari controller.</p>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-jsx">import React, { useState } from 'react';
+import Layout from '../../Layouts/Default';
+import { router } from '@inertiajs/react';
+
+export default function EditPost({ post, errors }) {
+    // State dengan default value dari props post
+    const [title, setTitle] = useState(post.title);
+    const [content, setContent] = useState(post.content);
+
+    const updatePost = (e) => {
+        e.preventDefault();
+        
+        router.put(`/posts/${post.id}`, {
+            title: title,
+            content: content
+        });
+    }
+
+    return (
+        &lt;Layout&gt;
+            &lt;div className="bg-white p-6 rounded shadow-md"&gt;
+                &lt;form onSubmit={updatePost}&gt;
+                    &lt;div className="mb-4"&gt;
+                        &lt;label className="block font-bold"&gt;TITLE&lt;/label&gt;
+                        &lt;input type="text" className="w-full border p-2 rounded" value={title} onChange={(e) => setTitle(e.target.value)} /&gt;
+                        {errors.title && &lt;div className="text-red-500 mt-2"&gt;{errors.title}&lt;/div&gt;}
+                    &lt;/div&gt;
+                    &lt;div className="mb-4"&gt;
+                        &lt;label className="block font-bold"&gt;CONTENT&lt;/label&gt;
+                        &lt;textarea className="w-full border p-2 rounded" rows="5" value={content} onChange={(e) => setContent(e.target.value)}&gt;&lt;/textarea&gt;
+                        {errors.content && &lt;div className="text-red-500 mt-2"&gt;{errors.content}&lt;/div&gt;}
+                    &lt;/div&gt;
+                    &lt;button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded"&gt;UPDATE&lt;/button&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        &lt;/Layout&gt;
+    );
+}</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Berkat fitur <strong>Route Model Binding</strong> pada Laravel, kita bisa langsung mendapatkan instance data hanya melalui ID di URL. Di materi terakhir, kita akan menyelesaikan CRUD ini dengan fitur <strong>Hapus Data (Delete)</strong>.</p>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

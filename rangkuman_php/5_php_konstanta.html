@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Konstanta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        li { margin-bottom: 0.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">PHP Konstanta</h1>
+        
+        <div class="card">
+            <p>Konstanta memiliki konsep yang mirip dengan variabel, namun memiliki perbedaan penting: <strong>nilainya tidak dapat diubah</strong> setelah ditetapkan. Konstanta sangat cocok untuk menyimpan nilai konfigurasi yang tetap.</p>
+
+            <h2 class="section-title">Apa Itu Konstanta?</h2>
+            <p><strong>Konstanta</strong> adalah sebuah nama untuk menyimpan nilai tetap. Umumnya digunakan untuk menyimpan nilai konfigurasi seperti nama aplikasi, versi, atau batas maksimal login yang tidak boleh berubah selama program berjalan.</p>
+
+            <h2 class="section-title">Cara Mendefinisikan Konstanta</h2>
+            <p>PHP menyediakan dua cara utama, yaitu menggunakan fungsi <code>define()</code> dan kata kunci <code>const</code>.</p>
+
+            <h3 class="text-xl font-bold mb-2">1. Menggunakan define()</h3>
+            <div class="code-wrap my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  define("APP_NAME", "Belajar PHP");
+  define("APP_VERSION", "1.0");
+
+  echo APP_NAME;    // Output: Belajar PHP
+  echo APP_VERSION; // Output: 1.0
+?&gt;</code></pre>
+            </div>
+            <p>Konstanta tidak menggunakan tanda dolar (<code>$</code>) dan secara konvensional ditulis dengan <strong>HURUF KAPITAL</strong>.</p>
+
+            <h3 class="text-xl font-bold mb-2">2. Menggunakan const</h3>
+            <p>Pendekatan ini sering digunakan di dalam <em>class</em>, namun juga bisa digunakan secara global sejak PHP 5.3.</p>
+            <div class="code-wrap my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  const AUTHOR = "SantriKoding";
+  echo AUTHOR; // Output: SantriKoding
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Karakteristik Konstanta</h2>
+            <ul>
+                <li>Nilainya tidak dapat diubah setelah didefinisikan.</li>
+                <li>Tidak menggunakan tanda <code>$</code> di depan namanya.</li>
+                <li>Bersifat global (dapat diakses dari mana saja dalam skrip).</li>
+                <li>Hanya dapat menyimpan tipe data skalar (string, integer, float, boolean).</li>
+            </ul>
+
+            <h2 class="section-title">Studi Kasus</h2>
+            <p>Misalkan kita mengatur batas percobaan login maksimal di aplikasi:</p>
+            <div class="code-wrap my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  define("MAX_LOGIN_ATTEMPTS", 3);
+
+  $percobaan = 2;
+
+  if ($percobaan >= MAX_LOGIN_ATTEMPTS) {
+      echo "Akun dikunci, terlalu banyak percobaan login.";
+  } else {
+      echo "Masih dapat mencoba login.";
+  }
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Konstanta membuat program lebih stabil dan aman dari perubahan nilai yang tidak disengaja. Di materi selanjutnya, kita akan mempelajari <strong>Operator dalam PHP</strong>.</p>
+        </div>
+    </div>
+</body>
+</html>

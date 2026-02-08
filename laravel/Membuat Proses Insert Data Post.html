@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membuat Proses Insert Data Post</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; color: #334155; background: #f8fafc; margin: 0; padding: 40px 20px; }
+        .container { max-width: 850px; margin: 0 auto; }
+        .btn-back { display: inline-block; margin-bottom: 20px; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+        .materi-card { background: #fff; padding: 45px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h1 { font-size: 2.5rem; color: #0f172a; margin-top: 0; border-bottom: 4px solid #3b82f6; padding-bottom: 10px; }
+        h3 { margin-top: 35px; color: #1e293b; font-size: 1.5rem; border-left: 5px solid #3b82f6; padding-left: 15px; }
+        pre { background: #1e1e2e; color: #f8f8f2; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 25px 0; }
+        code { font-family: 'Consolas', monospace; background: #fee2e2; color: #991b1b; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; color: inherit; padding: 0; }
+        img { max-width: 100%; border-radius: 12px; margin: 30px 0; display: block; border: 1px solid #e2e8f0; }
+        blockquote { border-left: 5px solid #3b82f6; background: #eff6ff; padding: 15px 25px; border-radius: 0 10px 10px 0; font-style: italic; margin: 25px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="btn-back">← Kembali ke Daftar Isi</a>
+        <article class="materi-card">
+            <main class="flex-1 min-w-0 lg:ml-80 mr-0 xl:mr-64 transition-all duration-300 pt-10 md:pt-0">
+<div class="max-w-full mx-auto px-4 sm:px-6 md:px-8 py-5">
+<h1 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">Membuat Proses Insert Data Post</h1>
+<div class="prose lg:prose-lg prose-a:text-blue-500 dark:prose-a:text-blue-400 dark:prose-invert w-full max-w-full">
+<div x-data="" x-init="let t=document.querySelector('.table-of-contents'),d=document.querySelector('.toc'),m=document.querySelector('.toc-mobile'),b=document.querySelector('.btn-toc');if(t&amp;&amp;t.querySelectorAll('li').length&gt;0){d.appendChild(t.cloneNode(true));m.appendChild(t.cloneNode(true))}else b?.classList.add('hidden');$nextTick(()=&gt;{document.querySelectorAll(`.prose a[href^='http']`).forEach(a=&gt;{a.href.includes(location.hostname)||(a.target='_blank',a.rel='noopener noreferrer')})})">
+</div>
+<ul class="table-of-contents">
+<li><a href="#content-langkah-1---menambahkan-method-create-dan-store">Langkah 1 - Menambahkan Method Create dan Store</a></li>
+<li><a href="#content-langkah-2---membuat-halaman-view--form-create">Langkah 2 - Membuat Halaman View / Form Create</a></li>
+<li><a href="#content-langkah-3---uji-coba-insert-data-post">Langkah 3 - Uji Coba Insert Data Post</a></li>
+</ul>
+<p>Setelah berhasil menampilkan data <em>posts</em> dari <em>database</em>, maka sekarang kita akan lanjutkan belajar bagaimana cara melakukan proses <em>insert</em> data ke dalam <em>database</em> menggunakan <em>model</em> dan <em>Eloquent</em>.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-langkah-1---menambahkan-method-create-dan-store" id="content-langkah-1---menambahkan-method-create-dan-store" title="Permalink"></a>Langkah 1 - Menambahkan Method <code>Create</code> dan <code>Store</code></h3>
+<p>Karena sebelumnya kita sudah membuat <em>controller</em>, maka sekarang kita tinggal menambahkan 2 <em>method</em> baru untuk proses <em>insert</em> data. Yaitu <code>create</code> yang digunakan untuk menampilkan halaman / <em>form</em> dan <code>store</code> untuk memproses data yang dikirimkan.</p>
+<p>Silahkan buka <em>file</em> <code>app/Http/Controllers/PostController.php</code>, kemudian ubah kode-nya menjadi seperti berikut ini :</p>
+<pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Post;
+use Illuminate\Http\Request;
+
+class PostController extends Controller
+{
+    /**
+     * index
+     *
+     * @return void
+     */
+    public function index()
+    {
+        //get posts
+        $posts = Post::latest()-&gt;paginate(5);
+
+        //render view with posts
+        return view('posts.index', compact('posts'));
+    }
+
+        /**
+     * create
+     *
+     * @return void
+     */
+    public function create()
+    {
+        return view('posts.create');
+    }
+
+    /**
+     * store
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function store(Request $request)
+    {
+        //validate form
+        $this-&gt;validate($request, [
+            'image'     =&gt; 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'title'     =&gt; 'required|min:5',
+            'content'   =&gt; 'required|min:10'
+        ]);
+
+        //upload image
+        $image = $request-&gt;file('image');
+        $image-&gt;storeAs('public/posts', $image-&gt;hashName());
+
+        //create post
+        Post::create([
+            'image'     =&gt; $image-&gt;hashName(),
+            'title'     =&gt; $request-&gt;title,
+            'content'   =&gt; $request-&gt;content
+        ]);
+
+        //redirect to index
+        return redirect()-&gt;route('posts.index')-&gt;with(['success' =&gt; 'Data Berhasil Disimpan!']);
+    }
+}
+</code></pre>
+<p>Dari perubahan kode di atas, kita menambahkan 2 <em>method</em> baru. Yaitu <code>create</code> dan <code>store</code>.</p>
+<p>Untuk <em>method</em> <code>create</code> akan kita gunakan untuk menampilkan halaman <em>form</em> yaang nantinya kita gunakan untuk melakukan <em>input</em> data. Disini kita return ke dalam sebuah <em>view</em> yang bernama <code>create.blade.php</code> yang berada di dalam <em>folder</em> <code>resources/views/posts</code>.</p>
+<pre><code>return view('posts.create');
+</code></pre>
+<p>Dan <em>method</em> <code>store</code> kita gunakan untuk memproses data yang akan disimpan ke dalam <em>database</em>. Sebelum itu, kita akan buat sebuah validasi terlebih dahulu. Validasi ini digunakan untuk memeriksa apakah data yang akan disimpan sudah sesuai dengan yang diharapkan.</p>
+<pre><code>//validate form
+$this-&gt;validate($request, [
+   'image'     =&gt; 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+   'title'     =&gt; 'required|min:5',
+   'content'   =&gt; 'required|min:10'
+]);
+</code></pre>
+<p>Dari validasi di atas, kita membuat beberapa <em>rule</em> atau aturan. Kurang lebih seperti berikut ini :</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th align="left">KEY</th>
+<th align="left">VALIDATION</th>
+<th align="left">KETERANGAN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>image</code></td>
+<td align="left"><em>required</em></td>
+<td align="left"><em>field</em> wajib diisi.</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><em>image</em></td>
+<td align="left"><em>field</em> harus berupa gambar</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><em>mimes:jpeg,png,jpg,gif,svg</em></td>
+<td align="left"><em>filed</em> harus memiliki extensi <code>jpeg</code>, <code>png</code>, <code>jpg</code>, <code>gif</code> dan <code>svg</code>.</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><em>max</em>:<em>2048</em></td>
+<td align="left"><em>field</em> maksimal berukuran 2048 Mb / 2Mb.</td>
+</tr>
+<tr>
+<td align="left"><code>title</code></td>
+<td align="left"><em>required</em></td>
+<td align="left"><em>field</em> wajib diisi.</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><em>min:5</em></td>
+<td align="left"><em>field</em> minimal memiliki 5 karakter/huruf.</td>
+</tr>
+<tr>
+<td align="left"><code>content</code></td>
+<td align="left"><em>required</em></td>
+<td align="left"><em>field</em> wajib diisi.</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"><em>min:10</em></td>
+<td align="left"><em>field</em> minimal memiliki 10 karakter/huruf.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Jika data yang dikirimkan sudah sesuai dengan validasi di atas, maka pertama kita akan melakukan proses <em>upload</em> gambar terlebih dahulu.</p>
+<pre><code>//upload image
+$image = $request-&gt;file('image');
+$image-&gt;storeAs('public/posts', $image-&gt;hashName());
+</code></pre>
+<p>Di atas, kita buat <em>variable</em> baru dengan nama <code>$image</code> yang berisi <em>request</em> yang bernama <code>image</code>. Kemudian kita <em>upload</em> gambar tersebut dengan <em>method</em> <code>storeAs</code> ke dalam <em>folder</em> <code>storage/app/public/posts</code>. Dan kita akan random nama gambarnya menggunakan <em>method</em> <code>hashName</code>.</p>
+<p>Setelah gambar berhasil di<em>upload</em>, selanjutnya kita <em>insert</em> data baru ke dalam <em>table</em> <em>posts</em> menggunakan <em>Eloquent</em>.</p>
+<pre><code>//create post
+Post::create([
+   'image'     =&gt; $image-&gt;hashName(),
+   'title'     =&gt; $request-&gt;title,
+   'content'   =&gt; $request-&gt;content
+]);
+</code></pre>
+<p>Setelah itu, kita <em>redirect</em> ke dalam <em>route</em> yang bernama <code>posts.index</code> dengan memberikan pesan <code>Data Berhasil Disimpan!</code>.</p>
+<pre><code>//redirect to index
+return redirect()-&gt;route('posts.index')-&gt;with(['success' =&gt; 'Data Berhasil Disimpan!']);
+</code></pre>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-langkah-2---membuat-halaman-view--form-create" id="content-langkah-2---membuat-halaman-view--form-create" title="Permalink"></a>Langkah 2 - Membuat Halaman View / Form Create</h3>
+<p>Kita lanjutkan untuk membuat <em>view</em> untuk menampilkan halaman tambah data <em>post</em>. Silahkan buat <em>file</em> baru dengan nama <code>create.blade.php</code> di dalam <em>folder</em> <code>resources/views/posts</code>, kemudian masukkan kode berikut ini di dalamnya.</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="ie=edge"&gt;
+    &lt;title&gt;Tambah Data Post - SantriKoding.com&lt;/title&gt;
+    &lt;link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"&gt;
+&lt;/head&gt;
+&lt;body style="background: lightgray"&gt;
+
+    &lt;div class="container mt-5 mb-5"&gt;
+        &lt;div class="row"&gt;
+            &lt;div class="col-md-12"&gt;
+                &lt;div class="card border-0 shadow rounded"&gt;
+                    &lt;div class="card-body"&gt;
+                        &lt;form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data"&gt;
+                        
+                            @csrf
+
+                            &lt;div class="form-group"&gt;
+                                &lt;label class="font-weight-bold"&gt;GAMBAR&lt;/label&gt;
+                                &lt;input type="file" class="form-control @error('image') is-invalid @enderror" name="image"&gt;
+                            
+                                &lt;!-- error message untuk title --&gt;
+                                @error('image')
+                                    &lt;div class="alert alert-danger mt-2"&gt;
+                                        {{ $message }}
+                                    &lt;/div&gt;
+                                @enderror
+                            &lt;/div&gt;
+
+                            &lt;div class="form-group"&gt;
+                                &lt;label class="font-weight-bold"&gt;JUDUL&lt;/label&gt;
+                                &lt;input type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" placeholder="Masukkan Judul Post"&gt;
+                            
+                                &lt;!-- error message untuk title --&gt;
+                                @error('title')
+                                    &lt;div class="alert alert-danger mt-2"&gt;
+                                        {{ $message }}
+                                    &lt;/div&gt;
+                                @enderror
+                            &lt;/div&gt;
+
+                            &lt;div class="form-group"&gt;
+                                &lt;label class="font-weight-bold"&gt;KONTEN&lt;/label&gt;
+                                &lt;textarea class="form-control @error('content') is-invalid @enderror" name="content" rows="5" placeholder="Masukkan Konten Post"&gt;{{ old('content') }}&lt;/textarea&gt;
+                            
+                                &lt;!-- error message untuk content --&gt;
+                                @error('content')
+                                    &lt;div class="alert alert-danger mt-2"&gt;
+                                        {{ $message }}
+                                    &lt;/div&gt;
+                                @enderror
+                            &lt;/div&gt;
+
+                            &lt;button type="submit" class="btn btn-md btn-primary"&gt;SIMPAN&lt;/button&gt;
+                            &lt;button type="reset" class="btn btn-md btn-warning"&gt;RESET&lt;/button&gt;
+
+                        &lt;/form&gt; 
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    
+&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    CKEDITOR.replace( 'content' );
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>Jika kita perhatikan kode di atas, pada bagian <em>form</em> <em>action</em>, kita arahkan ke dalam <em>route</em> yang bernama <code>posts.store</code> dengan <em>method</em> <code>POST</code>.</p>
+<pre><code>&lt;form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data"&gt;
+</code></pre>
+<p>Dan kita juga menambahkan <em>attribute</em> <code>enctype="multipart/form-data"</code>, yang bertujuan agar <em>form</em> ini dapat mengirimkaan sebuah <em>file</em>/gambar ke dalam <em>server</em>.</p>
+<p>Dan untuk <em>content</em>, kita akan menggunakan <em>library</em> tambahan yaitu <code>CKEDITOR</code>, dengan tujuan agar penulisan konten-nya lebih baik dan bagus.</p>
+<pre><code>&lt;script src="https://cdn.ckeditor.com/4.13.1/standard/ckeditor.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    CKEDITOR.replace( 'content' );
+&lt;/script&gt;
+</code></pre>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-langkah-3---uji-coba-insert-data-post" id="content-langkah-3---uji-coba-insert-data-post" title="Permalink"></a>Langkah 3 - Uji Coba Insert Data Post</h3>
+<p>Sekarang kita akan lakukan proses <em>insert</em> data <em>post</em> baru. Silahkan klik <em>button</em> <code>TAMBAH POST</code> atau bisa ke <em>URL</em> <a href="http://localhost:8000/posts/create">http://localhost:8000/posts/create</a>, jika berhasil, maka akan menampilkan halaman seperti berikut ini :</p>
+<p><img alt="" src="https://raw.githubusercontent.com/maulayyacyber/assets-images-ebooks/main/laravel-untuk-pemula/post-create.png"/></p>
+<p>Silahkan klik <em>button</em> <code>SIMPAN</code> tanpa mengisi data apapun, maka akan menampilkan validasi yang dikirimkan oleh <em>controller</em>. Kurang lebih seperti berikut ini :</p>
+<p><img alt="" src="https://raw.githubusercontent.com/maulayyacyber/assets-images-ebooks/main/laravel-untuk-pemula/post-create-validation.png"/></p>
+<p>Dan sekarang, silahkan masukkan data yang diinginkan, kemudian klik <em>button</em> <code>SIMPAN</code>. Jika berhasil maka akan mendapatkan hasil seperti berikut ini :</p>
+<p><img alt="" src="https://raw.githubusercontent.com/maulayyacyber/assets-images-ebooks/main/laravel-untuk-pemula/post-store.png"/></p>
+</div>
+<!-- Div pembatas dengan content -->
+<div class="border-t border-neutral-200 dark:border-neutral-700 mt-8 pt-6">
+<div class="flex justify-end">
+<a :aria-busy="loading ? 'true' : 'false'" :class="loading ? 'opacity-60 pointer-events-none' : ''" class="inline-flex items-center gap-2 px-6 py-3 bg-red-700 hover:bg-red-800 dark:bg-neutral-600 dark:hover:bg-neutral-700 text-white text-sm font-medium rounded-full transition-colors duration-200" data-id="1581" href="https://santrikoding.com/account/my-courses/laravel-untuk-pemula/1582?version=1.1.0" x-data="lessonComplete(28, '1.1.0', 'https://santrikoding.com/account/my-courses/laravel-untuk-pemula/lesson/completed')" x-on:click.prevent="complete($event)">
+ <span x-text="loading ? 'Processing…' : 'Complete &amp; Continue'"></span>
+ </a>
+</div>
+</div>
+</div>
+</main><aside :class="tocVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'" class="hidden xl:block fixed right-0 top-14 bottom-0 w-64 overflow-y-auto border-l border-neutral-200 dark:border-neutral-700/80 bg-white/95 dark:bg-neutral-900 backdrop-blur-sm transition-all duration-300 z-30" x-cloak="">
+<!-- Header dengan glass effect -->
+<div class="sticky top-0 z-10 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-b border-neutral-200/50 dark:border-neutral-700/50 px-4 py-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="p-1.5 bg-primary/10 rounded-lg">
+
+</div>
+<div>
+<h3 class="text-sm font-semibold text-neutral-900 dark:text-neutral-100">On This Page</h3>
+</div>
+</div>
+
+</div>
+</div>
+<!-- Progress Indicator yang benar-benar visible -->
+<div class="px-4 py-3 border-b border-neutral-200/50 dark:border-neutral-700/50" x-data="{
+            scrollProgress: 0,
+            updateProgress() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                this.scrollProgress = docHeight &gt; 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+            }
+         }" x-init="updateProgress(); $watch('scrollProgress', () =&gt; {}); window.addEventListener('scroll', () =&gt; updateProgress())">
+<div class="flex items-center justify-between text-xs mb-2">
+<span class="text-neutral-600 dark:text-neutral-400">Reading Progress</span>
+<span class="text-primary font-medium" x-text="Math.round(scrollProgress) + '%'"></span>
+</div>
+<!-- Progress Bar dengan warna yang kontras -->
+<div class="w-full bg-neutral-300 dark:bg-neutral-600 rounded-full h-2 shadow-inner">
+<div :style="'width: ' + scrollProgress + '%'" class="bg-gradient-to-r from-emerald-300 to-emerald-600 h-2 rounded-full transition-all duration-300 shadow-sm"></div>
+</div>
+</div>
+<!-- Table of Contents Content -->
+
+<!-- Footer dengan quick actions -->
+<div class="sticky bottom-0 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-t border-neutral-200/50 dark:border-neutral-700/50 p-3">
+<div class="flex items-center justify-between text-xs">
+
+
+</div>
+</div>
+</aside>
+        </article>
+    </div>
+</body>
+</html>

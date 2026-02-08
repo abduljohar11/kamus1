@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tipe Data JavaScript - Tutorial Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #fdf2f8; border: 2px dashed #db2777; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Tipe Data</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Apa Itu Tipe Data?</h2>
+            <p><strong>Tipe data</strong> adalah klasifikasi jenis nilai yang bisa kita simpan dan operasikan di dalam sebuah variabel. JavaScript adalah bahasa yang bersifat <em>dynamic typing</em>, artinya satu variabel bisa berganti tipe data secara otomatis.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan sebuah <strong>Label Harga</strong> di supermarket. Label tersebut bisa berisi teks (Nama Barang), angka (Harga), atau keterangan benar/salah (Sedang Diskon?). Komputer perlu tahu "label" apa yang sedang ia baca agar tidak salah menghitung; Anda tidak bisa menjumlahkan "Apel" dengan "Rp5000" secara matematika, bukan?</p>
+            </div>
+
+            
+
+            <h2 class="section-title">Tipe Data Primitive</h2>
+            <p>Tipe data sederhana yang menyimpan nilai tunggal. Berikut macam-macamnya:</p>
+
+            <ul>
+                <li><strong>String:</strong> Representasi teks. Ditulis di dalam petik <code>'...'</code>, <code>"..."</code>, atau <code>`...`</code>.</li>
+                <li><strong>Number:</strong> Angka bulat maupun desimal.</li>
+                <li><strong>Boolean:</strong> Hanya bernilai <span class="inline-code">true</span> atau <span class="inline-code">false</span>.</li>
+                <li><strong>Undefined:</strong> Variabel yang sudah ada tapi belum diberi isi.</li>
+                <li><strong>Null:</strong> Representasi nilai kosong yang disengaja.</li>
+            </ul>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let nama = "SantriKoding"; // String
+let umur = 25;             // Number
+let isOnline = true;       // Boolean
+let alamat;                // Undefined (karena kosong)
+let data = null;           // Null (sengaja dikosongkan)</code></pre>
+            </div>
+
+            <h2 class="section-title">Tipe Data Non-Primitive</h2>
+            <p>Tipe data kompleks yang bisa menampung banyak nilai sekaligus.</p>
+
+            <h3 class="font-bold text-lg mb-2">Object</h3>
+            <p>Menyimpan data dengan pasangan <em>key-value</em> (seperti identitas lengkap).</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let mahasiswa = {
+  nama: "Riza",
+  jurusan: "Informatika",
+  lulus: false
+};</code></pre>
+            </div>
+
+            <h3 class="font-bold text-lg mb-2">Array</h3>
+            <p>Menyimpan daftar nilai yang berurutan menggunakan index angka.</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let buah = ["Apel", "Jeruk", "Mangga"];
+console.log(buah[0]); // Output: Apel</code></pre>
+            </div>
+
+            <h2 class="section-title">Mengetahui Tipe Data (typeof)</h2>
+            <p>Gunakan operator <span class="inline-code">typeof</span> untuk mengecek jenis data dari sebuah variabel secara real-time.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">console.log(typeof "Halo");  // "string"
+console.log(typeof 123);     // "number"
+console.log(typeof true);    // "boolean"
+console.log(typeof {});      // "object"</code></pre>
+            </div>
+
+            <p><strong>Catatan Penting:</strong> <span class="inline-code">typeof null</span> akan mengembalikan <span class="inline-code">"object"</span>. Ini adalah anomali bersejarah di JavaScript, namun tetap dianggap sebagai tipe data primitive.</p>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Memahami tipe data adalah langkah awal untuk menghindari error saat melakukan operasi logika atau matematika. Dengan mengetahui perbedaan Primitive dan Non-Primitive, Anda bisa mengelola memori aplikasi dengan lebih baik.</p>
+            <p>Di artikel berikutnya, kita akan membahas <strong>Variabel</strong>: Perbedaan mendalam antara <span class="inline-code">var</span>, <span class="inline-code">let</span>, dan <span class="inline-code">const</span>.</p>
+        </div>
+    </div>
+</body>
+</html>

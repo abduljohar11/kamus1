@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Flow JavaScript - Tutorial Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #fdf2f8; border: 2px dashed #db2777; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Control Flow</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Apa Itu Control Flow?</h2>
+            <p><strong>Control Flow</strong> adalah cara kita mengatur urutan eksekusi perintah di dalam program. Secara default, kode dibaca dari atas ke bawah, namun dengan control flow kita bisa membuat lompatan, percabangan, atau pengulangan.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan Anda sedang <strong>Menyetir Mobil</strong> mengikuti GPS. <strong>Percabangan (If)</strong> adalah saat Anda bertemu persimpangan: "JIKA ada macet, belok kanan; JIKA TIDAK, jalan lurus". <strong>Perulangan (Loop)</strong> adalah saat Anda melewati bundaran: "Putar terus SELAMA Anda belum menemukan pintu keluar yang benar".</p>
+            </div>
+
+            
+
+            <h2 class="section-title">1. Percabangan (Conditionals)</h2>
+            <p>Digunakan untuk membuat keputusan berdasarkan kondisi tertentu.</p>
+
+            <h3 class="font-bold mb-2">If - Else If - Else</h3>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let nilai = 85;
+
+if (nilai >= 90) {
+  console.log("Grade: A");
+} else if (nilai >= 75) {
+  console.log("Grade: B");
+} else {
+  console.log("Grade: C");
+}</code></pre>
+            </div>
+
+            <h3 class="font-bold mb-2 text-indigo-700">2. Switch Statement</h3>
+            <p>Digunakan untuk memeriksa nilai tunggal terhadap banyak kemungkinan "case".</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let hari = "Senin";
+
+switch (hari) {
+  case "Senin":
+    console.log("Hari ini upacara");
+    break;
+  case "Minggu":
+    console.log("Hari ini libur");
+    break;
+  default:
+    console.log("Hari kerja biasa");
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">3. Perulangan (Loops)</h2>
+            <p>Digunakan untuk menjalankan perintah yang sama berulang-ulang tanpa harus menulis ulang kodenya.</p>
+
+            <h3 class="font-bold mb-2">For Loop (Perulangan Pasti)</h3>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">for (let i = 1; i <= 5; i++) {
+  console.log("Lari putaran ke-" + i);
+}</code></pre>
+            </div>
+
+            <h3 class="font-bold mb-2">While Loop (Perulangan Kondisional)</h3>
+            <p>Berjalan terus selama kondisi masih bernilai <span class="inline-code">true</span>.</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let i = 1;
+while (i <= 3) {
+  console.log("Cek kondisi...");
+  i++;
+}</code></pre>
+            </div>
+
+            <h3 class="font-bold mb-2">Do-While Loop</h3>
+            <p>Blok kode akan dijalankan <strong>minimal satu kali</strong>, baru kemudian dicek kondisinya.</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let j = 10;
+do {
+  console.log("Saya akan muncul sekali walaupun kondisi salah!");
+} while (j < 5);</code></pre>
+            </div>
+
+            <h2 class="section-title">Break & Continue</h2>
+            <ul>
+                <li><strong>Break:</strong> Menghentikan seluruh perulangan secara paksa.</li>
+                <li><strong>Continue:</strong> Melewati satu putaran perulangan dan lanjut ke putaran berikutnya.</li>
+            </ul>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">for (let i = 1; i <= 5; i++) {
+  if (i === 3) continue; // Melewati angka 3
+  if (i === 5) break;    // Berhenti saat sampai 5
+  console.log("Angka: " + i);
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Control flow adalah tulang punggung dari logika program. Tanpanya, aplikasi kita tidak akan bisa membedakan kondisi benar-salah atau melakukan tugas otomatis secara berulang.</p>
+            <p>Pada artikel berikutnya, kita akan belajar tentang <strong>Function di JavaScript</strong>: Cara membungkus kode-kode ini menjadi satu paket yang bisa dipanggil kapan saja.</p>
+        </div>
+    </div>
+</body>
+</html>

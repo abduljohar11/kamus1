@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; /* Menjaga baris baru kodingan <?php ?> */
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Menampilkan Data dari Database</h1>
+        <div class="card"><h2 class="section-title">Langkah 1 - Membuat Controller Product</h2><p>Untuk menampilkan data dari <em>database</em>, kita memerlukan sebuah <em><strong>Controller</strong></em>. <em>Controller</em> berfungsi sebagai penghubung antara <em><strong>Model</strong></em> (<em>database</em>) dan <em><strong>View</strong></em>**** (tampilan antarmuka pengguna). Dengan menggunakan <em>Controller</em>, kita dapat mengambil data dari <em>database</em> dan mengirimkannya ke <em>View</em> agar bisa ditampilkan kepada pengguna.</p><p>Mari kita mulai dengan membuat <em>Controller</em> untuk mengelola data <em><strong>Product</strong></em>. Silahkan jalankan perintah berikut ini di dalam terminal/CMD dan pastikan berada di dalam <em>folder</em> <em>project</em> <strong>Laravel</strong>-nya.</p><p>Perintah di atas akan membuat sebuah <em>Controller</em> baru dengan nama <code>ProductController.php</code>, yang secara otomatis akan disimpan di dalam <em>folder</em>: <code>app/Http/Controllers</code>.</p><p>Silahkan buka <em>file</em> tersebut, kemudian ubah semua kode-nya menjadi seperti berikut ini.</p><p>app/Http/Controllers/ProductController.php</p>
+                        <div class="code-wrap relative my-8">
+                            <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                            <pre><code class="language-php"><?php
+
+namespace App\Http\Controllers;
+
+//import model product
+use App\Models\Product; 
+
+//import return type View
+use Illuminate\View\View;
+
+class ProductController extends Controller
+{
+    /**
+     * index
+     *
+     * @return void
+     */
+    public function index() : View
+    {
+        //get all products
+        $products = Product::latest()->paginate(10);
+
+        //render view with products
+        return view('products.index', compact('products'));
+    }
+}</code></pre>
+                        </div><p>Dari perubahan kode di atas, pertama kita tentukan <code>namespace</code> atau lokasi <em>controller</em> ini berada.</p><p>Kemudian kita <em>import</em> <em>Model</em> <code>Product</code>, dimana digunakan untuk mengambil data dari tabel <code>products</code> di <em>database</em>.</p><p>Selanjutnya, kita <em>import</em> <em>class</em> <code>View</code> yang nanti digunakan sebagai tipe pengembalian untuk <em>method</em> <code>index</code>.</p><p>Setelah itu, di dalam <em>class</em> <code>ProductController</code> kita membuat sebuah <em>method</em> baru dengan nama <code>index</code>.</p><p>Di dalam <em>method</em> di atas, kita melakukan get data <em>products</em> dari <em>table</em> <code>products</code> yang ada di <em>database</em> menggunakan <em>Model</em> <code>Product</code>.</p><p>Di atas, kita urutkan data yang ditampilkan berdasarkan yang paling terbaru, yaitu dengan menggunakan <em>method</em> <code>latest</code>.</p><p>Dan kita akan tampilkan data pada setiap halaman sejumlah 10 <em>item</em> atau <em>record</em> dan <em>method</em> yang digunakan adalah <code>paginate</code>.</p><p>Terakhir, kita mengembalikan data produk yang telah diambil ke tampilan <code>products.index</code> menggunakan kode berikut:</p><p>Fungsi <code>compact()</code> di atas digunakan untuk membuat <em>array</em> asosiatif dari <em>variable</em> <code>products</code>. Sehingga data <em>produk</em> bisa diakses di dalam <em>view</em>.</p><h2 class="section-title">Langkah 2 - Membuat Route Products</h2><p><strong>Laravel</strong> menyediakan <strong><em>Route</em> <em>Resource</em></strong>, yaitu cara singkat untuk mendefinisikan semua <strong><em>route</em> CRUD</strong> (<em>Create, Read, Update, Delete</em>) dalam satu baris kode.</p><p>Silakan buka <em>file</em> <code>routes/web.php</code>, kemudian ubah semua kode-nya menjadi seperti berikut ini.</p><p>routes/web.php</p>
+                        <div class="code-wrap relative my-8">
+                            <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                            <pre><code class="language-php"><?php
+
+use Illuminate\Support\Facades\Route;
+
+//import product controller
+use App\Http\Controllers\ProductController;
+
+//route resource for products
+Route::resource('/products', ProductController::class);
+
+Route::get('/', function () {
+    return view('welcome');
+});</code></pre>
+                        </div><p>Dengan hanya satu baris kode di atas, <strong>Laravel</strong> otomatis membuat <strong>7 <em>route</em> bawaan</strong> untuk <strong>CRUD</strong> produk. Untuk melihat daftar lengkap <em>route</em> yang dibuat, jalankan perintah berikut di dalam terminal/CMD.</p><p>Output yang akan muncul di terminal/CMD.</p><h2 class="section-title">Langkah 3 - Membuat View Products Index</h2><p><strong>Laravel</strong> secara <em>default</em> menyimpan tampilan atau <em>view</em> di dalam <em>folder</em> <code>resources/views</code>. Karena kita akan membuat tampilan <em>lists</em> data produk, sekarang silahkan buat <em>folder</em> baru dengan nama <code>products</code> di dalam <code>views</code>, lalu buat <em>file</em> baru di dalamnya dengan nama <code>index.blade.php</code>.</p><p>Kurang lebih struktur <em>folder</em>-nya seperti berikut ini.</p><p>Silahkan buka <em>file</em> <code>resources/views/products/index.blade.php</code>, kemudian masukkan kode berikut ini di dalamnya.</p><p>resources/views/products/index.blade.php</p><p>Dari penambahan kode di atas, kita menambahkan <em>CDN</em> untuk <em>CSS</em> <strong>Bootstrap</strong>. Ini bertujuan untuk mempermudah kita dalam pembuatan sebuah <em>user</em> <em>interface</em>.</p><p>Kemudian kita melakukan perulangan menggunakan direktif <code>@forelse</code>.</p><p>Dan untuk menampilkan <em>pagination</em>, kita bisa menggunakan <code>links</code>.</p><p>Kemudian kita menambahkan kode untuk notifikasi menggunakan <em>library</em> <code>Sweet Alert</code>.</p><h2 class="section-title">Langkah 4 - Uji Coba Menampilkan Data</h2><p>Setelah semua berhasil dibuat, maka sekarang kita akan lakukan uji coba untuk menampilkan data-nya.</p><p>Silahkan teman-teman buka <em>URL</em> berikut ini <a href="http://localhost:8000/products">http://localhost:8000/products</a>. Jika berhasil maka kurang lebih hasilnya seperti berikut ini.</p><p>Di atas, muncul pesan <code>Data products belum ada.</code> karena di <em>database</em> memang masih belum ada data-nya.</p><h2 class="section-title">Kesimpulan</h2><p>Pada artikel ini, kita semua telah belajar banyak hal, seperti membuat <em>controller</em>, <em>route</em> dan <em>view</em> untuk menampilkan data <em>products</em> dari <em>database</em> ke pengguna melalui <em>view</em>.</p><p>Pada artikel berikutnya, kita semua akan belajar bagaimana cara membuat proses <em>insert</em> data ke dalam <em>database</em> di <strong>Laravel</strong> <strong>12</strong>.</p></div>
+    </div>
+</body>
+</html>

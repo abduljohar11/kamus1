@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Event Handling - React Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #fefce8; border: 2px dashed #eab308; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Event Handling</h1>
+        
+        <div class="card">
+            <p>Pada artikel kali ini, kita akan membahas tentang <strong>Event Handling</strong> di React. Dengan event handling, kita bisa merespons interaksi pengguna seperti klik tombol, mengetik di input, mengirim form, dan berbagai aksi lainnya.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan sebuah <strong>Bel Rumah</strong>. Tombol bel adalah elemen UI, "Tamu yang menekan tombol" adalah <strong>Event</strong> (kejadian), dan "Suara bel yang berbunyi" adalah <strong>Handler</strong> (respon yang kita siapkan). Tanpa handler, bel ditekan ribuan kali pun tidak akan terjadi apa-apa.</p>
+            </div>
+
+            <h2 class="section-title">Apa Itu Event Handling?</h2>
+            <p><strong>Event Handling</strong> adalah cara untuk menangani sebuah aksi atau interaksi yang dilakukan pengguna terhadap elemen di UI. React menggunakan sistem <em>Synthetic Events</em> yang membungkus event asli browser agar berjalan konsisten di semua browser.</p>
+
+            <p>Aturan penting di React:</p>
+            <ul>
+                <li>Menggunakan <strong>camelCase</strong> (contoh: <span class="inline-code">onClick</span>, bukan <span class="inline-code">onclick</span>).</li>
+                <li>Mengirim fungsi sebagai handler, bukan string.</li>
+            </ul>
+
+            <h2 class="section-title">Event onClick</h2>
+            <p>Digunakan untuk menangani aksi klik. Mari kita buat fungsi <span class="inline-code">handleClick</span>.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function App() {
+  const handleClick = () => {
+    alert("Tombol telah diklik!");
+  };
+
+  return (
+    &lt;button onClick={handleClick}&gt;
+      Klik Saya
+    &lt;/button&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Event onChange (Input)</h2>
+            <p>Event <span class="inline-code">onChange</span> sangat penting untuk menangkap apa yang diketikkan pengguna di dalam input secara real-time.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import { useState } from "react";
+
+function App() {
+  const [name, setName] = useState("");
+
+  return (
+    &lt;div&gt;
+      &lt;input 
+        type="text" 
+        placeholder="Ketik nama..." 
+        onChange={(e) => setName(e.target.value)} 
+      /&gt;
+      &lt;p&gt;Halo, {name}!&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">Event onSubmit (Form)</h2>
+            <p>Digunakan pada elemen <span class="inline-code">&lt;form&gt;</span>. Kita wajib menggunakan <span class="inline-code">event.preventDefault()</span> agar browser tidak me-refresh halaman saat submit.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function App() {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    alert("Data berhasil dikirim!");
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input type="email" placeholder="Email" /&gt;
+      &lt;button type="submit"&gt;Kirim&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Event dengan Parameter</h2>
+            <p>Jika ingin mengirim data ke dalam fungsi handler, kita harus membungkusnya dalam arrow function.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function App() {
+  const sayHello = (name) => {
+    alert("Halo " + name);
+  };
+
+  return (
+    &lt;button onClick={() => sayHello("Santri Koding")}&gt;
+      Sapa Saya
+    &lt;/button&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Pada artikel ini, kita sudah belajar tentang <strong>Event Handling</strong> sebagai jembatan interaksi antara pengguna dan aplikasi. Kita sudah mencoba berbagai event populer dan cara menangani form agar tidak me-refresh halaman.</p>
+            <p>Di artikel berikutnya, kita akan membahas tentang <strong>Conditional Rendering</strong>, yaitu cara menampilkan atau menyembunyikan UI berdasarkan kondisi tertentu (logika IF/ELSE di React).</p>
+        </div>
+    </div>
+</body>
+</html>

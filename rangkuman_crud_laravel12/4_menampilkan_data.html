@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Laravel & Inertia - Menampilkan Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; transform: scale(1.05); }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1.2rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        p { margin-bottom: 1.2rem; line-height: 1.8; color: #1e293b; }
+        .utility-tag { background: #cbd5e1; padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 0.85rem; font-weight: bold; color: #0f172a; }
+        
+        .analogy-box { background: #dbeafe; border-left: 4px solid #3b82f6; padding: 1rem; border-radius: 0.5rem; margin: 1.5rem 0; color: #1e3a8a; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Menampilkan Data (Index)
+        </h1>
+
+        <div class="card">
+            <div class="analogy-box">
+                <strong>💡 Analogi:</strong> Bayangkan <strong>Controller</strong> adalah seorang pelayan restoran yang mengambil daftar menu (data) dari dapur (database), lalu menyajikannya ke meja pelanggan (browser) menggunakan piring (Inertia Props). Pelanggan tidak perlu tahu apa yang terjadi di dapur, mereka hanya menerima menu yang siap dinikmati.
+            </div>
+
+            <h2 class="section-title">Langkah 1 - Membuat Controller</h2>
+            <p>Jalankan perintah berikut untuk membuat <span class="utility-tag">PostController</span>:</p>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-bash">php artisan make:controller PostController</code></pre>
+            </div>
+
+            <p>Buka <span class="utility-tag">app/Http/Controllers/PostController.php</span> dan tambahkan method <span class="utility-tag">index</span>:</p>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-php">&lt;?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Post;
+use Illuminate\Http\Request;
+
+class PostController extends Controller
+{
+    public function index()
+    {
+        // Mengambil data posts terbaru
+        $posts = Post::latest()->get();
+
+        // Mengirim data ke halaman 'Posts/Index' di React
+        return inertia('Posts/Index', [
+            'posts' => $posts
+        ]);
+    }
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 2 - Menambahkan Route</h2>
+            <p>Buka file <span class="utility-tag">routes/web.php</span>. Kita akan menggunakan <span class="utility-tag">Route::resource</span> agar Laravel otomatis menyiapkan semua jalur CRUD:</p>
+            
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-php">use App\Http\Controllers\PostController;
+
+Route::resource('/posts', PostController::class);</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 3 - Membuat Master Layout</h2>
+            <p>Agar tampilan konsisten, kita buat layout utama di <span class="utility-tag">resources/js/Layouts/Default.jsx</span>:</p>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-jsx">import { Link } from '@inertiajs/react';
+
+export default function Layout({ children }) {
+    return (
+        &lt;div className="min-h-screen bg-gray-100"&gt;
+            &lt;nav className="bg-white shadow-sm p-4 mb-6"&gt;
+                &lt;div className="container mx-auto flex justify-between"&gt;
+                    &lt;Link href="/posts" className="font-bold text-xl"&gt;LARAVEL INERTIA&lt;/Link&gt;
+                &lt;/div&gt;
+            &lt;/nav&gt;
+            &lt;main className="container mx-auto"&gt;{children}&lt;/main&gt;
+        &lt;/div&gt;
+    );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 4 - Membuat Halaman Index</h2>
+            <p>Halaman ini akan menerima data <span class="utility-tag">posts</span> dari controller. Buat file di <span class="utility-tag">resources/js/Pages/Posts/Index.jsx</span>:</p>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-jsx">import Layout from '../../Layouts/Default';
+import { Link } from '@inertiajs/react';
+
+export default function PostIndex({ posts, flash }) {
+    return (
+        &lt;Layout&gt;
+            &lt;div className="p-4"&gt;
+                {flash.message && (
+                    &lt;div className="bg-green-500 text-white p-3 rounded mb-4"&gt;{flash.message}&lt;/div&gt;
+                )}
+                
+                &lt;Link href="/posts/create" className="bg-blue-600 text-white px-4 py-2 rounded"&gt;TAMBAH DATA&lt;/Link&gt;
+
+                &lt;table className="w-full mt-6 bg-white rounded shadow"&gt;
+                    &lt;thead className="bg-gray-200"&gt;
+                        &lt;tr&gt;
+                            &lt;th className="p-3 text-left"&gt;TITLE&lt;/th&gt;
+                            &lt;th className="p-3 text-left"&gt;CONTENT&lt;/th&gt;
+                            &lt;th className="p-3 text-center"&gt;AKSI&lt;/th&gt;
+                        &lt;/tr&gt;
+                    &lt;/thead&gt;
+                    &lt;tbody&gt;
+                        {posts.map((post) => (
+                            &lt;tr key={post.id} className="border-t"&gt;
+                                &lt;td className="p-3"&gt;{post.title}&lt;/td&gt;
+                                &lt;td className="p-3"&gt;{post.content}&lt;/td&gt;
+                                &lt;td className="p-3 text-center"&gt;...&lt;/td&gt;
+                            &lt;/tr&gt;
+                        ))}
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+        &lt;/Layout&gt;
+    );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Kita telah berhasil menghubungkan database dengan frontend React melalui <strong>Inertia.js</strong>. Data mengalir dari Controller -> Props -> Komponen React. Di materi selanjutnya, kita akan belajar cara <strong>Menambah Data (Create & Store)</strong>.</p>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

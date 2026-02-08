@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP OOP - Property & Method</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; }
+        .badge { background: #2563eb; color: white; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; }
+        .security-box { background: #fff1f2; border: 2px solid #fda4af; padding: 1.5rem; border-radius: 1rem; margin: 1.5rem 0; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Property & Method</h1>
+        
+        <div class="card">
+            <p>Jika <strong>Class</strong> adalah sebuah mesin, maka <strong>Property</strong> adalah kabel dan bautnya (data), sedangkan <strong>Method</strong> adalah tombol-tombol yang bisa ditekan (fungsi).</p>
+
+            <h2 class="section-title">1. Property: Atribut Objek</h2>
+            <p>Property adalah variabel di dalam class. Untuk aplikasi guru, property bisa berupa nama siswa, NIS, atau nilai.</p>
+            
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  class Siswa {
+      public $nama; // Ini Property
+      public $kelas;
+  }
+
+  $siswa1 = new Siswa();
+  $siswa1->nama = "Andi"; // Mengisi Property
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">2. Method: Perilaku Objek</h2>
+            <p>Method adalah fungsi di dalam class. Gunakan <span class="badge">$this</span> untuk mengambil data dari property milik objek itu sendiri.</p>
+
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  class Siswa {
+      public $nama = "Andi";
+
+      public function sapa() {
+          // Mengakses property menggunakan $this
+          return "Halo, nama saya " . $this->nama;
+      }
+  }
+?&gt;</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">3. Hak Akses (Encapsulation)</h2>
+            <p>Inilah bagian terpenting untuk keamanan. Kita bisa mengatur siapa saja yang boleh melihat atau mengubah data.</p>
+            
+            <ul class="space-y-3 mb-8">
+                <li class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
+                    <span class="badge">public</span> : Bebas diakses dari mana saja (Luar & Dalam Class).
+                </li>
+                <li class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                    <span class="badge">protected</span> : Hanya bisa diakses oleh diri sendiri dan "Anak" (Class Turunan).
+                </li>
+                <li class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                    <span class="badge">private</span> : Rahasia! Hanya bisa diakses oleh diri sendiri di dalam class tersebut.
+                </li>
+            </ul>
+
+            <h2 class="section-title">Studi Kasus: Keamanan Nilai</h2>
+            <div class="security-box">
+                <p class="text-sm text-red-800 font-bold mb-2 italic">Bahaya: Jangan biarkan nilai bisa diubah langsung!</p>
+                <div class="code-wrap relative">
+                    <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                    <pre><code class="language-php">&lt;?php
+  class Raport {
+      private $nilai = 0; // Private: Tidak bisa diubah sembarangan
+
+      // Hanya guru yang bisa set nilai lewat tombol (Method) ini
+      public function setNilai($angka) {
+          if ($angka >= 0 && $angka <= 100) {
+              $this->nilai = $angka;
+          }
+      }
+
+      public function tampilkanNilai() {
+          return "Nilai Anda: " . $this->nilai;
+      }
+  }
+
+  $raportAndi = new Raport();
+  // $raportAndi->nilai = 100; // ERROR! Karena private
+  $raportAndi->setNilai(90);    // SUKSES! Lewat gerbang resmi
+  echo $raportAndi->tampilkanNilai();
+?&gt;</code></pre>
+                </div>
+            </div>
+
+            
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Dengan menggunakan <span class="badge">private</span> atau <span class="badge">protected</span>, kamu melindungi integritas data aplikasi "Buku Guru" kamu. Pastikan data sensitif tidak bisa diakses langsung dari luar class!</p>
+            
+            <p class="mt-12 text-center font-bold text-slate-500 italic">Materi Selanjutnya: Inheritance - Cara membuat Class "Anak" agar kodingan lebih efisien.</p>
+        </div>
+    </div>
+</body>
+</html>

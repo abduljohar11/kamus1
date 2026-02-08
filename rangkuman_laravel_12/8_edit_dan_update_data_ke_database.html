@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; /* Menjaga baris baru kodingan <?php ?> */
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Edit dan Update Data ke Database</h1>
+        <div class="card"><p>Dengan memahami materi ini, teman-teman akan mengetahui bagaimana cara mengambil data lama dari <em>database</em>, menampilkan dalam <em>form</em> <em>edit</em>, melakukan validasi, serta menyimpan perubahan ke dalam <em>database</em>.</p><h2 class="section-title">Langkah 1 - Membuat Method Edit dan Update di Controller</h2><p>Untuk meng<em>edit</em> dan memperbarui data, kita perlu menambahkan dua <em>method</em> berikut di dalam <code>ProductController.php</code>.</p><p>Silakan buka <em>file</em> <code>app/Http/Controllers/ProductController.php</code>, kemudian ubah semua kode-nya menjadi seperti berikut ini.</p><p>app/Http/Controllers/ProductController.php</p>
+                        <div class="code-wrap relative my-8">
+                            <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                            <pre><code class="language-php"><?php
+
+namespace App\Http\Controllers;
+
+//import model product
+use App\Models\Product; 
+
+//import return type View
+use Illuminate\View\View;
+
+//import return type redirectResponse
+use Illuminate\Http\Request;
+
+//import Http Request
+use Illuminate\Http\RedirectResponse;
+
+//import Facades Storage
+use Illuminate\Support\Facades\Storage;
+
+class ProductController extends Controller
+{
+    /**
+     * index
+     *
+     * @return void
+     */
+    public function index() : View
+    {
+        //get all products
+        $products = Product::latest()->paginate(10);
+
+        //render view with products
+        return view('products.index', compact('products'));
+    }
+
+    /**
+     * create
+     *
+     * @return View
+     */
+    public function create(): View
+    {
+        return view('products.create');
+    }
+
+    /**
+     * store
+     *
+     * @param  mixed $request
+     * @return RedirectResponse
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        //validate form
+        $request->validate([
+            'image'         => 'required|image|mimes:jpeg,jpg,png|max:2048',
+            'title'         => 'required|min:5',
+            'description'   => 'required|min:10',
+            'price'         => 'required|numeric',
+            'stock'         => 'required|numeric'
+        ]);
+
+        //upload image
+        $image = $request->file('image');
+        $image->storeAs('public/products', $image->hashName());
+
+        //create product
+        Product::create([
+            'image'         => $image->hashName(),
+            'title'         => $request->title,
+            'description'   => $request->description,
+            'price'         => $request->price,
+            'stock'         => $request->stock
+        ]);
+
+        //redirect to index
+        return redirect()->route('products.index')->with(['success' => 'Data Berhasil Disimpan!']);
+    }
+    
+    /**
+     * show
+     *
+     * @param  mixed $id
+     * @return View
+     */
+    public function show(string $id): View
+    {
+        //get product by ID
+        $product = Product::findOrFail($id);
+
+        //render view with product
+        return view('products.show', compact('product'));
+    }
+    
+    /**
+     * edit
+     *
+     * @param  mixed $id
+     * @return View
+     */
+    public function edit(string $id): View
+    {
+        //get product by ID
+        $product = Product::findOrFail($id);
+
+        //render view with product
+        return view('products.edit', compact('product'));
+    }
+        
+    /**
+     * update
+     *
+     * @param  mixed $request
+     * @param  mixed $id
+     * @return RedirectResponse
+     */
+    public function update(Request $request, $id): RedirectResponse
+    {
+        //validate form
+        $request->validate([
+            'image'         => 'image|mimes:jpeg,jpg,png|max:2048',
+            'title'         => 'required|min:5',
+            'description'   => 'required|min:10',
+            'price'         => 'required|numeric',
+            'stock'         => 'required|numeric'
+        ]);
+
+        //get product by ID
+        $product = Product::findOrFail($id);
+
+        //check if image is uploaded
+        if ($request->hasFile('image')) {
+
+						//delete old image
+            Storage::delete('products/'.$product->image);
+
+            //upload new image
+            $image = $request->file('image');
+            $image->storeAs('products', $image->hashName());
+
+            //update product with new image
+            $product->update([
+                'image'         => $image->hashName(),
+                'title'         => $request->title,
+                'description'   => $request->description,
+                'price'         => $request->price,
+                'stock'         => $request->stock
+            ]);
+
+        } else {
+
+            //update product without image
+            $product->update([
+                'title'         => $request->title,
+                'description'   => $request->description,
+                'price'         => $request->price,
+                'stock'         => $request->stock
+            ]);
+        }
+
+        //redirect to index
+        return redirect()->route('products.index')->with(['success' => 'Data Berhasil Diubah!']);
+    }
+}</code></pre>
+                        </div><p>Dari perubahan kode di atas, pertama kita <em>import</em> <em>Facades</em> <code>Storage</code> dari <strong>Laravel</strong>. Ini akan kita gunakan untuk menghapus <em>file</em> gambar <em>product</em> lama saat gambar diperbarui.</p><p>kemudian di dalam <em>class</em> <code>productController</code>, kita membuat 2 <em>method</em> baru, yaitu:</p><li><code>function edit</code></li><li><code>function update</code></li><p><em><strong>Function Edit</strong></em></p><p><em>Method</em> ini akan kita gunakan untuk menampilkan halaman <em>form</em> <em>edit</em> data product dan di dalam <em>method</em> tersebut terdapat parameter <code>$id</code> yang mana isinya akan diambil dari ID yang ada di dalam <em>URL</em> <em>browser</em>.</p><p>Di dalam <em>method</em> tersebut, kita melakukan <em>get</em> data ke dalam <em>database</em> menggunakan <em>Model</em> berdasarkan ID.</p><p>Setelah data didapatkan, kita tinggal kirimkan data tersebut ke dalam <em>view</em> menggunakan <code>compact</code>.</p><p><em><strong>Function Update</strong></em></p><p><em>Method</em> ini akan kita gunakan untuk proses <em>update</em> data <em>product</em> ke dalam <em>database</em>. Di dalam <em>method</em> ini terdapat 2 parameter, yaitu <code>$request</code> dan <code>$id</code>.</p><li><code>$request</code> - digunakan untuk menerima <em>request</em> data yang dikirimkan oleh pengguna melalui <em>form</em>.</li><li><code>$id</code> - merupakan <strong>ID</strong> data <em>product</em> yang akan akan dijadikan acuan <em>update</em> data.</li><p>Di dalam <em>method</em> di atas, pertama-tama kita membuat sebuah validasi terlebih dahulu.</p><p>Dari penambahan validasi di atas, kurang lebih ini penjelasannya.</p><p>Setelah membuat validasi, selanjutnya adalah melakukan <em>get</em> data <em>product</em> ke dalam <em>database</em> menggunakan <em>Model</em> berdasarkan ID atau <code>$id</code>.</p><p>Kemudian kita membuat sebuah kondisi untuk gambar, jika ada sebuah <em>request</em> <em>file</em> dengan nama <code>image</code>, maka kita akan <em>upload</em> gambar baru dan hapus gambar lama.</p><p>Di atas, jika ada sebuah <em>request</em> dengan nama <code>image</code>, maka kita akan melakukan beberapa aksi, yaitu:</p><li>
+<p>Hapus gambar lama</p>
+<pre><code>//delete old image
+Storage::delete('products/'.$product-&gt;image);
+</code></pre>
+</li><p>Hapus gambar lama</p><li>
+<p><em>Upload</em> gambar baru</p>
+<pre><code>//upload new image
+$image = $request-&gt;file('image');
+$image-&gt;storeAs('products', $image-&gt;hashName());
+</code></pre>
+</li><p><em>Upload</em> gambar baru</p><li>
+<p>Update data <em>product</em></p>
+<pre><code>//update product with new image
+$product-&gt;update([
+    'image'         =&gt; $image-&gt;hashName(),
+    'title'         =&gt; $request-&gt;title,
+    'description'   =&gt; $request-&gt;description,
+    'price'         =&gt; $request-&gt;price,
+    'stock'         =&gt; $request-&gt;stock
+]);
+</code></pre>
+</li><p>Update data <em>product</em></p><p>Tapi jika <em>request</em> <code>image</code> tidak ada, maka kita cukup <em>update</em> data <em>product</em> tanpa gambar.</p><p>Setelah itu, kita tinggal <em>redirect</em> ke dalam sebuah <em>route</em> dengan nama <code>products.index</code> dengan menambahkan <em>flash</em> data.</p><h2 class="section-title">Langkah 2 - Membuat View Form Edit Data</h2><p>Setelah berhasil menambahkan 2 <em>method</em> baru di dalam <em>controller</em>, maka kita akan lanjutkan membuat sebuah <em>view</em> untuk menampilkan <em>edit</em> data.</p><p>Silakan teman-teman buat <em>file</em> baru di dalam <em>folder</em> <code>resources/views/products/</code> dengan nama <code>edit.blade.php</code>, kurang lebih struktur foldernya akan terlihat seperti ini:</p><p>Setelah itu, silahkan buka <em>file</em>-nya dan tambahkan kode berikut ini di dalamnya.</p><p>resources/views/products/edit.blade.php</p><p>Pada penambahan kode di atas, untuk mengisi <em>value</em> kita panggil object dari data <em>product</em> di dalam <em>helper</em> <code>old</code>. Contohnya seperti berikut.</p><p>Dan jangan lupa, untuk halaman <em>form</em> edit, pastikan teman-teman menambahakn <em>method</em> <code>PUT</code> di dalamnya. Ini menandakan bahwa <em>form</em> tersebut adalah <em>form</em> <em>edit</em> data.</p><h2 class="section-title">Langkah 3 - Uji Coba Edit dan Update Product</h2><p>Silahkan teman-teman klik <em>button</em> <code>EDIT</code> di salah satu data yang dimiliki, jika berhasil maka akan menampilkan halaman <em>edit</em> data <em>product</em>, kurang lebih seperti berikut ini.</p><p>Silahkan teman-teman sesuaikan isinya, kemudian klik <em>button</em> <code>UPDATE</code>, jika berhasil maka akan menampilkan halaman seperti berikut ini.</p><h2 class="section-title">Kesimpulan</h2><p>Dalam artikel ini, kita telah mempelajari cara <strong>Mengedit dan Memperbarui Data Produk</strong> di <strong>Laravel</strong> <strong>12</strong>. Kita telah membuat <em>method</em> <code>edit</code> dan <code>update</code>, menggunakan <em>route</em> <em>resource</em>, membuat <em>form</em> <em>edit</em>, serta menguji proses <em>update</em> data di <strong>Laravel</strong> <strong>12</strong>.</p><p>Pada artikel berikutnya, kita semua akan belajar bagaimana cara membuat proses <em>delete</em> data produk dari <em>database</em> di <strong>Laravel</strong> <strong>12</strong>.</p></div>
+    </div>
+</body>
+</html>

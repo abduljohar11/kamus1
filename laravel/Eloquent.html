@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eloquent</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; color: #334155; background: #f8fafc; margin: 0; padding: 40px 20px; }
+        .container { max-width: 850px; margin: 0 auto; }
+        .btn-back { display: inline-block; margin-bottom: 20px; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+        .materi-card { background: #fff; padding: 45px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h1 { font-size: 2.5rem; color: #0f172a; margin-top: 0; border-bottom: 4px solid #3b82f6; padding-bottom: 10px; }
+        h3 { margin-top: 35px; color: #1e293b; font-size: 1.5rem; border-left: 5px solid #3b82f6; padding-left: 15px; }
+        pre { background: #1e1e2e; color: #f8f8f2; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 25px 0; }
+        code { font-family: 'Consolas', monospace; background: #fee2e2; color: #991b1b; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; color: inherit; padding: 0; }
+        img { max-width: 100%; border-radius: 12px; margin: 30px 0; display: block; border: 1px solid #e2e8f0; }
+        blockquote { border-left: 5px solid #3b82f6; background: #eff6ff; padding: 15px 25px; border-radius: 0 10px 10px 0; font-style: italic; margin: 25px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="btn-back">← Kembali ke Daftar Isi</a>
+        <article class="materi-card">
+            <main class="flex-1 min-w-0 lg:ml-80 mr-0 xl:mr-64 transition-all duration-300 pt-10 md:pt-0">
+<div class="max-w-full mx-auto px-4 sm:px-6 md:px-8 py-5">
+<h1 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">Eloquent</h1>
+<div class="prose lg:prose-lg prose-a:text-blue-500 dark:prose-a:text-blue-400 dark:prose-invert w-full max-w-full">
+<div x-data="" x-init="let t=document.querySelector('.table-of-contents'),d=document.querySelector('.toc'),m=document.querySelector('.toc-mobile'),b=document.querySelector('.btn-toc');if(t&amp;&amp;t.querySelectorAll('li').length&gt;0){d.appendChild(t.cloneNode(true));m.appendChild(t.cloneNode(true))}else b?.classList.add('hidden');$nextTick(()=&gt;{document.querySelectorAll(`.prose a[href^='http']`).forEach(a=&gt;{a.href.includes(location.hostname)||(a.target='_blank',a.rel='noopener noreferrer')})})">
+</div>
+<ul class="table-of-contents">
+<li><a href="#content-membuat-model">Membuat Model</a></li>
+<li><a href="#content-menampilkan-semua-record">Menampilkan Semua Record</a></li>
+<li><a href="#content-menampilkan-semua-record-dengan-pagination">Menampilkan Semua Record Dengan Pagination</a></li>
+<li><a href="#content-menampilkan-record-berdasarkan-primary">Menampilkan Record Berdasarkan Primary</a></li>
+<li><a href="#content-menampilkan-detail-data">Menampilkan Detail Data</a></li>
+<li><a href="#content-menghitung-jumlah-record">Menghitung Jumlah Record</a></li>
+<li><a href="#content-insert-record">Insert Record</a></li>
+<li><a href="#content-update-record">Update Record</a></li>
+<li><a href="#content-delete-record">Delete Record</a></li>
+</ul>
+<p><strong>Laravel</strong> memiliki fitur yang bernama <em>Eloquent</em>, yaitu sebuah <em>object</em>-<em>relational</em> <em>mapper</em> (<strong>ORM</strong>) yang digunakan untuk berinteraksi dengan <em>database</em> dengan lebih mudah</p>
+<p>Saat menggunakan <em>Eloquent</em>, maka kita harus membutuhkan sebuah <em>Model</em> yang terkait dengan <em>table</em>, sehingga proses seperti mengambil data, <em>insert</em>, <em>update</em> dan <em>delete</em> menjadi sangat mudah dilakukan.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-membuat-model" id="content-membuat-model" title="Permalink"></a>Membuat Model</h3>
+<p>Untuk membuat <em>model</em> di dalam <strong>Laravel</strong>, kita bisa menggunakan perintah <em>artisan</em>, yaitu <code>make:model</code>. Contohnya seperti berikut ini.</p>
+<pre><code>php artisan make:model Post
+</code></pre>
+<p>Perintah di atas akan membuatkan <em>model</em> baru yang bernama <code>Post.php</code> dan berada di dalam <em>folder</em> <code>app/Models</code>.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-menampilkan-semua-record" id="content-menampilkan-semua-record" title="Permalink"></a>Menampilkan Semua Record</h3>
+<p>Karena <em>model</em> sudah berhasil dibuat, maka kita bisa menggunakan <em>Eloquent</em> untuk berbagai kasus, misalnya ingin menampilkan semua <em>record</em> dari <em>database</em>. Maka kita bisa menggunakan kode seperti berikut ini.</p>
+<pre><code>Post::all();
+</code></pre>
+<p>Kode di atas digunakan untuk mencari semua <em>record</em> yang ada di dalam <em>table</em> <code>posts</code> dan menggunakan <em>method</em> <code>all</code>.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-menampilkan-semua-record-dengan-pagination" id="content-menampilkan-semua-record-dengan-pagination" title="Permalink"></a>Menampilkan Semua Record Dengan Pagination</h3>
+<p>Kita juga bisa menambahkan fungsi <em>pagination</em> dengan lebih mudah di dalam <em>Eloquent</em>, contohnya seperti berikut ini.</p>
+<pre><code>Post::paginate(10);
+</code></pre>
+<p>Di atas kita menambahkan <em>method</em> <code>paginate</code> dan di dalamnya terdapat <em>parameter</em> yang berisi jumlah data yang akan ditampilkan pada setiap halaman.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-menampilkan-record-berdasarkan-primary" id="content-menampilkan-record-berdasarkan-primary" title="Permalink"></a>Menampilkan Record Berdasarkan Primary</h3>
+<p>Untuk menampilkan sebuah <em>record</em> berdasarkan <em>primary</em> <em>key</em>, kita bisa menggunakan kode seperti berikut ini.</p>
+<pre><code>Post::find(1);
+</code></pre>
+<p><code>1</code> di atas merupakan ID <em>primary</em> <em>key</em> yang ada di dalam <em>table</em> <code>posts</code>.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-menampilkan-detail-data" id="content-menampilkan-detail-data" title="Permalink"></a>Menampilkan Detail Data</h3>
+<p>Untuk menampilkan <em>detail</em> data di dalam <em>Eloquent</em>, kita bisa menggunakan <em>method</em> <code>first</code>. Contohnya seperti berikut ini.</p>
+<pre><code>$id = 1;
+
+Post::where('id', $id)-&gt;first();
+</code></pre>
+<p>Di atas kita akan menampilkan <em>detail</em> <em>record</em> dengan ID <code>1</code>.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-menghitung-jumlah-record" id="content-menghitung-jumlah-record" title="Permalink"></a>Menghitung Jumlah Record</h3>
+<p>Untuk mengetahui jumlah <em>record</em> yang ada di dalam <em>table</em>, kita bisa dengan mudah menggunakan <em>Eloquent</em>. Contohnya seperti berikut ini.</p>
+<pre><code>Post::count();
+</code></pre>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-insert-record" id="content-insert-record" title="Permalink"></a>Insert Record</h3>
+<p>Seperti yang dijelaskan pada awal materi, bahwa dengan <em>Eloquent</em> kita bisa dengan lebih mudah dalam melakukan manupilasi data ke dalam <em>database</em>. Berikut ini contoh untuk proses <em>insert</em> data ke dalam <em>database</em> menggunakan <em>model</em> dan <em>Eloquent</em>.</p>
+<pre><code>Post::create([
+	'title' 	=&gt; $request-&gt;title,
+	'content'	=&gt; $request-&gt;content
+]);
+</code></pre>
+<p>Di atas kita menggunakan <em>method</em> <code>create</code> dari <em>Eloquent</em> untuk proses <em>insert</em> data ke dalam <em>database</em>.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-update-record" id="content-update-record" title="Permalink"></a>Update Record</h3>
+<p>Untuk melakukan <em>update</em> <em>record</em> menggunakan <em>Eloquent</em>, kita bisa pakai <em>method</em> yang bernama <code>update</code>. Berikut ini contohnya.</p>
+<pre><code>$post = Post::find(1);
+
+$post-&gt;update([
+	'title' 	=&gt; $request-&gt;title,
+	'content'	=&gt; $request-&gt;content
+]);
+</code></pre>
+<p>Di atas, kita harus mengambil <em>object</em> <em>user</em> terlebih dahulu, kemudian kita <em>update</em> menggunakan <em>method</em> <code>update</code> dari <em>Eloquent</em>.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-delete-record" id="content-delete-record" title="Permalink"></a>Delete Record</h3>
+<p>Di dalam <em>Eloquent</em> untuk menghapus data dari <em>database</em> kita bisa menggunakan <em>method</em> <code>delete</code>. Contohnya seperti berikut ini.</p>
+<pre><code>$post = Post::find(1);
+
+$post-&gt;delete();
+</code></pre>
+</div>
+<!-- Div pembatas dengan content -->
+<div class="border-t border-neutral-200 dark:border-neutral-700 mt-8 pt-6">
+<div class="flex justify-end">
+<a :aria-busy="loading ? 'true' : 'false'" :class="loading ? 'opacity-60 pointer-events-none' : ''" class="inline-flex items-center gap-2 px-6 py-3 bg-red-700 hover:bg-red-800 dark:bg-neutral-600 dark:hover:bg-neutral-700 text-white text-sm font-medium rounded-full transition-colors duration-200" data-id="1569" href="https://santrikoding.com/account/my-courses/laravel-untuk-pemula/1570?version=1.1.0" x-data="lessonComplete(28, '1.1.0', 'https://santrikoding.com/account/my-courses/laravel-untuk-pemula/lesson/completed')" x-on:click.prevent="complete($event)">
+ <span x-text="loading ? 'Processing…' : 'Complete &amp; Continue'"></span>
+ </a>
+</div>
+</div>
+</div>
+</main><aside :class="tocVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'" class="hidden xl:block fixed right-0 top-14 bottom-0 w-64 overflow-y-auto border-l border-neutral-200 dark:border-neutral-700/80 bg-white/95 dark:bg-neutral-900 backdrop-blur-sm transition-all duration-300 z-30" x-cloak="">
+<!-- Header dengan glass effect -->
+<div class="sticky top-0 z-10 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-b border-neutral-200/50 dark:border-neutral-700/50 px-4 py-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="p-1.5 bg-primary/10 rounded-lg">
+
+</div>
+<div>
+<h3 class="text-sm font-semibold text-neutral-900 dark:text-neutral-100">On This Page</h3>
+</div>
+</div>
+
+</div>
+</div>
+<!-- Progress Indicator yang benar-benar visible -->
+<div class="px-4 py-3 border-b border-neutral-200/50 dark:border-neutral-700/50" x-data="{
+            scrollProgress: 0,
+            updateProgress() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                this.scrollProgress = docHeight &gt; 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+            }
+         }" x-init="updateProgress(); $watch('scrollProgress', () =&gt; {}); window.addEventListener('scroll', () =&gt; updateProgress())">
+<div class="flex items-center justify-between text-xs mb-2">
+<span class="text-neutral-600 dark:text-neutral-400">Reading Progress</span>
+<span class="text-primary font-medium" x-text="Math.round(scrollProgress) + '%'"></span>
+</div>
+<!-- Progress Bar dengan warna yang kontras -->
+<div class="w-full bg-neutral-300 dark:bg-neutral-600 rounded-full h-2 shadow-inner">
+<div :style="'width: ' + scrollProgress + '%'" class="bg-gradient-to-r from-emerald-300 to-emerald-600 h-2 rounded-full transition-all duration-300 shadow-sm"></div>
+</div>
+</div>
+<!-- Table of Contents Content -->
+
+<!-- Footer dengan quick actions -->
+<div class="sticky bottom-0 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-t border-neutral-200/50 dark:border-neutral-700/50 p-3">
+<div class="flex items-center justify-between text-xs">
+
+
+</div>
+</div>
+</aside>
+        </article>
+    </div>
+</body>
+</html>

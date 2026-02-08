@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Control Flow - Panduan Lengkap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        li { margin-bottom: 0.75rem; line-height: 1.6; }
+        .badge { background: #2563eb; color: white; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Detail Logika PHP</h1>
+        
+        <div class="card">
+            <h2 class="section-title">1. Memahami Struktur Percabangan</h2>
+            <p>Percabangan digunakan agar program bisa memilih jalan mana yang harus ditempuh berdasarkan kondisi data.</p>
+            
+            <ul>
+                <li><span class="badge">if</span>: Pintu gerbang pertama. Digunakan untuk memeriksa satu kondisi utama. Jika kondisi ini <strong>benar (true)</strong>, kodenya dijalankan.</li>
+                <li><span class="badge">elseif</span>: Cabang alternatif. Digunakan jika kondisi <code>if</code> pertama salah, tapi kamu masih punya kondisi lain untuk diperiksa sebelum menyerah.</li>
+                <li><span class="badge">else</span>: Jalan terakhir. Digunakan untuk menangkap semua kemungkinan yang <strong>tidak memenuhi</strong> syarat <code>if</code> maupun <code>elseif</code>.</li>
+            </ul>
+
+            <div class="code-wrap my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  $absensi = 70; // Persentase kehadiran siswa
+
+  if ($absensi >= 80) {
+      // Dijalankan jika absensi 80 ke atas
+      echo "Status: Diizinkan ikut ujian.";
+  } elseif ($absensi >= 60) {
+      // Dijalankan jika absensi di bawah 80 tapi masih di atas/sama dengan 60
+      echo "Status: Butuh tugas tambahan sebelum ujian.";
+  } else {
+      // Dijalankan jika semua kondisi di atas salah (di bawah 60)
+      echo "Status: Tidak diizinkan ikut ujian.";
+  }
+?&gt;</code></pre>
+            </div>
+
+            
+
+<h2 class="section-title">2. Menguasai Switch Case</h2>
+            <p>Gunakan <span class="badge">switch</span> sebagai alternatif yang lebih rapi dari <code>if...elseif</code> jika kamu ingin membandingkan <strong>satu variabel tunggal</strong> dengan banyak nilai tetap yang spesifik.</p>
+            
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-4">
+                <p class="font-bold text-blue-800">Kenapa pakai Switch?</p>
+                <ul class="list-disc ml-5 text-blue-900 text-sm">
+                    <li><strong>Lebih Cepat Dibaca:</strong> Struktur kodenya vertikal dan bersih.</li>
+                    <li><strong>Efisien:</strong> PHP hanya mengevaluasi variabel satu kali di awal.</li>
+                    <li><strong>Ideal untuk Menu:</strong> Sangat cocok untuk sistem role, navigasi menu, atau pilihan kategori.</li>
+                </ul>
+            </div>
+
+            <div class="code-wrap my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  $role = "guru";
+
+  switch ($role) {
+      case "admin":
+          echo "Hak akses: Kelola semua data sekolah.";
+          break; // Menghentikan pengecekan jika cocok
+
+      case "guru":
+          echo "Hak akses: Input nilai dan absen siswa.";
+          break;
+
+      case "siswa":
+          echo "Hak akses: Lihat nilai pribadi.";
+          break;
+
+      default:
+          // Dijalankan jika tidak ada case yang cocok
+          echo "Akses ditolak: Role tidak dikenal.";
+          break;
+  }
+?&gt;</code></pre>
+            </div>
+
+            
+
+            <h3 class="text-xl font-bold mt-6 mb-2 text-slate-800">Penjelasan Komponen:</h3>
+            <ul class="space-y-4 mb-8">
+                <li class="bg-white p-3 rounded-lg shadow-sm border border-slate-200">
+                    <strong class="text-blue-600">switch ($variabel)</strong><br>
+                    Ini adalah bagian "pemeriksaan utama". PHP akan mengambil nilai dari variabel ini dan membawanya ke bawah untuk dibandingkan dengan setiap <code>case</code>.
+                </li>
+                <li class="bg-white p-3 rounded-lg shadow-sm border border-slate-200">
+                    <strong class="text-blue-600">case "nilai":</strong><br>
+                    Ini adalah target perbandingannya. Jika isi variabel sama dengan nilai di sini, maka kode di bawahnya akan dijalankan.
+                </li>
+                <li class="bg-white p-3 rounded-lg shadow-sm border border-slate-200">
+                    <strong class="text-red-600">break;</strong><br>
+                    <strong>Wajib Ada!</strong> Tanpa <code>break</code>, PHP akan terus menjalankan <code>case</code> di bawahnya meskipun nilainya tidak cocok (fenomena ini disebut <em>fall-through</em>).
+                </li>
+                <li class="bg-white p-3 rounded-lg shadow-sm border border-slate-200">
+                    <strong class="text-green-600">default:</strong><br>
+                    Ini adalah "jaring pengaman" terakhir. Fungsinya sama seperti <code>else</code>, yaitu menangani kondisi jika tidak ada satu pun target yang cocok.
+                </li>
+            </ul>
+
+
+
+            
+            <h2 class="section-title">3. Perulangan (Looping) Otomatis</h2>
+            <p>Perulangan adalah perintah untuk melakukan tugas yang sama berkali-kali. Bayangkan perulangan sebagai <strong>"Otomatisasi Tugas"</strong> agar kamu tidak perlu menulis kode yang sama secara manual.</p>
+
+            <div class="mb-10 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h3 class="text-xl font-bold mb-2 text-blue-700">A. For Loop (Si Mesin Fotokopi)</h3>
+                <p class="mb-2"><strong>Analogi:</strong> Seperti menyetel mesin fotokopi untuk mencetak 10 lembar. Kamu sudah tahu angka pastinya sebelum menekan tombol START.</p>
+                
+                <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                    <p class="font-bold text-blue-800 text-sm mb-1">Rumus Baku For Loop:</p>
+                    <code class="text-blue-900 font-bold">for ($awal; $syarat; $langkah) { // Perintah }</code>
+                    <ul class="text-xs text-blue-700 mt-2 list-decimal ml-4">
+                        <li><strong>Awal:</strong> Titik mulai (Contoh: $i = 1)</li>
+                        <li><strong>Syarat:</strong> Sampai kapan? (Contoh: $i <= 10)</li>
+                        <li><strong>Langkah:</strong> Cara jalan (Contoh: $i++ artinya tambah satu tiap putaran)</li>
+                    </ul>
+                </div>
+
+                
+
+                <div class="code-wrap relative mt-4">
+                    <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                    <pre><code class="language-php">&lt;?php
+  // Perintah: Buat 10 nomor urut absen
+  for ($i = 1; $i <= 10; $i++) {
+      echo "Nomor Absen: $i &lt;br&gt;";
+  }
+?&gt;</code></pre>
+                </div>
+            </div>
+
+            <div class="mb-10 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h3 class="text-xl font-bold mb-2 text-orange-700">B. While Loop (Si Penjaga Gerbang)</h3>
+                <p class="mb-2"><strong>Analogi:</strong> Seperti penjaga gerbang sekolah yang hanya membolehkan masuk <strong>selama</strong> siswa memakai seragam. Ia tidak tahu berapa siswa yang datang, pokoknya selama syarat terpenuhi, pintu dibuka.</p>
+                
+                <div class="bg-orange-50 p-4 rounded-lg mb-4">
+                    <p class="font-bold text-orange-800 text-sm mb-1">Rumus Baku While Loop:</p>
+                    <code class="text-orange-900 font-bold">while ($syarat_masih_benar) { // Perintah; $perubahan; }</code>
+                </div>
+
+                
+
+                <div class="code-wrap relative mt-4">
+                    <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                    <pre><code class="language-php">&lt;?php
+  $stok_buku = 5;
+
+  while ($stok_buku > 0) {
+      echo "Buku dibagikan. Sisa stok: $stok_buku &lt;br&gt;";
+      $stok_buku--; // Wajib ada agar tidak terjadi perulangan selamanya
+  }
+?&gt;</code></pre>
+                </div>
+            </div>
+
+            <div class="mb-10 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <h3 class="text-xl font-bold mb-2 text-green-700">C. Foreach Loop (Si Pembagi Tugas)</h3>
+                <p class="mb-2"><strong>Analogi:</strong> Seperti guru yang membagikan hasil ujian ke tumpukan kertas di meja. Guru tidak perlu menghitung, cukup ambil satu-satu sampai tumpukannya habis.</p>
+                
+                <div class="bg-green-50 p-4 rounded-lg mb-4">
+                    <p class="font-bold text-green-800 text-sm mb-1">Rumus Baku Foreach:</p>
+                    <code class="text-green-900 font-bold">foreach ($tumpukan_data as $data_satuan) { // Perintah }</code>
+                </div>
+
+                
+
+                <div class="code-wrap relative mt-4">
+                    <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                    <pre><code class="language-php">&lt;?php
+  $daftar_siswa = ["Budi", "Siti", "Andi"];
+
+  // Membongkar array satu per satu
+  foreach ($daftar_siswa as $nama) {
+      echo "Nama Siswa: $nama &lt;br&gt;";
+  }
+?&gt;</code></pre>
+                </div>
+            </div>
+            
+
+            <h2 class="section-title">Kesimpulan Praktis</h2>
+            <p>Gunakan <strong>If-Else</strong> untuk logika yang kompleks (seperti membandingkan angka), gunakan <strong>Switch</strong> untuk pilihan menu yang rapi, dan gunakan <strong>Foreach</strong> jika kamu berurusan dengan daftar data (array).</p>
+            <p>Di materi selanjutnya, kita akan belajar <strong>Function</strong> untuk membungkus logika ini agar bisa dipanggil berkali-kali.</p>
+        </div>
+    </div>
+</body>
+</html>

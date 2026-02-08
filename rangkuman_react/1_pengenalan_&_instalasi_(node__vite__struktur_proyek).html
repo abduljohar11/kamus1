@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Pengenalan & Instalasi (Node, Vite, Struktur Proyek)</h1>
+        
+        <div class="card">
+            <p>Semoga dengan seri ini, kita bisa memahami pondasi <strong>React</strong> dengan lebih kuat dan siap untuk melangkah ke tahap berikutnya.</p>
+
+            <h2 class="section-title">Apa Itu React?</h2>
+            <p><strong>React</strong> adalah sebuah <em>library</em> JavaScript yang digunakan untuk membangun antarmuka pengguna (<em>User Interface</em>). React pertama kali dibuat oleh Facebook (sekarang Meta) dan kini menjadi salah satu <em>library</em> paling populer dalam pengembangan web modern.</p>
+            
+            
+
+[Image of React component-based architecture diagram]
+
+
+            <p>Dengan React, kita bisa membuat komponen-komponen UI yang dapat digunakan kembali (<em>reusable</em>), mengelola data dengan mudah, dan membangun aplikasi <em>single-page</em> (SPA) yang cepat dan interaktif.</p>
+            
+            <p>Jika diibaratkan:</p>
+            <ul>
+                <li><strong>HTML</strong> bertugas membangun struktur halaman.</li>
+                <li><strong>CSS</strong> bertugas mengatur tampilan.</li>
+                <li><strong>React</strong> hadir untuk mengatur bagaimana tampilan (UI) berubah secara dinamis ketika data berubah.</li>
+            </ul>
+
+            <h2 class="section-title">Kenapa Harus Belajar React?</h2>
+            <ul>
+                <li><strong>Populer & Banyak Digunakan</strong>: Hampir semua perusahaan teknologi besar menggunakan React.</li>
+                <li><strong>Komunitas Besar</strong>: Banyak dokumentasi, tutorial, dan dukungan dari komunitas global.</li>
+                <li><strong>Ekosistem Luas</strong>: Didukung oleh banyak <em>library</em> pendukung (Router, State Management, dll).</li>
+                <li><strong>Reusable Component</strong>: Membuat kode lebih terstruktur, rapi, dan mudah dipelihara.</li>
+            </ul>
+
+            <h2 class="section-title">Langkah 1 - Installasi Node.js</h2>
+            <p>React membutuhkan <strong>Node.js</strong> untuk menjalankan server pengembangan dan mengelola dependensi (package). Silakan teman-teman download Node.js versi <strong>LTS</strong> di situs resmi:</p>
+            <p><a href="https://nodejs.org/en/download" class="text-blue-600 hover:underline">https://nodejs.org/en/download</a></p>
+            
+            <p>Setelah selesai, pastikan instalasi berhasil dengan menjalankan perintah berikut di terminal/CMD:</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">node -v
+npm -v</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 2 - Membuat Proyek React dengan Vite</h2>
+            <p>Kita akan menggunakan <strong>Vite</strong> karena jauh lebih cepat dan ringan dibandingkan pendahulunya (Create React App).</p>
+            <p>Buka terminal, masuk ke folder tujuan, lalu jalankan perintah berikut:</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">npm create vite@latest belajar-react-dasar -- --template react</code></pre>
+            </div>
+
+            <p>Setelah perintah di atas selesai, ikuti langkah navigasi berikut:</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash"># Masuk ke folder proyek
+cd belajar-react-dasar
+
+# Install dependensi yang dibutuhkan
+npm install
+
+# Jalankan server pengembangan
+npm run dev</code></pre>
+            </div>
+
+            <p>Jika berhasil, buka browser lalu akses <span class="inline-code">http://localhost:5173</span>. Proyek React pertama kita sudah berjalan!</p>
+
+            <h2 class="section-title">Struktur Folder Proyek React (Vite)</h2>
+            <p>Memahami struktur folder awal sangatlah penting sebelum kita mulai menulis kode:</p>
+            <ul>
+                <li><span class="inline-code">node_modules/</span> : Berisi semua library/package yang diinstall melalui NPM.</li>
+                <li><span class="inline-code">public/</span> : Tempat menyimpan aset statis seperti favicon atau logo.</li>
+                <li><span class="inline-code">src/</span> : Folder utama tempat kita menulis kode komponen React (JSX).</li>
+                <li><span class="inline-code">index.html</span> : File HTML utama tempat aplikasi React kita di-mount.</li>
+                <li><span class="inline-code">package.json</span> : Daftar library dan script proyek.</li>
+            </ul>
+
+            
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Pada artikel ini, kita sudah berhasil menyiapkan lingkungan pengembangan dan membuat proyek React pertama menggunakan Vite. Kita juga sudah mengenal fungsi dasar dari struktur foldernya.</p>
+            <p>Di artikel berikutnya, kita akan belajar lebih dalam tentang <strong>JSX</strong>, yang menjadi dasar penulisan kode di React agar UI kita bisa tampil lebih dinamis.</p>
+        </div>
+    </div>
+</body>
+</html>

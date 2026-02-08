@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Arrow Function - Tutorial Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #fdf2f8; border: 2px dashed #db2777; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background: white; border-radius: 0.5rem; overflow: hidden; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #334155; color: white; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Arrow Function</h1>
+        
+        <div class="card">
+            <p><em>Arrow Function</em> diperkenalkan di <strong>ES6 (ECMAScript 2015)</strong> sebagai cara penulisan <em>function</em> yang lebih singkat, modern, dan memiliki perilaku <code>this</code> yang berbeda.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan sebuah <strong>Busur dan Panah</strong>. Menulis function biasa seperti membangun ketapel kayu besar yang butuh banyak ruang. Sedangkan <strong>Arrow Function</strong> adalah busur modern yang ringan; cukup tarik satu garis lurus (panah <code>=></code>) dan Anda langsung bisa menembak ke target (hasil/return). Lebih efisien, lebih cepat, dan hemat tempat.</p>
+            </div>
+
+            <h2 class="section-title">Apa Itu Arrow Function?</h2>
+            <p><strong>Arrow Function</strong> adalah alternatif penulisan fungsi yang lebih ringkas. Kita tidak lagi menggunakan kata kunci <span class="inline-code">function</span>, melainkan simbol "panah gemuk" (<em>fat arrow</em>) yaitu <span class="inline-code">=></span>.</p>
+
+            
+
+            <h2 class="section-title">Perbandingan Penulisan</h2>
+            
+            <h3 class="font-bold mb-2">1. Function Biasa</h3>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">function sapa(nama) {
+  return "Halo " + nama;
+}</code></pre>
+            </div>
+
+            <h3 class="font-bold mb-2">2. Arrow Function</h3>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">const sapa = (nama) => {
+  return `Halo ${nama}`;
+};</code></pre>
+            </div>
+
+            <h2 class="section-title">Variasi Penulisan</h2>
+
+            <p><strong>A. Tanpa Parameter</strong> (Wajib pakai tanda kurung kosong):</p>
+            <div class="relative">
+                <pre><code class="language-javascript">const halo = () => console.log("Halo!");</code></pre>
+            </div>
+
+            <p><strong>B. Satu Parameter</strong> (Boleh hapus tanda kurung):</p>
+            <div class="relative">
+                <pre><code class="language-javascript">const kuadrat = x => x * x;</code></pre>
+            </div>
+
+            <p><strong>C. Implicit Return</strong> (Hanya untuk isi satu baris, otomatis mengembalikan nilai tanpa kata <code>return</code>):</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">const tambah = (a, b) => a + b; 
+
+console.log(tambah(5, 10)); // 15</code></pre>
+            </div>
+
+            <h2 class="section-title">Mengembalikan Object</h2>
+            <p>Untuk mengembalikan sebuah <em>object</em> secara langsung (implicit return), Anda harus membungkus object-nya dengan tanda kurung <span class="inline-code">()</span> agar tidak dikira sebagai blok kode <span class="inline-code">{}</span>.</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">const buatUser = (nama, role) => ({ 
+  username: nama, 
+  level: role 
+});
+
+console.log(buatUser("Riza", "Admin"));</code></pre>
+            </div>
+
+            <h2 class="section-title">Perbedaan Utama</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fitur</th>
+                        <th>Function Biasa</th>
+                        <th>Arrow Function</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sintaks</td>
+                        <td>Panjang & deskriptif</td>
+                        <td>Singkat & minimalis</td>
+                    </tr>
+                    <tr>
+                        <td>Hoisting</td>
+                        <td>Bisa dipanggil sebelum dibuat</td>
+                        <td>Tidak (Harus dibuat dulu)</td>
+                    </tr>
+                    <tr>
+                        <td><code>this</code></td>
+                        <td>Dinamis (tergantung pemanggil)</td>
+                        <td>Lexical (tetap pada scope luar)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Arrow function adalah pilihan utama di pengembangan JavaScript modern (seperti React) karena sintaksnya yang bersih. Namun, gunakan function biasa jika Anda memerlukan fitur <em>hoisting</em> atau perilaku <code>this</code> yang dinamis.</p>
+            <p>Di materi berikutnya, kita akan menjelajahi <strong>Array</strong>: Cara mengelola kumpulan data dengan metode-metode sakti JavaScript!</p>
+        </div>
+    </div>
+</body>
+</html>

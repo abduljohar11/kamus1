@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Dasar - Pengenalan & Instalasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .analogy-box { background: #dbeafe; border-left: 4px solid #2563eb; padding: 1rem; margin: 1.5rem 0; border-radius: 0.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Pengenalan SQL & Instalasi MySQL</h1>
+        
+        <div class="card">
+            <p><strong>SQL (Structured Query Language)</strong> adalah bahasa standar yang digunakan untuk mengelola data di dalam database relasional.</p>
+
+            <div class="analogy-box">
+                <strong>Analogi Dunia Nyata:</strong><br>
+                Bayangkan SQL adalah <strong>Bahasa Indonesia</strong> yang kamu gunakan untuk memesan makanan di warung. Pelayan (MySQL) akan mengerti pesananmu jika kamu menggunakan kalimat yang benar, seperti: <em>"Tolong ambilkan (SELECT) semua ( * ) lauk dari (FROM) etalase (tabel_makanan)."</em>
+            </div>
+
+            <h2 class="section-title">Apa Itu SQL?</h2>
+            <p>Dengan SQL, kita memiliki kendali penuh atas data:</p>
+            <ul>
+                <li>Membuat laci penyimpanan (Database/Tabel).</li>
+                <li>Menyimpan informasi baru (Insert).</li>
+                <li>Mengubah data yang salah (Update).</li>
+                <li>Mengambil data secara spesifik (Query).</li>
+            </ul>
+
+            <h2 class="section-title">Kenapa Harus MySQL?</h2>
+            <p>MySQL sangat populer karena performanya stabil dan gratis. Dalam ekosistem <strong>Laravel</strong>, MySQL adalah pilihan database yang paling umum digunakan oleh pengembang.</p>
+
+            <h2 class="section-title">Langkah 1 - Instalasi</h2>
+            <p>Bagi pengguna Windows, cara termudah adalah menggunakan <strong>XAMPP</strong>:</p>
+            <ol class="list-decimal ml-6 mb-6">
+                <li>Download XAMPP di situs resmi Apache Friends.</li>
+                <li>Buka <strong>XAMPP Control Panel</strong> dan aktifkan modul <strong>MySQL</strong>.</li>
+                <li>Akses <strong>phpMyAdmin</strong> melalui browser di alamat <code>http://localhost/phpmyadmin</code>.</li>
+            </ol>
+
+            <h2 class="section-title">Contoh Penerapan: Query Pertama</h2>
+            <p>Mari kita simulasikan pembuatan database sederhana untuk aplikasi sekolah:</p>
+            
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-sql">-- 1. Membuat database sekolah
+CREATE DATABASE belajar_sql;
+
+-- 2. Menggunakan database tersebut
+USE belajar_sql;
+
+-- 3. Membuat tabel untuk menyimpan nama siswa
+CREATE TABLE siswa (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nama VARCHAR(50),
+  umur INT
+);
+
+-- 4. Memasukkan data contoh
+INSERT INTO siswa (nama, umur) VALUES ('Ali', 18), ('Budi', 17);
+
+-- 5. Menampilkan hasilnya
+SELECT * FROM siswa;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>SQL adalah fondasi penting untuk pengelolaan data. Memahami perintah dasar seperti <code>CREATE</code>, <code>INSERT</code>, dan <code>SELECT</code> akan sangat membantumu saat nanti belajar fitur <strong>Migrations</strong> di Laravel 12.</p>
+        </div>
+    </div>
+</body>
+</html>

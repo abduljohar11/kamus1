@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        pre { background: #1a1b26 !important; padding: 1.5rem !important; border-radius: 1rem !important; border: 1px solid #334155; overflow-x: auto; }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        .copy-btn { position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30; }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        .analogy-box { background: #fff1f2; border-left: 4px solid #f43f5e; padding: 1rem; margin: 1.5rem 0; border-radius: 0.5rem; color: #9f1239; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">INSERT INTO</h1>
+        
+        <div class="card">
+            <p>Digunakan untuk memasukkan data baru ke dalam baris tabel.</p>
+
+            <div class="analogy-box">
+                <strong>Analogi Formulir Pendaftaran:</strong><br>
+                Bayangkan kamu sedang mengisi formulir pendaftaran fisik. Setiap kolom (Nama, Alamat, Umur) di kertas harus kamu isi dengan data yang sesuai. Perintah <strong>INSERT</strong> adalah tindakan menyerahkan kertas tersebut ke petugas untuk disimpan di dalam map (Database).
+            </div>
+
+            <h2 class="section-title">Penerapan Nyata</h2>
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-sql">-- Menambahkan satu siswa baru
+INSERT INTO siswa (nama, kelas, umur) 
+VALUES ('Ismail', 'XII IPA 1', 18);
+
+-- Menambahkan banyak siswa sekaligus
+INSERT INTO siswa (nama, kelas, umur) 
+VALUES 
+  ('Andi', 'X IPA 2', 16),
+  ('Budi', 'XI IPS 1', 17),
+  ('Citra', 'XII IPA 3', 18);</code></pre>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

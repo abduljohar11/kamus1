@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; /* Menjaga baris baru kodingan <?php ?> */
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Menampilkan Detail Data By ID</h1>
+        <div class="card"><p>Dengan memahami materi ini, teman-teman akan dapat menampilkan informasi lengkap dari sebuah produk berdasarkan ID yang dipilih oleh pengguna.</p><h2 class="section-title">Langkah 1 - Menambahkan Method show di Controller</h2><p>Untuk menampilkan <em>detail</em> produk, kita akan menggunakan <em>method</em> <code>show</code> di dalam <code>ProductController.php</code>. <em>Method</em> ini akan mengambil data produk berdasarkan ID dan mengirimkannya ke <em>view</em> untuk ditampilkan.</p><p>Silahkan buka <em>file</em> <code>app/Http/Controllers/ProductController.php</code>, kemudian ubah semua kode-nya menjadi seperti berikut ini.</p><p>app/Http/Controllers/ProductController.php</p>
+                        <div class="code-wrap relative my-8">
+                            <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                            <pre><code class="language-php"><?php
+
+namespace App\Http\Controllers;
+
+//import model product
+use App\Models\Product; 
+
+//import return type View
+use Illuminate\View\View;
+
+//import return type redirectResponse
+use Illuminate\Http\RedirectResponse;
+
+//import Http Request
+use Illuminate\Http\Request;
+
+class ProductController extends Controller
+{
+    /**
+     * index
+     *
+     * @return void
+     */
+    public function index() : View
+    {
+        //get all products
+        $products = Product::latest()->paginate(10);
+
+        //render view with products
+        return view('products.index', compact('products'));
+    }
+
+    /**
+     * create
+     *
+     * @return View
+     */
+    public function create(): View
+    {
+        return view('products.create');
+    }
+
+    /**
+     * store
+     *
+     * @param  mixed $request
+     * @return RedirectResponse
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        //validate form
+        $request->validate([
+            'image'         => 'required|image|mimes:jpeg,jpg,png|max:2048',
+            'title'         => 'required|min:5',
+            'description'   => 'required|min:10',
+            'price'         => 'required|numeric',
+            'stock'         => 'required|numeric'
+        ]);
+
+        //upload image
+        $image = $request->file('image');
+        $image->storeAs('public/products', $image->hashName());
+
+        //create product
+        Product::create([
+            'image'         => $image->hashName(),
+            'title'         => $request->title,
+            'description'   => $request->description,
+            'price'         => $request->price,
+            'stock'         => $request->stock
+        ]);
+
+        //redirect to index
+        return redirect()->route('products.index')->with(['success' => 'Data Berhasil Disimpan!']);
+    }
+    
+    /**
+     * show
+     *
+     * @param  mixed $id
+     * @return View
+     */
+    public function show(string $id): View
+    {
+        //get product by ID
+        $product = Product::findOrFail($id);
+
+        //render view with product
+        return view('products.show', compact('product'));
+    }
+}</code></pre>
+                        </div><p>Dari perubahan kode di atas, kita menambahkan <em>method</em> baru dengan nama <code>show</code> dan di dalam parameternya kita berikan <em>variable</em> <code>$id</code>.</p><p>Di dalam <em>method</em> di atas, kita akan melakukan <em>get</em> data dari <em>database</em> melalui <em>Model</em> <code>Product</code> dengan <em>method</em> <code>findOrFail</code>.</p><p>Setelah data berhasil didapatkan, selanjutnya adalah dikirimkan ke dalam <em>view</em> menggunakan fungsi <code>compact</code>.</p><h2 class="section-title">Langkah 2 - Membuat View Detail Data Product</h2><p>Setelah menambahkan <em>method</em> <code>show</code> di <code>ProductController.php</code>, sekarang kita akan membuat halaman tampilan untuk menampilkan <em>detail</em> produk.</p><p>Silahkan teman-teman buat <em>file</em> baru di dalam <em>folder</em> <code>resources/views/products/</code> dengan nama <code>show.blade.php</code>.</p><p>Kurang lebih struktur <em>folder</em>-nya akan terlihat seperti ini:</p><p>Sekarang, buka <em>file</em> <code>show.blade.php</code> dan masukkan kode berikut ini di dalamnya.</p><p>resources/views/products/show.blade.php</p><p>Dari penambahan kode di atas, kita menampilkan <em>detail</em> data-nya dengan cara memanggil objek dari <code>$product</code>.</p><li>
+<p><strong>Menampilkan Gambar</strong></p>
+<pre><code>&lt;img src="{{ asset('/storage/products/'.$product-&gt;image) }}" class="rounded" style="width: 100%"&gt;
+</code></pre>
+</li><p><strong>Menampilkan Gambar</strong></p><li>
+<p><strong>Menampilkan Title</strong></p>
+<pre><code>{{ $product-&gt;title }}
+</code></pre>
+</li><p><strong>Menampilkan Title</strong></p><li>
+<p><strong>Menampilkan Harga</strong></p>
+<pre><code>{{ "Rp " . number_format($product-&gt;price,2,',','.') }}
+</code></pre>
+<p>Di atas, kita gunakan <em>function</em> <code>number_format</code> dari <strong>PHP</strong> untuk memformat harga <em>product</em>.</p>
+</li><p><strong>Menampilkan Harga</strong></p><p>Di atas, kita gunakan <em>function</em> <code>number_format</code> dari <strong>PHP</strong> untuk memformat harga <em>product</em>.</p><li>
+<p><strong>Menampilkan Description</strong></p>
+<pre><code>{!! $product-&gt;description !!}
+</code></pre>
+<p>Karena di dalam <em>description</em> terdapat sintaks <strong>HTML</strong>, maka kita harus me-<em>render</em>nya menggunakan <code>{!! !!}</code>.</p>
+</li><p><strong>Menampilkan Description</strong></p><p>Karena di dalam <em>description</em> terdapat sintaks <strong>HTML</strong>, maka kita harus me-<em>render</em>nya menggunakan <code>{!! !!}</code>.</p><li>
+<p><strong>Menampilkan Stock</strong></p>
+<pre><code>{{ $product-&gt;stock }}
+</code></pre>
+</li><p><strong>Menampilkan Stock</strong></p><h2 class="section-title">Langkah 3 - Uji Coba Menampilkan Detail Data Product</h2><p>Setelah kita membuat <em>method</em> <code>show</code> di <code>ProductController.php</code> dan menyiapkan halaman <em>view</em> <code>show.blade.php</code>, sekarang saatnya menguji apakah fitur ini sudah berjalan dengan baik.</p><p>Silahkan teman-teman klik <em>button</em> <code>SHOW</code> di data produk yang teman-teman miliki, jika berhasil maka akan menampilkan hasil seperti berikut ini.</p><h2 class="section-title">Kesimpulan</h2><p>Pada tutorial ini, kita telah belajar bagaimana cara menampilkan <em>detail</em> produk berdasarkan ID di <strong>Laravel</strong> <strong>12</strong>, menambahkan <em>method</em> <code>show</code> di <em>controller</em>, serta membuat <em>view</em> detail produk dengan <strong>Bootstrap</strong>.</p><p>Pada tutorial berikutnya, kita akan belajar bagaimana cara <strong>Meng-edit dan meng-Update Data Produk</strong> <strong>di Laravel 12</strong>.</p></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; /* Menjaga baris baru kodingan <?php ?> */
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Cara Install Laravel 12</h1>
+        <div class="card"><p>Kita tidak akan sekadar mengikuti tutorial tanpa memahami konsepnya. Setiap langkah akan dijelaskan dengan bahasa yang sederhana dan mudah dimengerti, sehingga cocok untuk pemula yang baru mengenal <strong>Laravel</strong>.</p><h2 class="section-title">Apa yang Akan Kita Pelajari?</h2><p>Dalam seri ini, kita akan membahas:</p><li>Installasi dan persiapan Laravel 12.</li><li>Pembuatan <em>database</em> dan migrasi tabel.</li><li>Konfigurasi File System untuk <em>upload</em> gambar.</li><li>Pembuatan <em>model</em>, <em>controller</em>, dan <em>routing</em>.</li><li>Implementasi fitur <em>create</em>, <em>read</em>, <em>edit</em>, dan <em>delete</em> data.</li><li>Validasi <em>input</em> dan tampilan dengan <em>Blade</em>.</li><li>Penggunaan fitur <strong>Laravel</strong> seperti <em>Eloquent</em> <em>ORM</em> dan lain sebagainya.</li><p>Pada artikel pertama ini, kita akan belajar cara membuat dan menjalankan projek <strong>Laravel 12</strong>. Namun, sebelum itu, kita perlu menyiapkan terlebih dahulu berbagai <em>tools</em> yang akan digunakan.</p><h2 class="section-title">Langkah 1 - Installasi Composer</h2><p><strong>Composer</strong> merupakan sebuah <em>package</em> <em>manager</em> untuk basaha <em>pemrogramman</em> <strong>PHP</strong> dan kita akan gunakan <strong>Composer</strong> untuk membuat <em>project</em> <strong>Laravel</strong>.</p><p>Jika teman-teman belum meng<em>install</em>-nya di dalam komputer, maka silahkan diinstall terlebih dahulu, untuk installasi bisa ikuti <em>link</em> dibawah ini dan sesuaikan dengan sistem operasi yang digunakan.</p><ul>
+<li><strong>Linux / Unix / macOS</strong>: <a href="https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos">Panduan Instalasi</a></li>
+<li><strong>Windows</strong>: <a href="https://getcomposer.org/doc/00-intro.md#installation-windows">Panduan Instalasi</a></li>
+</ul><li><strong>Linux / Unix / macOS</strong>: <a href="https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos">Panduan Instalasi</a></li><li><strong>Windows</strong>: <a href="https://getcomposer.org/doc/00-intro.md#installation-windows">Panduan Instalasi</a></li><p>Jika sudah, maka kita bisa pastikan apakah <strong>Composer</strong> tersebut sudah benar-benar terinstall di dalam komputer dengan cara menjalankan perintah berikut ini di dalam terminal/CMD.</p><p>Jika berhasil, maka kurang lebih hasilnya seperti berikut ini.</p><h2 class="section-title">Langkah 2 - Membuat Project Laravel 12</h2><p>Sekarang silahkan teman-teman masuk ke dalam <em>folder</em> dimana akan menyimpan <em>project</em>-nya, jika menggunakan <code>XAMPP</code>, maka biasanya di dalam <em>folder</em> <code>htdocs</code>.</p><p>Kemudian jalankan perintah berikut ini di dalam terminal/CMD.</p><p>Jika perintah di atas berhasil dijalankan, maka akan membuat <em>project</em> <strong>Laravel</strong> baru dengan nama <code>laravel-12</code> dan versi yang digunakan adalah <code>12.x.x</code>.</p><h2 class="section-title">Langkah 3 - Menjalankan Laravel 12</h2><p>Jika proses installasi <em>project</em> dengan <strong>Laravel 12</strong> sudah selesai, maka kita akan belajar bagaimana cara menjalankannya, sehingga nanti kita bisa membukanya melalui <em>web</em> <em>browser</em>.</p><p>Silahkan teman-teman jalankan perintah berikut ini di dalam terminal/CMD.</p><p>Perintah <code>cd</code> di atas digunakan untuk masuk ke dalam <em>folder</em> <em>project</em> <strong>Laravel</strong> kita, yaitu <code>laravel-12</code>. Jika sudah masuk ke dalam folder <em>project</em>-nya, silahkan teman-teman jalankan perintah berikut ini.</p><p>Jika perintah di atas berhasil dijalankan, maka <em>project</em> akan dijalankan di dalam <em>localhost</em> menggunakan <em>port</em> <code>8000</code>. Kita bisa membukanya di dalam <em>web</em> <em>browser</em> dengan mengetikkan <a href="http://localhost:8000">http://localhost:8000</a>. Jika berhasil maka hasilnya kurang lebih seperti berikut ini.</p><h2 class="section-title">Kesimpulan</h2><p>Pada materi ini kita telah belajar bagaimana cara membuat dan menjalankan <em>project</em> <strong>Laravel</strong> <strong>12</strong> untuk pemula, pada materi berikutnya kita semua akan belajar melakukan konfigurasi <em>File</em> <em>System</em> di dalam <strong>Laravel</strong> <strong>12</strong>.</p></div>
+    </div>
+</body>
+</html>

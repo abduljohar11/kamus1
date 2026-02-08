@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installasi Laravel - Panduan Lengkap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        strong { color: #0f172a; }
+        code.inline { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: inherit; font-size: 0.9em; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Installasi dan Persiapan Laravel</h1>
+        
+        <div class="card">
+            <p>Sebelumnya saya juga pernah membahas materi pembuatan aplikasi sederhana atau <strong>CRUD</strong> menggunakan <strong>Laravel</strong>, <strong>Inertia.js</strong> dan <strong>React.js</strong>. Teman-teman bisa cek pada link berikut ini :</p>
+            <p><a href="https://santrikoding.com/tutorial-set/tutorial-laravel-inertiajs-reactjs" class="text-blue-600 hover:underline font-bold">https://santrikoding.com/tutorial-set/tutorial-laravel-inertiajs-reactjs</a></p>
+
+            <p><strong>Laravel</strong> merupakan <em>web</em> <em>framework</em> yang dikembangkan menggunakan bahasa pemrogramman <strong>PHP</strong> dan menggunakan arsitektur <strong>MVC</strong> atau biasa disebut <strong>Model</strong>, <strong>View</strong> dan <strong>Controller</strong>. <strong>Laravel</strong> bersifat <em>open</em> <em>source</em>, sehingga teman-teman bisa menggunakannya secara gratis.</p>
+
+            
+
+            <p><strong>Laravel</strong> di Indonesia sangat populer, karena komunitasnya sangat besar dan ekosistem pendukungnya sangat melimpah. Di dalam <strong>Laravel</strong> juga banyak fitur-fitur <em>magic</em> yang akan mempermudah teman-teman dalam mengembangkan sebuah aplikasi maupun <em>website</em>.</p>
+
+            <p><strong>Inertia.js</strong> merupakan sebuah <em>adapter</em> yang bertugas menggantikan peran <strong>Rest</strong> <strong>API</strong> dalam menghubungkan antara <em>backend</em> dan <em>frontend</em> dengan lebih mudah dan cepat. Tidak hanya itu, <strong>Inertia.js</strong> juga mampu membuat aplikasi atau <em>website</em> yang kita kembangkan berjalan secara <strong>SPA</strong> atau biasa disebut dengan <em>Single</em> <em>Page</em> <em>Application</em>.</p>
+
+            <p>Untuk mengetahui lebih jauh tentang <strong>Inertia.js</strong>, teman-teman bisa baca artikel di <em>link</em> berikut ini :</p>
+            <p><a href="https://santrikoding.com/apa-itu-inertia-js" class="text-blue-600 hover:underline font-bold">https://santrikoding.com/apa-itu-inertia-js</a></p>
+
+            <p><strong>React.js</strong> merupakan <em>library</em> <strong>JavaScript</strong> yang digunakan untuk mengembangkan <em>user</em> <em>interface</em> aplikasi / <em>website</em> menjadi interaktif dan cepat. <strong>React.js</strong> pertama kali dikembangkan oleh <strong>Facebook</strong> dan sekarang sudah banyak kontributor diseluruh dunia yang ikut mengembangkan <em>library</em> tersebut.</p>
+
+            <p>Pada kesempatan kali ini, kita semua akan belajar melakukan installasi dan persiapan di dalam <em>project</em> <strong>Laravel</strong>.</p>
+
+            <h2 class="section-title">Langkah 1 - Installasi Composer</h2>
+            <p><strong>Composer</strong> merupakan <em>dependency</em> <em>manager</em> dari bahasa pemrogramman <strong>PHP</strong> yang digunakan untuk mempermudah dalam melakukan installasi <em>library</em>.</p>
+            <p>Untuk installasi <strong>Composer</strong> bisa ikuti langkah-langkahnya sesuai dengan sistem operasi yang digunakan :</p>
+            <ul>
+                <li>Installation - Linux / Unix / macOS : <a href="https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos" class="text-blue-600 hover:underline">https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos</a></li>
+                <li>Installation - Windows : <a href="https://getcomposer.org/doc/00-intro.md#installation-windows" class="text-blue-600 hover:underline">https://getcomposer.org/doc/00-intro.md#installation-windows</a></li>
+            </ul>
+
+            <p>Untuk mengetahui apakah <strong>Composer</strong> berhasil terinstall, kita bisa menjalankan perintah berikut ini di dalam terminal/CMD :</p>
+            
+            <pre><button class="copy-btn" onclick="copyCode(this)">COPY</button><code class="language-bash">composer --version</code></pre>
+
+            <h2 class="section-title">Langkah 2 - Membuat Project Laravel</h2>
+            <p>Karena sudah berhasil melakukan installasi <strong>Composer</strong>, maka sekarang kita bisa lanjutkan membuat <em>project</em> <strong>Laravel</strong> menggunakan <strong>Composer</strong>.</p>
+            <p>Sekarang silahkan masuk ke dalam <em>folder</em> dimana teman-teman akan menyimpan <em>project</em>-nya, kemudian jalankan perintah berikut ini di dalam terminal/CMD :</p>
+            
+            <pre><button class="copy-btn" onclick="copyCode(this)">COPY</button><code class="language-bash">composer create-project laravel/laravel:^11.0 inertia-react-auth</code></pre>
+
+            <p><strong>INFORMASI</strong> : minimal menggunakan PHP versi <code class="inline">8.3.x</code></p>
+            <p>Jika perintah di atas berhasil dijalankan, maka kita akan dibuatkan <em>project</em> <strong>Laravel</strong> baru dengan nama <code class="inline">inertia-react-auth</code> dan silahkan teman-teman tunggu sampai proses installasinya selesai.</p>
+
+            <h2 class="section-title">Langkah 3 - Menjalankan Project Laravel</h2>
+            <p>Setelah proses installasi <em>project</em>-nya selesai, maka kita akan belajar baagaimana cara menjalankan <em>project</em> tersebut agar bisa diakses melalui <em>browser</em>.</p>
+            <p>Silahkan teman-teman jalankan perintah berikut ini di dalam terminal/CMD :</p>
+            
+            <pre><button class="copy-btn" onclick="copyCode(this)">COPY</button><code class="language-bash">cd inertia-react-auth</code></pre>
+
+            <p>Perintah <code class="inline">cd</code> di atas digunakan untuk melakukan navigasi atau masuk ke dalam <em>folder</em> <em>project</em>, yaitu <code class="inline">inertia-react-auth</code>.</p>
+            <p>Jika sudah berada di dalam <em>project</em>-nya, silahkan teman-teman jalankan perintah berikut ini di dalam terminal/CMD :</p>
+
+            <pre><button class="copy-btn" onclick="copyCode(this)">COPY</button><code class="language-bash">php artisan serve</code></pre>
+
+            <p>Jika perintah di atas berhasil dijalankan, maka <em>project</em> akan dijalankan di dalam <em>localhost</em> menggunakan <em>port</em> <code class="inline">8000</code>.</p>
+            <p>Kita bisa membukanya di dalam <em>browser</em> dengan alamat <a href="http://localhost:8000/" class="text-blue-600 hover:underline">http://localhost:8000</a>.</p>
+
+            <h2 class="section-title">Langkah 4 - Konfigurasi Koneksi Database</h2>
+            <p>Karena akan berhubungan dengan proses <em>register</em> dan <em>login</em>, maka kita akan membutuhkan sebuah <em>database</em>. Untuk itu, kita akan melakukan konfigurasi koneksi <em>database</em> terlebih dahulu.</p>
+            <p>Silahkan teman-teman buka <em>file</em> <code class="inline">.env</code>, kemudian cari kode berikut ini.</p>
+
+<pre><button class="copy-btn" onclick="copyCode(this)">COPY</button><code class="language-env">DB_CONNECTION=sqlite
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=laravel
+# DB_USERNAME=root
+# DB_PASSWORD=</code></pre>
+
+            <p>Dan ubahlah menjadi seperti berikut ini.</p>
+
+<pre><button class="copy-btn" onclick="copyCode(this)">COPY</button><code class="language-env">DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=db_inertia_react_auth
+DB_USERNAME=root
+DB_PASSWORD=</code></pre>
+
+            <p>Di atas, untuk <code class="inline">DB_CONNECTION</code> kita ubah menjadi <code class="inline">mysql</code> dan untuk <code class="inline">DB_DATABASE</code> merupakan nama <em>database</em> yang akan kita gunakan nanti.</p>
+
+            <h2 class="section-title">Langkah 5 - Membuat Database</h2>
+            <p>Kita lanjutkan membuat <em>database</em> di dalam <strong>MySQL</strong>. Silahkan teman-teman buka link berikut ini <a href="http://localhost/phpmyadmin" class="text-blue-600 hover:underline">http://localhost/phpmyadmin</a> dan buat <em>database</em> baru dengan nama <code class="inline">db_inertia_react_auth</code>.</p>
+
+            
+
+            <h2 class="section-title">Langkah 6 - Menjalankan Migration</h2>
+            <p>Secara <em>default</em>, Laravel memberikan kita migration <em>user</em>. Kita perlu menjalankan proses <em>migrate</em> agar tabel-tabel tersebut dibuat di database kita.</p>
+
+            <pre><button class="copy-btn" onclick="copyCode(this)">COPY</button><code class="language-bash">php artisan migrate</code></pre>
+
+            <p>Jika muncul proses seperti berikut ini, maka proses migrasi berhasil dilakukan.</p>
+
+            <pre><code class="language-text">   INFO  Preparing database.
+   Creating migration table ................................... 16ms DONE
+   Running migrations.
+   0001_01_01_000000_create_users_table ....................... 45ms DONE
+   0001_01_01_000001_create_cache_table ....................... 12ms DONE
+   0001_01_01_000002_create_jobs_table ........................ 20ms DONE</code></pre>
+
+            <p>Sampai disini pembahasan kita tentang bagaimana cara melakukan installasi <em>project</em> <strong>Laravel</strong> dan menjalankan <em>project</em> tersebut serta melakukan konfigurasi <em>database</em>.</p>
+        </div>
+    </div>
+</body>
+</html>

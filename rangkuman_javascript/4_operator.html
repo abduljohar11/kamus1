@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator JavaScript - Tutorial Lengkap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #fdf2f8; border: 2px dashed #db2777; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background: white; border-radius: 0.5rem; overflow: hidden; }
+        th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; }
+        th { background: #334155; color: white; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Operator</h1>
+        
+        <div class="card">
+            <p>Operator sangat penting karena digunakan untuk melakukan berbagai operasi pada data, seperti perhitungan matematika, perbandingan nilai, hingga logika dalam alur program.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan sebuah <strong>Kalkulator</strong>. Angka yang Anda masukkan adalah <strong>Data (Operand)</strong>, sedangkan tombol plus (+), minus (-), atau sama dengan (=) adalah <strong>Operator</strong>. Tanpa menekan tombol operator, angka-angka tersebut tidak akan pernah berubah menjadi hasil yang Anda inginkan.</p>
+            </div>
+
+            <h2 class="section-title">Apa Itu Operator?</h2>
+            <p><strong>Operator</strong> adalah simbol khusus yang menginstruksikan komputer untuk melakukan manipulasi tertentu pada satu atau lebih nilai. Nilai yang diolah disebut sebagai <em>operand</em>.</p>
+
+            
+
+            <h2 class="section-title">1. Operator Aritmatika</h2>
+            <p>Digunakan untuk perhitungan matematika dasar.</p>
+            <table>
+                <thead>
+                    <tr><th>Simbol</th><th>Operasi</th><th>Contoh</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>+</td><td>Penjumlahan</td><td>10 + 5 = 15</td></tr>
+                    <tr><td>-</td><td>Pengurangan</td><td>10 - 5 = 5</td></tr>
+                    <tr><td>*</td><td>Perkalian</td><td>10 * 5 = 50</td></tr>
+                    <tr><td>/</td><td>Pembagian</td><td>10 / 2 = 5</td></tr>
+                    <tr><td>%</td><td>Sisa Bagi (Modulo)</td><td>10 % 3 = 1</td></tr>
+                    <tr><td>**</td><td>Perpangkatan</td><td>2 ** 3 = 8</td></tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">2. Operator Perbandingan</h2>
+            <p>Membandingkan dua nilai dan menghasilkan <strong>Boolean</strong> (<span class="inline-code">true</span> atau <span class="inline-code">false</span>).</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">console.log(10 == "10");  // true (hanya cek nilai)
+console.log(10 === "10"); // false (cek nilai & tipe data - SANGAT DISARANKAN)
+console.log(10 > 5);      // true
+console.log(10 != 5);     // true</code></pre>
+            </div>
+
+            <h2 class="section-title">3. Operator Logika</h2>
+            <p>Digunakan untuk menggabungkan kondisi-kondisi Boolean.</p>
+            <ul>
+                <li><strong>&& (AND):</strong> Benar jika semua kondisi benar.</li>
+                <li><strong>|| (OR):</strong> Benar jika salah satu kondisi benar.</li>
+                <li><strong>! (NOT):</strong> Membalikkan nilai (true jadi false).</li>
+            </ul>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let punyaTiket = true;
+let punyaUang = false;
+
+console.log(punyaTiket && punyaUang); // false
+console.log(punyaTiket || punyaUang); // true</code></pre>
+            </div>
+
+            <h2 class="section-title">4. Operator Penugasan (Assignment)</h2>
+            <p>Digunakan untuk memasukkan nilai ke variabel secara ringkas.</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let x = 10;
+x += 5; // Sama dengan x = x + 5
+console.log(x); // 15</code></pre>
+            </div>
+
+            <h2 class="section-title">5. Operator Ternary</h2>
+            <p>Cara singkat menulis <span class="inline-code">if-else</span> dalam satu baris.</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let umur = 20;
+let status = (umur >= 18) ? "Dewasa" : "Anak-anak";
+console.log(status); // Dewasa</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Operator adalah alat pertukangan dalam JavaScript. Dengan menguasai operator aritmatika, perbandingan, dan logika, Anda sudah bisa mulai membangun mesin logika dasar dalam program Anda.</p>
+            <p>Di artikel berikutnya, kita akan membahas <strong>Control Flow</strong>: Bagaimana menggunakan operator-operator ini untuk membuat keputusan di dalam kode!</p>
+        </div>
+    </div>
+</body>
+</html>

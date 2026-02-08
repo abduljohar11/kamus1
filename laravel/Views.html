@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Views - Laravel</title>
+    <style>
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        line-height: 1.8;
+        color: #334155;
+        background: #f8fafc;
+        margin: 0;
+        padding: 40px 20px;
+      }
+      .container {
+        max-width: 850px;
+        margin: 0 auto;
+      }
+
+      /* Navigasi Wrapper */
+      .nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .btn-link {
+        display: inline-block;
+        color: #3b82f6;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 0.9rem;
+        transition: color 0.2s;
+      }
+      .btn-link:hover {
+        color: #1d4ed8;
+      }
+
+      .materi-card {
+        background: #fff;
+        padding: 45px;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Typography */
+      h1 {
+        font-size: 2.5rem;
+        color: #0f172a;
+        margin-top: 0;
+        border-bottom: 4px solid #3b82f6;
+        padding-bottom: 10px;
+        margin-bottom: 25px;
+      }
+      h3 {
+        margin-top: 35px;
+        color: #1e293b;
+        font-size: 1.5rem;
+        border-left: 5px solid #3b82f6;
+        padding-left: 15px;
+      }
+      p {
+        margin-bottom: 1.25rem;
+        font-size: 1.1rem;
+      }
+
+      /* Code Block */
+      pre {
+        background: #1e1e2e;
+        color: #f8f8f2;
+        padding: 20px;
+        border-radius: 12px;
+        overflow-x: auto;
+        margin: 25px 0;
+        border: 1px solid #334155;
+      }
+      code {
+        font-family: "Consolas", "Monaco", monospace;
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+      }
+      pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        font-size: 14px;
+      }
+
+      /* Misc */
+      img {
+        max-width: 100%;
+        border-radius: 12px;
+        margin: 30px 0;
+        display: block;
+        border: 1px solid #e2e8f0;
+      }
+      blockquote {
+        border-left: 5px solid #3b82f6;
+        background: #eff6ff;
+        padding: 15px 25px;
+        border-radius: 0 10px 10px 0;
+        font-style: italic;
+        margin: 25px 0;
+      }
+
+      /* Membersihkan class bawaan web yang tidak perlu */
+      main,
+      .max-w-full,
+      .prose {
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="nav-header">
+        <a href="index.html" class="btn-link">← Kembali ke Daftar Isi</a>
+        <a href="../index.html" class="btn-link">🏠 Ke Halaman Utama</a>
+      </div>
+
+      <article class="materi-card">
+        <h1>Views</h1>
+
+        <p>
+          Tentu saja tidak mungkin melakukan <em>return</em> sebuah
+          <strong>HTML</strong> di dalam <em>route</em> ataupun
+          <em>controller</em> secara langsung. Untungnya
+          <code>views</code> menyediakan cara yang sangat mudah untuk
+          menempatkan semua <em>file</em> <strong>HTML</strong> kita secara
+          terpisah.
+        </p>
+
+        <p>
+          Dengan <code>views</code> kita bisa memisahkan antara logika aplikasi
+          dengan tampilan aplikasi, sehingga kita akan lebih mudah dalam
+          mengelola <strong>HTML</strong> untuk ditampilkan pada layar
+          <em>browser</em>. Semua <em>file</em> <code>views</code> akan
+          ditempatkan pada <em>folder</em> <code>resources/views</code>.
+        </p>
+
+        <h3>Contoh Penggunaan</h3>
+        <p>
+          Contoh sederhana penggunaan <em>views</em> untuk menampilkan data pada
+          <em>route</em>:
+        </p>
+
+        <pre><code>Route::get('/', function () {
+    return view('home', ['name' => 'Fika Ridaul Maulayya']);
+});
+</code></pre>
+
+        <p>
+          Di atas, kita membuat <em>route</em> dengan <em>path</em>
+          <code>/</code> dan di dalamnya kita melakukan <em>return</em> ke dalam
+          <em>view</em>. Terdapat 2 <em>parameter</em> di sana:
+        </p>
+        <ul>
+          <li>Parameter pertama: <code>home</code> (nama file view).</li>
+          <li>
+            Parameter kedua: <code>name => 'Fika Ridaul Maulayya'</code> (data
+            yang dikirim).
+          </li>
+        </ul>
+
+        <p>
+          Setelah itu, buat file view di
+          <code>resources/views/home.blade.php</code>:
+        </p>
+
+        <pre><code>&lt;html&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Hello, {{ $name }}&lt;/h1&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+        <p>
+          Jika dijalankan, maka akan mencetak pada layar <em>browser</em> dengan
+          tulisan <code>Hello, Fika Ridaul Maulayya</code>.
+        </p>
+      </article>
+    </div>
+  </body>
+</html>

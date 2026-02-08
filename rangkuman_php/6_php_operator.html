@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Operator - Lengkap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; }
+        ul { list-style: none; padding: 0; margin-bottom: 1.5rem; }
+        li { background: #f1f5f9; padding: 0.75rem 1rem; border-radius: 0.75rem; margin-bottom: 0.5rem; border: 1px solid #cbd5e1; font-weight: 500; }
+        .op-badge { background: #2563eb; color: white; padding: 2px 8px; border-radius: 4px; font-family: monospace; margin-right: 8px; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">PHP Operator & Penerapan</h1>
+        
+        <div class="card">
+            <p><strong>Operator</strong> adalah simbol khusus untuk melakukan operasi terhadap nilai (operand). Di bawah ini adalah ringkasan jenis operator dan contoh penerapannya dalam kasus nyata.</p>
+
+            <h2 class="section-title">1. Operator Aritmatika</h2>
+            <p>Digunakan untuk perhitungan matematika dasar:</p>
+            <ul>
+                <li><span class="op-badge">+</span> Penjumlahan</li>
+                <li><span class="op-badge">-</span> Pengurangan</li>
+                <li><span class="op-badge">*</span> Perkalian</li>
+                <li><span class="op-badge">/</span> Pembagian</li>
+                <li><span class="op-badge">%</span> Modulo (Sisa Bagi)</li>
+            </ul>
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // Contoh Kasus: Kasir Belanja
+  $harga_barang = 50000;
+  $jumlah_beli = 3;
+  $diskon = 10000;
+
+  $total_awal = $harga_barang * $jumlah_beli;
+  $total_akhir = $total_awal - $diskon;
+
+  echo "Total Belanja: Rp " . $total_akhir; 
+  // Output: Total Belanja: Rp 140000
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">2. Operator Perbandingan</h2>
+            <p>Menghasilkan <strong>Boolean</strong> (true/false) untuk mengecek kondisi:</p>
+            <ul>
+                <li><span class="op-badge">==</span> Sama dengan</li>
+                <li><span class="op-badge">!=</span> Tidak sama dengan</li>
+                <li><span class="op-badge">&gt;</span> Lebih besar</li>
+                <li><span class="op-badge">&lt;</span> Lebih kecil</li>
+                <li><span class="op-badge">&gt;=</span> Lebih besar atau sama dengan</li>
+            </ul>
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // Contoh Kasus: Cek Kelulusan (KKM)
+  $nilai_siswa = 80;
+  $kkm = 75;
+
+  $is_lulus = $nilai_siswa >= $kkm;
+
+  if ($is_lulus) {
+      echo "Selamat, Anda Lulus!";
+  } else {
+      echo "Maaf, silakan remedial.";
+  }
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">3. Operator Logika</h2>
+            <p>Menggabungkan beberapa ekspresi logika sekaligus:</p>
+            <ul>
+                <li><span class="op-badge">&&</span> (AND) Benar jika semua kondisi terpenuhi</li>
+                <li><span class="op-badge">||</span> (OR) Benar jika salah satu kondisi terpenuhi</li>
+                <li><span class="op-badge">!</span> (NOT) Membalikkan hasil logika</li>
+            </ul>
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // Contoh Kasus: Validasi Login Multi-Syarat
+  $email = "guru@sekolah.com";
+  $password = "rahasia123";
+  $is_active = true;
+
+  if ($email == "guru@sekolah.com" && $password == "rahasia123" && $is_active) {
+      echo "Login Berhasil!";
+  } else {
+      echo "Akun tidak ditemukan atau tidak aktif.";
+  }
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">4. Operator Penugasan</h2>
+            <p>Digunakan untuk memberi nilai ke variabel secara efisien:</p>
+            <ul>
+                <li><span class="op-badge">=</span> Sama dengan (Isi nilai)</li>
+                <li><span class="op-badge">+=</span> Tambah dan tugaskan</li>
+                <li><span class="op-badge">.=</span> Gabung teks (String Concatenation)</li>
+            </ul>
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // Contoh Kasus: Akumulasi Skor
+  $skor = 0;
+  $skor += 100; // Tambah 100 ke skor saat ini
+  $skor += 50;  // Skor sekarang 150
+
+  $pesan = "Skor Anda adalah ";
+  $pesan .= $skor; // Gabung teks dan variabel skor
+
+  echo $pesan; // Output: Skor Anda adalah 150
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Operator adalah alat utama untuk mengolah data dan membangun logika program. Penggabungan operator aritmatika, perbandingan, dan logika akan membentuk "otak" dari aplikasi yang kamu bangun. Selanjutnya, kita akan membahas <strong>Control Flow</strong> untuk mengarahkan alur program.</p>
+        </div>
+    </div>
+</body>
+</html>

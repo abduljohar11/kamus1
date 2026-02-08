@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap Belajar: Laravel ke PHP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; transform: scale(1.05); }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1.2rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        .step-num { background: #2563eb; color: white; padding: 4px 12px; border-radius: 99px; font-size: 1rem; margin-right: 8px; }
+        
+        .analogy-box { background: #dcfce7; border-left: 4px solid #16a34a; padding: 1rem; border-radius: 0.5rem; margin: 1.5rem 0; color: #166534; }
+        .roadmap-item { border-bottom: 1px solid #94a3b8; padding: 1.5rem 0; }
+        .roadmap-item:last-child { border-bottom: none; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Roadmap: Laravel ke PHP (Top-Down)
+        </h1>
+
+        <div class="card">
+            <div class="analogy-box">
+                <strong>💡 Strategi Belajar:</strong> Kita akan belajar cara menyetir mobil (**Laravel**) dulu agar bisa jalan, baru kemudian kita buka kap mesinnya untuk belajar cara kerja mesinnya (**PHP Dasar**).
+            </div>
+
+            <div class="roadmap-item">
+                <h2 class="section-title"><span class="step-num">01</span> Laravel Dasar & Blade</h2>
+                <p>Jangan pakai React dulu. Fokus menguasai bagaimana data berpindah dari URL ke layar.</p>
+                <ul class="list-disc ml-6 mb-4 space-y-2">
+                    <li><strong>Routing:</strong> Cara membuat URL.</li>
+                    <li><strong>Controller:</strong> Tempat menulis logika.</li>
+                    <li><strong>Eloquent:</strong> Cara mengambil data database.</li>
+                </ul>
+                <div class="code-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                    <pre><code class="language-php">// web.php (Routing Laravel)
+Route::get('/guru', [GuruController::class, 'index']);
+
+// GuruController.php
+public function index() {
+    $data = Guru::all(); // Ini Eloquent
+    return view('guru.index', compact('data')); // Ini Blade
+}</code></pre>
+                </div>
+                <p class="text-sm font-bold text-orange-600">🔎 Sambil jalan cari tahu: Apa itu PHP Static Method (::) dan Class?</p>
+            </div>
+
+            <div class="roadmap-item">
+                <h2 class="section-title"><span class="step-num">02</span> Database & Migrations</h2>
+                <p>Belajar mengelola tabel tanpa perlu buka PhpMyAdmin terus-menerus.</p>
+                <div class="code-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                    <pre><code class="language-bash">php artisan make:migration create_gurus_table
+php artisan migrate</code></pre>
+                </div>
+                <p class="text-sm font-bold text-orange-600">🔎 Sambil jalan cari tahu: Apa itu Tipe Data di Database (String, Integer, Boolean)?</p>
+            </div>
+
+            
+
+            <div class="roadmap-item">
+                <h2 class="section-title"><span class="step-num">03</span> Inertia.js (The Connector)</h2>
+                <p>Ganti Blade dengan React. Di sini kamu mulai "menghubungkan" dua dunia.</p>
+                <div class="code-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                    <pre><code class="language-php">// Di Controller, ganti 'view' jadi 'inertia'
+return inertia('Guru/Index', ['gurus' => $data]);</code></pre>
+                </div>
+                <p class="text-sm font-bold text-orange-600">🔎 Sambil jalan cari tahu: Apa itu JSON dan cara PHP mengubah Array menjadi JSON?</p>
+            </div>
+
+            <div class="roadmap-item">
+                <h2 class="section-title"><span class="step-num">04</span> React Dasar (Frontend)</h2>
+                <p>Belajar menampilkan data di sisi user menggunakan komponen.</p>
+                <div class="code-wrapper">
+                    <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                    <pre><code class="language-jsx">// Index.jsx (React)
+export default function Index({ gurus }) {
+    return (
+        &lt;ul&gt;
+            {gurus.map(guru => &lt;li key={guru.id}&gt;{guru.nama}&lt;/li&gt;)}
+        &lt;/ul&gt;
+    );
+}</code></pre>
+                </div>
+                <p class="text-sm font-bold text-orange-600">🔎 Sambil jalan cari tahu: Apa itu JavaScript ES6 (Arrow Functions, Map, Destructuring)?</p>
+            </div>
+
+            
+
+            <div class="roadmap-item">
+                <h2 class="section-title"><span class="step-num">05</span> Authentication & Security</h2>
+                <p>Tahap akhir: Mengamankan aplikasi dengan Login dan Register menggunakan <strong>Laravel Breeze</strong>.</p>
+                <p class="text-sm font-bold text-orange-600">🔎 Sambil jalan cari tahu: Apa itu Middleware, Session, dan Cookies?</p>
+            </div>
+
+            <h2 class="section-title text-center mt-10">Kesimpulan</h2>
+            <p class="text-center italic">"Jangan takut tidak tahu dasarnya sekarang. Setiap kali kamu menulis kode Laravel yang aneh, tanyakan 'Mengapa'—di situlah proses belajar PHP yang sesungguhnya dimulai."</p>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

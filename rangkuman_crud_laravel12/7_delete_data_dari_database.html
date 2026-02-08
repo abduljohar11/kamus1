@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Laravel & Inertia - Delete Data</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; transform: scale(1.05); }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1.2rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        p { margin-bottom: 1.2rem; line-height: 1.8; color: #1e293b; }
+        .utility-tag { background: #cbd5e1; padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 0.85rem; font-weight: bold; color: #0f172a; }
+        
+        .analogy-box { background: #fee2e2; border-left: 4px solid #ef4444; padding: 1rem; border-radius: 0.5rem; margin: 1.5rem 0; color: #991b1b; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Delete Data dari Database
+        </h1>
+
+        <div class="card">
+            <div class="analogy-box">
+                <strong>⚠️ Analogi:</strong> Proses <strong>Delete</strong> adalah seperti menghapus permanen sebuah file di komputer. Namun, di aplikasi web, kita harus memberikan "konfirmasi" (seperti kotak dialog Recycle Bin) agar pengguna tidak tidak sengaja menghapus data yang penting.
+            </div>
+
+            <h2 class="section-title">Langkah 1 - Menambahkan Method Destroy</h2>
+            <p>Buka file <span class="utility-tag">app/Http/Controllers/PostController.php</span>. Kita akan menambahkan method <code>destroy</code> yang akan menghapus record berdasarkan ID yang dikirim.</p>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-php">/**
+ * destroy
+ *
+ * @param  mixed $post
+ * @return void
+ */
+public function destroy(Post $post)
+{
+    // Melakukan penghapusan data
+    $post->delete();
+
+    // Redirect kembali ke index dengan pesan flash
+    return redirect()->route('posts.index')->with('message', 'Data Berhasil Dihapus!');
+}</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">Langkah 2 - Implementasi di React (Index.jsx)</h2>
+            <p>Sekarang kita perlu menambahkan tombol hapus dan logika pengirimannya di file <span class="utility-tag">resources/js/Pages/Posts/Index.jsx</span>. Kita menggunakan <span class="utility-tag">router.delete</span> dari Inertia.</p>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-jsx">import React from 'react';
+import Layout from '../../Layouts/Default';
+import { Link, router } from '@inertiajs/react';
+
+export default function PostIndex({ posts, flash }) {
+
+    // Fungsi untuk menghapus data
+    const deletePost = (id) => {
+        if(confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+            router.delete(`/posts/${id}`);
+        }
+    }
+
+    return (
+        &lt;Layout&gt;
+            &lt;div className="p-4"&gt;
+                {/* Flash Message */}
+                {flash.message && (
+                    &lt;div className="bg-green-500 text-white p-3 rounded mb-4"&gt;{flash.message}&lt;/div&gt;
+                )}
+
+                &lt;table className="w-full bg-white rounded shadow"&gt;
+                    &lt;tbody&gt;
+                        {posts.map((post) => (
+                            &lt;tr key={post.id}&gt;
+                                &lt;td&gt;{post.title}&lt;/td&gt;
+                                &lt;td className="text-center"&gt;
+                                    &lt;button 
+                                        onClick={() =&gt; deletePost(post.id)} 
+                                        className="bg-red-500 text-white px-3 py-1 rounded"&gt;
+                                        DELETE
+                                    &lt;/button&gt;
+                                &lt;/td&gt;
+                            &lt;/tr&gt;
+                        ))}
+                    &lt;/tbody&gt;
+                &lt;/table&gt;
+            &lt;/div&gt;
+        &lt;/Layout&gt;
+    );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 3 - Uji Coba Hapus Data</h2>
+            <p>Jalankan <span class="utility-tag">npm run dev</span>. Pada halaman daftar post, klik tombol <strong>DELETE</strong>. Browser akan memunculkan konfirmasi; jika kamu menekan "OK", Inertia akan mengirimkan request ke server dan halaman akan terupdate secara otomatis tanpa refresh (SPA).</p>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Selamat! Kamu telah menyelesaikan seluruh rangkaian <strong>CRUD (Create, Read, Update, Delete)</strong> menggunakan Laravel, Inertia.js, dan React. Sekarang kamu sudah memahami bagaimana data mengalir antara backend dan frontend secara modern dan efisien.</p>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; /* Menjaga baris baru kodingan <?php ?> */
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Membuat Model dan Migration</h1>
+        <div class="card"><p>Sebelum melangkah lebih jauh, maka kita perlu ketahui terlebih dahulu apa itu <em>Model</em> dan <em>Migration</em> di dalam <strong>Laravel</strong>, berikut ini penjelasan singkatnya.</p><h2 class="section-title">Apa Itu Model dan Migration?</h2><li><strong>Model</strong>
+<em>Model</em> dalam <strong>Laravel</strong> adalah representasi dari tabel di <em>database</em>. Dengan <em>model</em>, kita bisa berinteraksi dengan data menggunakan sintaks yang lebih sederhana dibandingkan dengan menulis <em>query</em> <em>SQL</em> secara langsung. <em>Model</em> ini berperan sebagai perantara antara aplikasi dan <em>database</em>.</li><li><strong>Migration</strong>
+<em>Migration</em> adalah fitur <strong>Laravel</strong> yang memungkinkan kita untuk mengelola struktur <em>database</em> menggunakan kode. Dengan <em>migration</em>, kita dapat membuat, mengubah, atau menghapus tabel tanpa harus menulis <em>query</em> SQL secara manual. <em>Migration</em> juga membantu dalam menjaga konsistensi struktur <em>database</em> saat bekerja dalam tim.</li><p>Setelah mengetahui penjelasan tentang <em>Model</em> dan <em>Migration</em> di dalam <strong>Laravel</strong>, maka kita akan lanjutkan proses pembuatannya.</p><h2 class="section-title">Langkah 1 - Konfigurasi Koneksi Database</h2><p>Langkah pertama dalam membuat <em>Model</em> dan <em>Migration</em> di <strong>Laravel</strong> <strong>12</strong> adalah mengkonfigurasi koneksi <em>database</em>. Pengaturan ini dilakukan di dalam <em>file</em> <code>.env</code>.</p><p>Silahkan temna-teman buka <em>file</em> <code>.env</code>, kemudian cari kode berikut ini.</p><p>.env</p><p>Silahkan ubah kode-nya menjadi seperti berikut ini.</p><p>Dari perubahan kode di atas, pertama kita mengubah <em>driver</em> <em>database</em> yang digunakan, yaitu yang sebelumnya menggunakan <code>sqlite</code>, kita ubah menjadi <code>mysql</code>.</p><p>Kemudian kita hapus semua tanda <code>#</code> pada konfigurasi key, tujuaanya agar <em>variable</em>-nya diaktifkan. Kemudian untuk <code>DB_DATABASE</code> kita atur menggunakan <code>db_laravel_12</code>.</p><p>Untuk <code>DB_USERNAME</code> secara <em>default</em> adalah <code>root</code> dan untuk <code>DB_PASSWORD</code> jika teman-teman menggunakan <code>XAMPP</code>, maka dikosongkan saja.</p><p>Setelah melakukan perubahan ini, simpan <em>file</em> <code>.env</code> dan jalankan perintah berikut untuk memastikan konfigurasi <em>database</em> telah diterapkan:</p><h2 class="section-title">Langkah 2 - Membuat Model dan Migration</h2><p>Di <strong>Laravel</strong>, kita bisa membuat <em>Model</em> dan <em>Migration</em> sekaligus dalam satu perintah <em>artisan</em>. Hal ini bertujuan untuk menghemat waktu saat mengembangkan aplikasi.</p><p>Silakan jalankan perintah berikut di terminal/CMD, pastikan berada di dalam <em>folder</em> <em>project</em> <strong>Laravel</strong>-nya:</p><p>Dari perintah di atas, berikut ini penjelasannya.</p><ul>
+<li><code>php artisan make:model Product</code> → Membuat <em>Model</em> dengan nama <code>Product</code>.</li>
+<li><code>-m</code> → Menambahkan flag <code>-m</code> agar <strong>Laravel</strong> otomatis membuat <em>file</em> <em>Migration</em> untuk <em>Model</em> tersebut.</li>
+</ul><li><code>php artisan make:model Product</code> → Membuat <em>Model</em> dengan nama <code>Product</code>.</li><li><code>-m</code> → Menambahkan flag <code>-m</code> agar <strong>Laravel</strong> otomatis membuat <em>file</em> <em>Migration</em> untuk <em>Model</em> tersebut.</li><p><strong>INFORMASI:</strong> Nama <em>file</em> <em>Migration</em> akan bersifat unik, mengikuti format waktu pembuatannya. Kurang lebih seperti berikut ini <code>YYYY_MM_DD_HHMMSS_create_products_table.php</code>.</p><p>Jika berhasil dijalankan, maka kita akan mendapatkan 2 <em>file</em> baru yang berada di dalam <em>folder</em>:</p><li><code>app/Models/Product.php</code></li><li><code>database/migrations/2025_02_25_080603_create_products_table.php</code></li><p>Setelah <em>Model</em> dan <em>Migration</em> berhasil dibuat, langkah berikutnya adalah mengedit <em>file</em> <em>Migration</em> untuk mendefinisikan struktur tabel <code>products</code>.</p><h2 class="section-title">Langkah 3 - Menambahkan Field / Kolom di Migration</h2><p>Sekarang kita akan lanjutkan menambahkan sebuah <em>field</em>-<em>field</em> atau kolom di dalam <em>file</em> <em>migration</em>. Silahkan teman-teman buka <em>file</em> berikut ini <code>database/migrations/</code>, kemudian pada <code>function up</code> ubah kode-nya menjadi seperti berikut ini.</p><p>database/migrations/2025_02_25_080603_create_products_table.php</p><p>Dari perubahan kode di atas, kita menambahkan 5 <em>field</em>, yaitu :</p><h2 class="section-title">Langkah 4 - Konfigurasi Mass Assigment</h2><p><strong>Mass Assignment</strong> di <strong>Laravel</strong> adalah fitur yang memungkinkan kita untuk mengisi beberapa kolom <em>database</em> sekaligus menggunakan <em>array</em> data. Ini sering digunakan saat menyimpan data dari sebuah <em>form</em> ke <em>database</em> melalui <em>model</em> <em>Eloquent</em>.</p><p><strong>Laravel</strong> melindungi <em>Model</em> dari <em>mass assignment</em> secara <em>default</em> untuk mencegah serangan <em>Mass Assignment Vulnerability</em>, di mana pengguna dapat mengisi kolom yang tidak diizinkan, seperti <em>role</em> pengguna atau hak akses.</p><p>Silahkan teman-teman buka <em>file</em> <code>app/Models/Product.php</code>, kemudian ubah semua kode-nya menjadi seperti berikut ini.</p><p>app/Models/Product.php</p>
+                        <div class="code-wrap relative my-8">
+                            <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                            <pre><code class="language-php"><?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Product extends Model
+{
+    use HasFactory;
+
+    /**
+     * fillable
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'image',
+        'title',
+        'description',
+        'price',
+        'stock',
+    ];
+}</code></pre>
+                        </div><p>Dari perubahan kode di atas, kita tambahkan properti <code>$fillable</code>. Properti ini digunakan untuk menentukan <em>field</em>/kolom mana saja yang boleh diisi.</p><h2 class="section-title">Langkah 5 - Menjalankan Migration</h2><p>Setelah berhasil menambahkan <em>field</em> atau kolom di dalam <em>file</em> <em>Migration</em> dan menambahkan <em>Mass</em> <em>Assigment</em> di dalam <em>Model</em>, maka kita akan lanjutkan belajar menjalankan proses <em>migrate</em>.</p><p>Dengan menjalankan proses <em>migrate</em>, maka <em>field</em>/kolom yang sudah kita definisikan di dalam <em>file</em> migration akan di<em>generate</em> ke dalam <em>database</em>.</p><p>Silahkan teman-teman jalankan perintah berikut ini di dalam terminal/CMD dan pastikan berada di dalam <em>project</em> <strong>Laravel</strong>-nya.</p><p>Jika keluar <em>output</em> seperti berikut ini. Itu artinya kita belum memiliki <em>database</em> di dalam <strong>MySQL</strong> dengan nama <code>db_laravel_12</code> dan apakah kita ingin membuatnya ? Silahkan pilih <code>Yes</code> dan <strong>ENTER</strong>.</p><p>Dan jika teman-teman cek pada <strong>PhpMyAdmin</strong> di <a href="http://localhost/phpmyadmin">http://localhost/phpmyadmin</a>, maka <em>table</em>-<em>table</em> akan berhasil di<em>generate</em> berserta <em>field</em>-<em>field</em> di dalamnya.</p><h2 class="section-title">Kesimpulan</h2><p>Pada artikel ini, kita telah belajar tentang konsep <em>Model</em> dan <em>Migration</em> di <strong>Laravel</strong> <strong>12</strong>. Kita juga telah mempraktikkan cara membuat <em>Model</em> dan <em>Migration</em>, menambahkan <em>field</em> atau kolom dalam Migration, serta memahami <em>Mass Assignment</em> di dalam <em>Model</em>. Terakhir, kita telah menjalankan proses <em>migrate</em> untuk menerapkan perubahan ke <em>database</em>.</p><p>Pada artikel selanjutnya, kita semua akan belajar bagaimana cara menampilkan data dari <em>database</em> di dalam <strong>Laravel</strong> <strong>12</strong>.</p></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Class dan Dynamic Class - React Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #ecfdf5; border: 2px dashed #10b981; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Class dan Dynamic Class</h1>
+        
+        <div class="card">
+            <p>Materi ini sangat krusial karena dalam pembuatan aplikasi nyata, elemen UI sering kali harus berubah bentuk, warna, atau posisi berdasarkan status tertentu (misal: tombol yang menyala saat aktif).</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan sebuah <strong>Jaket Bolak-Balik</strong>. Sisi luar berwarna biru (class: <span class="inline-code">blue-side</span>) dan sisi dalam berwarna merah (class: <span class="inline-code">red-side</span>). Anda adalah <strong>React</strong> yang memutuskan sisi mana yang dipakai berdasarkan cuaca atau suasana hati (state). Jaketnya tetap sama, tapi "penampilannya" (class) berubah secara dinamis.</p>
+            </div>
+
+            <h2 class="section-title">Menambahkan Class Biasa</h2>
+            <p>Ingat, di JSX kita dilarang menggunakan kata <span class="inline-code">class</span> karena merupakan kata kunci cadangan JavaScript untuk membuat objek. Kita wajib menggunakan <span class="inline-code">className</span>.</p>
+            
+            <p>File CSS (<span class="inline-code">App.css</span>):</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-css">.btn { padding: 10px 20px; border-radius: 5px; }
+.active { background-color: green; color: white; }
+.inactive { background-color: gray; color: black; }</code></pre>
+            </div>
+
+            <h2 class="section-title">Menambahkan Class Secara Dinamis</h2>
+            <p>Cara termudah adalah menggunakan <strong>ternary operator</strong> di dalam atribut <span class="inline-code">className</span>.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import { useState } from 'react';
+import './App.css';
+
+function App() {
+  const [isActive, setIsActive] = useState(false);
+
+  return (
+    &lt;button 
+      className={isActive ? "btn active" : "btn inactive"}
+      onClick={() => setIsActive(!isActive)}
+    &gt;
+      {isActive ? "AKTIF" : "NON-AKTIF"}
+    &lt;/button&gt;
+  );
+}</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">Menggunakan Template Literal</h2>
+            <p>Jika Anda memiliki banyak class statis dan hanya satu atau dua yang dinamis, gunakan backtick (<span class="inline-code">`</span>).</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function Box({ isDark }) {
+  return (
+    &lt;div className={`box-layout border shadow ${isDark ? 'bg-black' : 'bg-white'}`}&gt;
+       Konten Box
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Menggunakan Library clsx (Sangat Disarankan)</h2>
+            <p>Untuk pengelolaan class yang sangat kompleks (misal pada Tailwind CSS), library <span class="inline-code">clsx</span> atau <span class="inline-code">classnames</span> adalah standar industri.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import clsx from 'clsx';
+
+function StatusBadge({ status }) {
+  return (
+    &lt;span className={clsx('badge-base', {
+      'bg-red-500': status === 'error',
+      'bg-green-500': status === 'success',
+      'bg-yellow-500': status === 'pending',
+    })}&gt;
+      {status}
+    &lt;/span&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Kita telah mempelajari bagaimana React mengelola gaya visual melalui manipulasi class. Dengan menguasai <strong>Dynamic Class</strong>, aplikasi Anda kini bisa merespons perubahan data secara visual dengan sangat halus.</p>
+            
+            <p><strong>Selamat!</strong> Anda telah menyelesaikan seluruh rangkaian materi <strong>Belajar React Dasar</strong>. Kini Anda memiliki pondasi yang kuat untuk melangkah ke tingkat menengah seperti pengerjaan API nyata, autentikasi, dan manajemen state global yang lebih kompleks.</p>
+            
+            <p class="text-center font-bold mt-8 p-4 bg-slate-200 rounded-lg">🚀 Teruslah berkarya dan selamat mencoba proyek pertama Anda!</p>
+        </div>
+    </div>
+</body>
+</html>

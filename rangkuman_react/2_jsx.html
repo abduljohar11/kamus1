@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar JSX - React Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Mengenal JSX</h1>
+        
+        <div class="card">
+            <p>Pada artikel kali ini, kita akan membahas salah satu konsep paling penting dalam React, yaitu <strong>JSX</strong>. Konsep ini wajib kita pahami karena hampir semua kode React ditulis dengan menggunakan JSX.</p>
+
+            <h2 class="section-title">Apa Itu JSX?</h2>
+            <p><strong>JSX (JavaScript XML)</strong> adalah ekstensi sintaks JavaScript yang memungkinkan kita menulis kode HTML di dalam JavaScript. JSX bukanlah <em>string</em> atau <em>template engine</em>, melainkan sebuah sintaks khusus yang akan dikompilasi menjadi fungsi JavaScript murni.</p>
+
+            <p>Contoh penulisan JSX:</p>
+            <div class="relative">
+                <pre><code class="language-jsx">const element = &lt;h1&gt;Hello World&lt;/h1&gt;;</code></pre>
+            </div>
+
+            <p>Dibalik layar, React (melalui compiler seperti Babel atau SWC) akan mengubahnya menjadi fungsi <span class="inline-code">React.createElement()</span>:</p>
+            <div class="relative">
+                <pre><code class="language-javascript">const element = React.createElement('h1', null, 'Hello World');</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">Kenapa Harus Menggunakan JSX?</h2>
+            <ul>
+                <li><strong>Mudah Dibaca</strong>: Struktur kode lebih rapi karena menyerupai HTML.</li>
+                <li><strong>Deklaratif</strong>: Kita cukup mendeskripsikan bagaimana UI seharusnya terlihat.</li>
+                <li><strong>Keamanan</strong>: JSX mencegah serangan XSS secara default dengan membersihkan nilai yang disisipkan sebelum dirender.</li>
+            </ul>
+
+            <h2 class="section-title">Menulis JSX Dasar</h2>
+            <p>Silakan buka file <span class="inline-code">src/App.jsx</span> dan ubah kodenya menjadi seperti berikut:</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function App() {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Hello React&lt;/h1&gt;
+      &lt;p&gt;Belajar JSX itu menyenangkan!&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+            </div>
+
+            <h2 class="section-title">Menyisipkan Ekspresi JavaScript</h2>
+            <p>JSX memungkinkan kita menulis ekspresi JavaScript (variabel, fungsi, operasi matematika) di dalam tanda kurung kurawal <span class="inline-code">{ }</span>.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function App() {
+  const name = "Santri Koding";
+  const age = 20;
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Halo, {name}!&lt;/h1&gt;
+      &lt;p&gt;Umur saya tahun depan adalah: {age + 1} tahun&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+            </div>
+
+            <h2 class="section-title">Aturan Dasar JSX</h2>
+            <p>Ada beberapa aturan yang <strong>wajib</strong> diikuti saat menulis JSX:</p>
+
+            <p><strong>1. Hanya boleh ada satu elemen induk (Parent Element)</strong></p>
+            <div class="relative">
+                <pre><code class="language-jsx">// ✅ Benar: Dibungkus dalam satu div atau Fragment
+return (
+  &lt;&gt;
+    &lt;h1&gt;Hello&lt;/h1&gt;
+    &lt;p&gt;World&lt;/p&gt;
+  &lt;/&gt;
+);</code></pre>
+            </div>
+
+            <p><strong>2. Gunakan className bukan class</strong></p>
+            <p>Karena <span class="inline-code">class</span> adalah kata kunci cadangan di JavaScript, kita menggunakan <span class="inline-code">className</span> untuk memberikan kelas CSS.</p>
+            <div class="relative">
+                <pre><code class="language-jsx">&lt;h1 className="text-bold text-blue"&gt;Judul Artikel&lt;/h1&gt;</code></pre>
+            </div>
+
+            <p><strong>3. Gunakan camelCase untuk atribut</strong></p>
+            <p>Atribut seperti <span class="inline-code">onclick</span> berubah menjadi <span class="inline-code">onClick</span>, dan <span class="inline-code">tabindex</span> menjadi <span class="inline-code">tabIndex</span>.</p>
+            <div class="relative">
+                <pre><code class="language-jsx">&lt;button onClick={() => alert("Halo!")}&gt;Klik Saya&lt;/button&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>JSX adalah jembatan yang memudahkan kita membangun UI di React dengan menggabungkan kekuatan JavaScript dan struktur HTML. Dengan memahami aturan dasarnya, kita sudah siap untuk membuat komponen yang lebih kompleks.</p>
+            <p>Di artikel berikutnya, kita akan belajar tentang <strong>Components</strong>, yaitu pondasi utama dalam membangun aplikasi React yang modular.</p>
+        </div>
+    </div>
+</body>
+</html>

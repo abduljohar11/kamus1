@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Rangkuman Laravel & Inertia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <a href="../index.html" class="mb-6 inline-flex items-center font-bold text-blue-600 uppercase text-xs hover:text-blue-800 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Kembali ke Beranda Utama
+        </a>
+
+        <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-2 tracking-tighter uppercase">📚 Daftar Rangkuman</h1>
+        <p class="text-slate-600 mb-10">Kumpulan tutorial Laravel, Inertia.js, dan React.js.</p>
+
+        <div class="grid gap-4">
+            <a href="1_installasi_dan_persiapan_laravel.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-blue-600">
+                <span class="text-blue-600 font-bold text-xs uppercase tracking-widest">Bagian 01</span>
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight">Installasi dan Persiapan Laravel</h3>
+                <p class="text-slate-500 text-sm mt-1">Setup project, Composer, dan Database. &rarr;</p>
+            </a>
+
+            <a href="2_installasi_dan_konfigurasi_inertia_server.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-indigo-600">
+                <span class="text-indigo-600 font-bold text-xs uppercase tracking-widest">Bagian 02</span>
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-indigo-600 tracking-tight">Konfigurasi Inertia.js (Server-Side)</h3>
+                <p class="text-slate-500 text-sm mt-1">Middleware dan Root Template Blade. &rarr;</p>
+            </a>
+
+            <a href="3_installasi_dan_konfigurasi_inertia_client.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-purple-600">
+                <span class="text-purple-600 font-bold text-xs uppercase tracking-widest">Bagian 03</span>
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-purple-600 tracking-tight">Konfigurasi Inertia.js (Client-Side)</h3>
+                <p class="text-slate-500 text-sm mt-1">Setup React, Vite, dan App.jsx. &rarr;</p>
+            </a>
+
+            <a href="4_membuat_proses_register.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-emerald-600">
+                <span class="text-emerald-600 font-bold text-xs uppercase tracking-widest">Bagian 04</span>
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-emerald-600 tracking-tight">Membuat Proses Register</h3>
+                <p class="text-slate-500 text-sm mt-1">Logic pendaftaran user dan Form React. &rarr;</p>
+            </a>
+
+            <a href="5_membuat_proses_login.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-orange-600">
+                <span class="text-orange-600 font-bold text-xs uppercase tracking-widest">Bagian 05</span>
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-orange-600 tracking-tight">Membuat Proses Login</h3>
+                <p class="text-slate-500 text-sm mt-1">Autentikasi Session dan Fungsi Logout. &rarr;</p>
+            </a>
+
+            <a href="6_menampilkan_user_di_halaman_dashboard.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-rose-600">
+                <span class="text-rose-600 font-bold text-xs uppercase tracking-widest">Bagian 06</span>
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-rose-600 tracking-tight">Menampilkan User di Dashboard</h3>
+                <p class="text-slate-500 text-sm mt-1">Proteksi Route Auth dan tampilan data user. &rarr;</p>
+            </a>
+        </div>
+
+        <footer class="mt-12 text-center text-slate-400 text-xs uppercase tracking-widest font-bold">
+            Laravel + Inertia + React Learning Journey
+        </footer>
+    </div>
+</body>
+</html>

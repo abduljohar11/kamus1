@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial JavaScript - Ternary Operator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #fdf2f8; border: 2px dashed #db2777; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Ternary Operator</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Apa Itu Ternary Operator?</h2>
+            <p><strong>Ternary Operator</strong> adalah operator kondisional yang berbentuk satu baris, digunakan untuk menggantikan struktur <code>if-else</code> sederhana. Disebut "<em>ternary</em>" karena melibatkan tiga bagian utama: kondisi, hasil jika <strong>true</strong>, dan hasil jika <strong>false</strong>.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan sebuah <strong>Gerbang Otomatis</strong> di parkiran mal. <strong>Kondisi</strong>: "Apakah saldo kartu cukup?". Jika <strong>YA</strong>, palu gerbang terbuka. Jika <strong>TIDAK</strong>, palu tetap tertutup. Semuanya terjadi dalam satu aksi cepat di satu titik gerbang tersebut.</p>
+            </div>
+
+            <p>Format umum penulisan Ternary Operator adalah sebagai berikut:</p>
+            <div class="relative">
+                <pre><code class="language-javascript">kondisi ? hasil_jika_true : hasil_jika_false;</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">Contoh Tanpa Ternary Operator</h2>
+            <p>Biasanya jika kita ingin membuat percabangan sederhana untuk memberikan nilai ke variabel, kita menggunakan <code>if-else</code>:</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let umur = 20;
+let status;
+
+if (umur >= 18) {
+  status = "Dewasa";
+} else {
+  status = "Anak-anak";
+}
+
+console.log(status); // Output: Dewasa</code></pre>
+            </div>
+            <p>Cukup panjang hanya untuk satu keputusan sederhana, bukan?</p>
+
+            <h2 class="section-title">Contoh Dengan Ternary Operator</h2>
+            <p>Dengan <em>Ternary Operator</em>, kita bisa meringkas kode di atas menjadi satu baris saja:</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let umur = 20;
+let status = (umur >= 18) ? "Dewasa" : "Anak-anak";
+
+console.log(status); // Output: Dewasa</code></pre>
+            </div>
+            <p>Lebih singkat, bersih, dan tetap mudah dibaca!</p>
+
+            <h2 class="section-title">Cara Kerja Ternary Operator</h2>
+            <ul>
+                <li><strong>Kondisi</strong> (sebelum tanda <span class="inline-code">?</span>) akan dicek terlebih dahulu nilai kebenarannya.</li>
+                <li>Jika <strong>Benar (true)</strong>, ekspresi di antara tanda <span class="inline-code">?</span> dan <span class="inline-code">:</span> akan dieksekusi.</li>
+                <li>Jika <strong>Salah (false)</strong>, ekspresi setelah tanda <span class="inline-code">:</span> akan dieksekusi.</li>
+            </ul>
+
+            <h3 class="font-bold mb-2">Contoh Lain: Cek Kelulusan</h3>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let nilai = 75;
+let hasil = (nilai >= 70) ? "Lulus" : "Tidak Lulus";
+
+console.log(`Anda dinyatakan: ${hasil}`); // Output: Anda dinyatakan: Lulus</code></pre>
+            </div>
+
+            <h2 class="section-title">Ternary Operator Bertingkat (Nested)</h2>
+            <p>Kita juga bisa membuat <em>ternary operator</em> bertingkat untuk menangani lebih dari dua kondisi, mirip dengan <code>if-else if-else</code>:</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let skor = 85;
+let grade = (skor >= 90) ? "A" 
+          : (skor >= 80) ? "B" 
+          : (skor >= 70) ? "C" 
+          : "D";
+
+console.log(grade); // Output: B</code></pre>
+            </div>
+            <p><strong>Tips:</strong> Gunakan ternary bertingkat dengan bijak. Jika kondisinya terlalu banyak, sebaiknya kembali menggunakan <code>switch</code> atau <code>if-else</code> agar kode tetap mudah dipahami oleh orang lain.</p>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p><strong>Ternary Operator</strong> di JavaScript adalah alat yang sangat berguna untuk membuat keputusan cepat dalam satu baris. Ini sangat sering digunakan dalam pengembangan **React** untuk menampilkan elemen UI secara kondisional.</p>
+            
+            <p>Di artikel berikutnya, kita akan membahas materi yang sangat penting untuk modularitas kode, yaitu <strong>Module (Import & Export) di JavaScript</strong>!</p>
+        </div>
+    </div>
+</body>
+</html>

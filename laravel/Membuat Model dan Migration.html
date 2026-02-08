@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membuat Model dan Migration</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; color: #334155; background: #f8fafc; margin: 0; padding: 40px 20px; }
+        .container { max-width: 850px; margin: 0 auto; }
+        .btn-back { display: inline-block; margin-bottom: 20px; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+        .materi-card { background: #fff; padding: 45px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h1 { font-size: 2.5rem; color: #0f172a; margin-top: 0; border-bottom: 4px solid #3b82f6; padding-bottom: 10px; }
+        h3 { margin-top: 35px; color: #1e293b; font-size: 1.5rem; border-left: 5px solid #3b82f6; padding-left: 15px; }
+        pre { background: #1e1e2e; color: #f8f8f2; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 25px 0; }
+        code { font-family: 'Consolas', monospace; background: #fee2e2; color: #991b1b; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; color: inherit; padding: 0; }
+        img { max-width: 100%; border-radius: 12px; margin: 30px 0; display: block; border: 1px solid #e2e8f0; }
+        blockquote { border-left: 5px solid #3b82f6; background: #eff6ff; padding: 15px 25px; border-radius: 0 10px 10px 0; font-style: italic; margin: 25px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="btn-back">← Kembali ke Daftar Isi</a>
+        <article class="materi-card">
+            <main class="flex-1 min-w-0 lg:ml-80 mr-0 xl:mr-64 transition-all duration-300 pt-10 md:pt-0">
+<div class="max-w-full mx-auto px-4 sm:px-6 md:px-8 py-5">
+<h1 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">Membuat Model dan Migration</h1>
+<div class="prose lg:prose-lg prose-a:text-blue-500 dark:prose-a:text-blue-400 dark:prose-invert w-full max-w-full">
+<div x-data="" x-init="let t=document.querySelector('.table-of-contents'),d=document.querySelector('.toc'),m=document.querySelector('.toc-mobile'),b=document.querySelector('.btn-toc');if(t&amp;&amp;t.querySelectorAll('li').length&gt;0){d.appendChild(t.cloneNode(true));m.appendChild(t.cloneNode(true))}else b?.classList.add('hidden');$nextTick(()=&gt;{document.querySelectorAll(`.prose a[href^='http']`).forEach(a=&gt;{a.href.includes(location.hostname)||(a.target='_blank',a.rel='noopener noreferrer')})})">
+</div>
+<ul class="table-of-contents">
+<li><a href="#content-langkah-1---membuat-model-dan-migration">Langkah 1 - Membuat Model dan Migration</a></li>
+<li><a href="#content-langkah-2---menambahkan-field-table">Langkah 2 - Menambahkan Field Table</a></li>
+<li><a href="#content-langkah-3---konfigurasi-mass-assigment">Langkah 3 - Konfigurasi Mass Assigment</a></li>
+</ul>
+<p>Setelah berhasil melakukan konfigurasi koneksi <em>databaase</em> dan membuat <em>database</em> melalui <strong>PhpMyadmin</strong>, maka kita akan lantjutkan belajar membuat <em>model</em> dan <em>migration</em>.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-langkah-1---membuat-model-dan-migration" id="content-langkah-1---membuat-model-dan-migration" title="Permalink"></a>Langkah 1 - Membuat Model dan Migration</h3>
+<p>Sekarang, kita lanjutkan belajar bagaimana cara membuat <em>model</em> dan <em>migration</em> di Laravel. Silahkan jalankan perintah berikut ini di dalam terminal/CMD dan pastikan berada di dalam <em>project</em> Laravel-nya.</p>
+<pre><code>php artisan make:model Post -m
+</code></pre>
+<p>Perintah di atas, digunakan untuk membuat <em>model</em> baru dengan nama <code>Post</code> dan kita tambahkan <em>flag</em> <code>-m</code>, yang artinya <em>file</em> <em>migration</em>-nya juga akan ikut dibuat.</p>
+<p>Jika perintah di atas berhasil dijalankan, maka kita akan mendapatkan 2 <em>file</em> baru, yaitu :</p>
+<ul>
+<li><code>app/Models/Post.php</code></li>
+<li><code>database/migrations/2024_05_05_002859_create_posts_table.php</code></li>
+</ul>
+<blockquote>
+<p><strong>INFORMASI</strong> : untuk nama file migration akan random sesuai tanggal pembuatannya.</p>
+</blockquote>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-langkah-2---menambahkan-field-table" id="content-langkah-2---menambahkan-field-table" title="Permalink"></a>Langkah 2 - Menambahkan Field Table</h3>
+<p>Setelah berhasil membuat <em>model</em> dan <em>migration</em>, sekarang kita lanjutkan untuk menambahkan <em>field</em>  di dalam <em>file</em> <em>migration</em>. <em>Field</em> yang kita tambahkan ini akan di<em>generate</em> di dalam <em>table</em> <code>posts</code> yang ada di <em>database</em>.</p>
+<p>Silahkan buka <em>file</em> <code>database/migrations/2024_05_05_002859_create_posts_table.php</code>, kemudian pada bagian <code>function up</code>, ubah kode-nya menjadi seperti berikut ini :</p>
+<pre><code>public function up(): void
+{
+  Schema::create('posts', function (Blueprint $table) {
+    $table-&gt;id();
+    $table-&gt;string('image');
+    $table-&gt;string('title');
+    $table-&gt;text('content');
+    $table-&gt;timestamps();
+  });
+}
+</code></pre>
+<p>Dari perubahan kode di atas, kita menambahkan 3 field baru, yaitu :</p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th align="left">FIELD</th>
+<th align="left">TYPE DATA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>image</code></td>
+<td align="left">string</td>
+</tr>
+<tr>
+<td align="left"><code>title</code></td>
+<td align="left">string</td>
+</tr>
+<tr>
+<td align="left"><code>content</code></td>
+<td align="left">text</td>
+</tr>
+</tbody>
+</table></div>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-langkah-3---konfigurasi-mass-assigment" id="content-langkah-3---konfigurasi-mass-assigment" title="Permalink"></a>Langkah 3 - Konfigurasi Mass Assigment</h3>
+<p><strong>Mass Assigment</strong> di <strong>Laravel</strong> memungkinkan kita untuk mengizinkan sebuah <em>field</em> dari <em>table</em> agar dapat menyimpan sebuah data. Karena <em>table</em> yang kita gunakan nantinya buat menyimpan data, maka kita perlu melakukan konfigurasi <em>Mass</em> <em>Assigment</em>-nya terlebih dahulu.</p>
+<p>Silahkan buka <em>file</em> <code>app/Models/Post.php</code>, kemudian ubah kode-nya menjadi seperti berikut ini :</p>
+<pre><code>&lt;?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Post extends Model
+{
+    use HasFactory;
+    
+    /**
+     * fillable
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'image',
+        'title',
+        'content',
+    ];
+}
+</code></pre>
+<p>Di atas, kita menambahkan properti baru yang bernama <code>$fillable</code>. Properti tersebut yang dinamakan <em>Mass</em> <em>Assigment</em> di <strong>Laravel</strong>. Diman di dalamnya kita menambahkan <em>field</em>-<em>field</em> yang diizinkan untuk melakukan manipulasi data.</p>
+</div>
+<!-- Div pembatas dengan content -->
+<div class="border-t border-neutral-200 dark:border-neutral-700 mt-8 pt-6">
+<div class="flex justify-end">
+<a :aria-busy="loading ? 'true' : 'false'" :class="loading ? 'opacity-60 pointer-events-none' : ''" class="inline-flex items-center gap-2 px-6 py-3 bg-red-700 hover:bg-red-800 dark:bg-neutral-600 dark:hover:bg-neutral-700 text-white text-sm font-medium rounded-full transition-colors duration-200" data-id="1578" href="https://santrikoding.com/account/my-courses/laravel-untuk-pemula/1579?version=1.1.0" x-data="lessonComplete(28, '1.1.0', 'https://santrikoding.com/account/my-courses/laravel-untuk-pemula/lesson/completed')" x-on:click.prevent="complete($event)">
+ <span x-text="loading ? 'Processing…' : 'Complete &amp; Continue'"></span>
+ </a>
+</div>
+</div>
+</div>
+</main><aside :class="tocVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'" class="hidden xl:block fixed right-0 top-14 bottom-0 w-64 overflow-y-auto border-l border-neutral-200 dark:border-neutral-700/80 bg-white/95 dark:bg-neutral-900 backdrop-blur-sm transition-all duration-300 z-30" x-cloak="">
+<!-- Header dengan glass effect -->
+<div class="sticky top-0 z-10 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-b border-neutral-200/50 dark:border-neutral-700/50 px-4 py-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="p-1.5 bg-primary/10 rounded-lg">
+
+</div>
+<div>
+<h3 class="text-sm font-semibold text-neutral-900 dark:text-neutral-100">On This Page</h3>
+</div>
+</div>
+
+</div>
+</div>
+<!-- Progress Indicator yang benar-benar visible -->
+<div class="px-4 py-3 border-b border-neutral-200/50 dark:border-neutral-700/50" x-data="{
+            scrollProgress: 0,
+            updateProgress() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                this.scrollProgress = docHeight &gt; 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+            }
+         }" x-init="updateProgress(); $watch('scrollProgress', () =&gt; {}); window.addEventListener('scroll', () =&gt; updateProgress())">
+<div class="flex items-center justify-between text-xs mb-2">
+<span class="text-neutral-600 dark:text-neutral-400">Reading Progress</span>
+<span class="text-primary font-medium" x-text="Math.round(scrollProgress) + '%'"></span>
+</div>
+<!-- Progress Bar dengan warna yang kontras -->
+<div class="w-full bg-neutral-300 dark:bg-neutral-600 rounded-full h-2 shadow-inner">
+<div :style="'width: ' + scrollProgress + '%'" class="bg-gradient-to-r from-emerald-300 to-emerald-600 h-2 rounded-full transition-all duration-300 shadow-sm"></div>
+</div>
+</div>
+<!-- Table of Contents Content -->
+
+<!-- Footer dengan quick actions -->
+<div class="sticky bottom-0 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-t border-neutral-200/50 dark:border-neutral-700/50 p-3">
+<div class="flex items-center justify-between text-xs">
+
+
+</div>
+</div>
+</aside>
+        </article>
+    </div>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        li { margin-bottom: 0.5rem; line-height: 1.6; }
+        .badge { background: #cbd5e1; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; }
+    
+        .text-sm{color: #1a1b26;}
+    
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">PHP Variabel</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Apa Itu Variabel?</h2>
+            <p><strong>Variabel</strong> adalah sebuah wadah untuk menyimpan nilai. Nilai ini bisa berupa teks, angka, array, hingga boolean. Di PHP, variabel bersifat dinamis, artinya kita tidak perlu mendeklarasikan tipe datanya secara eksplisit.</p>
+            <p>Semua variabel di PHP wajib diawali dengan tanda dolar (<span class="badge">$</span>).</p>
+
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  $nama = "Eka";
+  $umur = 22;
+
+  echo "Halo, nama saya $nama dan saya berumur $umur tahun.";
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Aturan Penamaan Variabel</h2>
+            <p>PHP memiliki aturan baku dalam pemberian nama variabel:</p>
+            <ul>
+                <li>Wajib diawali dengan tanda <span class="badge">$</span>.</li>
+                <li>Hanya boleh mengandung huruf, angka, dan underscore (<span class="badge">_</span>).</li>
+                <li><strong>Tidak boleh</strong> diawali dengan angka.</li>
+                <li>Bersifat <strong>Case-Sensitive</strong> (<span class="badge">$hobi</span> berbeda dengan <span class="badge">$Hobi</span>).</li>
+            </ul>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div class="p-4 bg-green-100 border-l-4 border-green-500 rounded-r">
+                    <p class="font-bold text-green-700 mb-1">✅ Valid:</p>
+                    <code class="text-sm">$nama, $_umur, $skor_1</code>
+                </div>
+                <div class="p-4 bg-red-100 border-l-4 border-red-500 rounded-r">
+                    <p class="font-bold text-red-700 mb-1">❌ Tidak Valid:</p>
+                    <code class="text-sm">$1nama, $nama-depan, $biaya!</code>
+                </div>
+            </div>
+
+            <h2 class="section-title">Menampilkan Nilai Variabel</h2>
+            <p>Ada dua cara umum untuk menampilkan variabel: langsung di dalam tanda kutip dua atau menggunakan operator titik (<span class="badge">.</span>) untuk penggabungan (konkatenasi).</p>
+            
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  $kota = "Yogyakarta";
+
+  // Cara 1: Langsung dalam kutip dua
+  echo "Saya tinggal di $kota";
+
+  // Cara 2: Konkatenasi (Operator Titik)
+  echo "Saya tinggal di " . $kota;
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Variabel Dinamis</h2>
+            <p>PHP mendukung <em>variable variables</em>, di mana nama sebuah variabel bisa ditentukan oleh isi variabel lain.</p>
+            
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  $nama = "user";
+  $user = "Dina";
+
+  echo $$nama; // Output: Dina
+?&gt;</code></pre>
+            </div>
+            <p>Simbol <span class="badge">$$nama</span> berarti kita memanggil variabel yang namanya adalah isi dari <span class="badge">$nama</span> (yaitu <span class="badge">$user</span>).</p>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Variabel adalah pondasi dalam mengelola data di PHP. Pastikan selalu mengikuti aturan penamaan agar kode tidak error. Di materi selanjutnya, kita akan membahas tentang <strong>Konstanta</strong>.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Laravel - Apa Yang Baru di Laravel 12</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; transform: scale(1.05); }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1.2rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        p { margin-bottom: 1.2rem; line-height: 1.8; color: #1e293b; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; color: #1e293b; }
+        li { margin-bottom: 0.5rem; }
+        
+        .utility-tag { background: #cbd5e1; padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 0.85rem; font-weight: bold; color: #0f172a; }
+        .highlight-info { background: #dcfce7; border-left: 4px solid #16a34a; padding: 1rem; border-radius: 0.5rem; margin: 1.5rem 0; color: #166534; font-size: 0.95rem; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Apa Yang Baru di Laravel 12
+        </h1>
+
+        <div class="card">
+            <p>Laravel 12 hadir dengan berbagai peningkatan performa dan penyederhanaan sintaks. Fokus utamanya adalah membuat kode PHP kamu semakin pendek, namun tetap mudah dibaca.</p>
+
+            <h2 class="section-title">1. Laravel Starter Kits Terpadu</h2>
+            <p>Laravel 12 memperkenalkan penggabungan installer untuk <strong>Breeze</strong> dan <strong>Jetstream</strong>. Kamu kini bisa memilih stack (Blade, Livewire, atau Inertia) dengan lebih fleksibel langsung saat instalasi proyek baru.</p>
+            
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-bash">laravel new my-app --stack=inertia --dark</code></pre>
+            </div>
+
+            <h2 class="section-title">2. Peningkatan Eloquent</h2>
+            <p>Eloquent di Laravel 12 semakin cerdas dalam menangani query database yang kompleks. Salah satu fitur barunya adalah <strong>Deferrable Validations</strong> yang memungkinkan validasi database dilakukan hanya saat data benar-benar akan disimpan.</p>
+
+            <h2 class="section-title">3. Native PHP 8.4 Support</h2>
+            <p>Laravel 12 memanfaatkan fitur-fitur terbaru dari <strong>PHP 8.4</strong>, seperti <em>Property Hooks</em> yang memungkinkan kita melakukan get/set logic langsung pada properti class tanpa harus membuat method manual.</p>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-php">// Contoh Property Hooks di PHP 8.4 / Laravel 12
+public string $name {
+    set => strtolower($value);
+    get => ucfirst($value);
+}</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">4. Vite 6 Integration</h2>
+            <p>Secara default, Laravel 12 menggunakan <strong>Vite 6</strong> sebagai module bundler. Ini memberikan kecepatan build yang lebih luar biasa, terutama sangat terasa saat kamu mengembangkan aplikasi menggunakan <strong>Inertia.js</strong> dan <strong>React</strong>.</p>
+
+            <h2 class="section-title">5. New Artisan Commands</h2>
+            <p>Beberapa perintah baru ditambahkan untuk mempermudah <em>debugging</em> dan manajemen database langsung dari terminal, termasuk peningkatan pada perintah <span class="utility-tag">php artisan model:show</span>.</p>
+
+            <div class="highlight-info">
+                <strong>💡 Info:</strong> Laravel 12 sangat direkomendasikan bagi kamu yang ingin membangun aplikasi skala besar dengan struktur yang lebih ramping. Jika kamu baru mulai, Laravel 12 adalah titik awal terbaik karena dokumentasinya paling mutakhir.
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Laravel 12 terus membuktikan dirinya sebagai framework PHP paling modern. Dengan dukungan penuh terhadap PHP 8.4 dan Vite 6, pengembangan aplikasi Fullstack menjadi jauh lebih efisien.</p>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

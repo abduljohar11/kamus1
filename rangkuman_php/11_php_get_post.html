@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP GET & POST - Panduan Lengkap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; }
+        .badge { background: #2563eb; color: white; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; }
+        .table-custom { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background: white; border-radius: 1rem; overflow: hidden; }
+        .table-custom th, .table-custom td { padding: 1rem; border: 1px solid #cbd5e1; text-align: left; }
+        .table-custom th { background: #f1f5f9; font-weight: bold; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">PHP $_GET & $_POST</h1>
+        
+        <div class="card">
+            <p>Agar aplikasi "Buku Guru" bisa menerima input seperti nama siswa atau nilai ujian, kita butuh cara untuk mengirim data dari browser ke server. Di sinilah <span class="badge">$_GET</span> dan <span class="badge">$_POST</span> berperan.</p>
+
+            <div class="bg-white p-6 rounded-2xl border-l-8 border-blue-500 mb-8">
+                <h3 class="font-bold text-xl mb-2 text-blue-800">Analogi Sederhana:</h3>
+                <p class="text-sm"><strong>GET itu seperti Kartu Pos:</strong> Isinya terlihat oleh siapa saja (di URL) karena terbatas dan terbuka.</p>
+                <p class="text-sm"><strong>POST itu seperti Surat dalam Amplop:</strong> Isinya tertutup rapat di dalam (Request Body), tidak terlihat dari luar.</p>
+            </div>
+
+            
+
+            <h2 class="section-title">1. Method $_GET (Lewat URL)</h2>
+            <p>Data dikirim dengan cara ditempelkan di belakang alamat URL. Cocok untuk fitur pencarian atau link navigasi.</p>
+            
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // URL: proses.php?nama=Budi&kelas=10A
+  
+  if (isset($_GET['nama'])) {
+      echo "Mencari data siswa: " . $_GET['nama'];
+  }
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">2. Method $_POST (Lewat Body)</h2>
+            <p>Data dikirim secara "tersembunyi". Wajib digunakan untuk data sensitif atau data yang panjang seperti form input nilai atau login.</p>
+
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // Data tidak terlihat di URL
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+      $nilai = $_POST['nilai_siswa'];
+      echo "Nilai berhasil disimpan: " . $nilai;
+  }
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Perbandingan GET vs POST</h2>
+            <table class="table-custom">
+                <thead>
+                    <tr>
+                        <th>Fitur</th>
+                        <th>$_GET</th>
+                        <th>$_POST</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Keamanan</strong></td>
+                        <td>Rendah (Terlihat di URL)</td>
+                        <td>Lebih Tinggi (Tersembunyi)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kapasitas</strong></td>
+                        <td>Terbatas (maks 2000 karakter)</td>
+                        <td>Tidak Terbatas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kegunaan</strong></td>
+                        <td>Pencarian, Filter, Link</td>
+                        <td>Simpan Data, Login, Upload</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">💡 Praktik: Form Input Nilai</h2>
+            <p>Beginilah cara kamu menggabungkan Form HTML dengan PHP nantinya:</p>
+            
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;!-- Form di file index.php --&gt;
+&lt;form action="proses.php" method="POST"&gt;
+    Nama: &lt;input type="text" name="nama_siswa"&gt;
+    Nilai: &lt;input type="number" name="skor"&gt;
+    &lt;button type="submit"&gt;Simpan Nilai&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;?php
+  // Di file proses.php
+  if (isset($_POST['nama_siswa'])) {
+      $nama = $_POST['nama_siswa'];
+      $skor = $_POST['skor'];
+      echo "Siswa $nama mendapatkan nilai $skor";
+  }
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Validasi isset()</h2>
+            <p>Selalu gunakan <span class="badge">isset()</span> sebelum memanggil data agar tidak muncul error "Undefined Index" jika user langsung membuka halaman tanpa mengisi form.</p>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Gunakan <strong>POST</strong> untuk formulir yang mengubah data di database (seperti input nilai), dan gunakan <strong>GET</strong> untuk link yang hanya menampilkan data (seperti melihat detail siswa).</p>
+            
+           
+        </div>
+    </div>
+</body>
+</html>

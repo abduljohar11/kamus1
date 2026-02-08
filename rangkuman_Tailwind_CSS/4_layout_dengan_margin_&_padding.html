@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Tailwind: Margin & Padding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        p { margin-bottom: 1.2rem; line-height: 1.8; }
+        
+        /* Table Style */
+        .info-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+        .info-table th { background: #334155; color: white; padding: 10px; text-align: left; }
+        .info-table td { padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 0.85rem; }
+
+        /* Label Khusus Simulasi */
+        .label-margin { color: #ea580c; font-weight: 900; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
+        .label-padding { color: #2563eb; font-weight: 900; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Layout: Margin & Padding
+        </h1>
+
+        <div class="card">
+            <p>Mengatur jarak adalah bagian paling krusial dalam desain UI. Tailwind membagi jarak menjadi dua jenis utama yang mengikuti konsep <strong>CSS Box Model</strong>.</p>
+
+            <h2 class="section-title">1. Apa Bedanya?</h2>
+            <p>Bayangkan sebuah kotak di dalam kotak. <strong>Margin</strong> adalah zona luar, sedangkan <strong>Padding</strong> adalah bantalan dalam.</p>
+
+            <div class="my-8 bg-white p-8 rounded-2xl border border-slate-300 shadow-inner overflow-hidden">
+                <div class="flex items-center gap-6 mb-6 text-[11px] font-bold">
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-orange-200 border border-orange-400"></div> AREA MARGIN</div>
+                    <div class="flex items-center gap-2"><div class="w-3 h-3 bg-blue-100 border border-blue-400"></div> AREA PADDING</div>
+                </div>
+
+                <div class="relative bg-orange-200 border-2 border-dashed border-orange-400 p-10 rounded-xl">
+                    <div class="absolute top-2 left-4 label-margin">Margin (m-10)</div>
+                    
+                    <div class="bg-blue-100 border-2 border-blue-500 p-10 rounded-lg shadow-sm">
+                        <div class="relative">
+                            <div class="absolute -top-7 left-0 label-padding">Padding (p-10)</div>
+                            
+                            <div class="bg-blue-600 text-white p-4 text-center rounded shadow-md font-bold text-sm">
+                                KONTEN / ELEMENT
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="text-center text-xs text-slate-500 mt-6 italic">
+                    *Kotak oranye adalah jarak **luar** (ke elemen lain), kotak biru muda adalah jarak **dalam** (ke konten).
+                </p>
+            </div>
+
+            
+
+            <h2 class="section-title">2. Arah dan Sisi</h2>
+            <p>Tailwind memudahkan kita memilih sisi mana yang ingin diberi jarak menggunakan inisial arah.</p>
+            
+            <table class="info-table shadow-sm text-sm">
+                <thead>
+                    <tr><th>Inisial</th><th>Arah</th><th>Contoh Class</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>t</code></td><td>Top (Atas)</td><td><code>mt-4</code>, <code>pt-2</code></td></tr>
+                    <tr><td><code>b</code></td><td>Bottom (Bawah)</td><td><code>mb-6</code>, <code>pb-10</code></td></tr>
+                    <tr><td><code>l</code></td><td>Left (Kiri)</td><td><code>ml-2</code>, <code>pl-4</code></td></tr>
+                    <tr><td><code>r</code></td><td>Right (Kanan)</td><td><code>mr-8</code>, <code>pr-1</code></td></tr>
+                    <tr><td><code>x</code></td><td>Horizontal (Kiri & Kanan)</td><td><code>mx-auto</code>, <code>px-5</code></td></tr>
+                    <tr><td><code>y</code></td><td>Vertical (Atas & Bawah)</td><td><code>my-10</code>, <code>py-3</code></td></tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">3. Contoh Implementasi</h2>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!-- m-10 p-10 diterapkan sekaligus --&gt;
+&lt;div class="m-10 p-10 bg-white shadow-lg rounded-xl"&gt;
+  &lt;h2 class="font-bold mb-4"&gt;Card Berjarak&lt;/h2&gt;
+  &lt;p&gt;Konten ini memiliki bantalan dalam dan jarak luar yang sama.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Gunakan <strong>Padding</strong> untuk memberikan "napas" pada konten di dalam kotak, dan gunakan <strong>Margin</strong> untuk mengatur jarak antar kotak di halaman web kamu.</p>
+
+            <div class="mt-10 pt-6 border-t border-slate-300 flex justify-between items-center">
+                <div>
+                    <p class="text-sm font-bold text-slate-500 italic uppercase">Selanjutnya:</p>
+                    <p class="text-lg font-bold text-blue-600">Background & Borders &raquo;</p>
+                </div>
+                <div class="text-xs font-mono text-slate-400 bg-slate-200 px-3 py-1 rounded-full">
+                    Step 4 of 10
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

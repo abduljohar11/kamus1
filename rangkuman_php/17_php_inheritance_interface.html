@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP OOP - Inheritance & Interface (Laravel Ready)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; }
+        .badge { background: #2563eb; color: white; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; }
+        .laravel-note { background: #fff1f2; border-left: 4px solid #f43f5e; padding: 1rem; margin: 1.5rem 0; border-radius: 0.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Inheritance & Interface</h1>
+        
+        <div class="card">
+            <h2 class="section-title">1. Inheritance (Pewarisan)</h2>
+            <p>Di Laravel, konsep ini adalah fondasi utama. Semua Controller yang kamu buat akan mewarisi fitur-fitur canggih dari Controller pusat Laravel.</p>
+            
+            <div class="bg-blue-50 p-4 rounded-xl border-l-4 border-blue-500 my-4">
+                <strong>Analogi:</strong> Ibarat sebuah **Template PowerPoint**. Kamu tidak membuat desain dari nol, kamu mengambil template yang sudah ada (Parent), lalu kamu tinggal menambah isi atau mengubah sedikit bagian (Child).
+            </div>
+
+            
+
+[Image of object-oriented programming inheritance diagram]
+
+
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // Parent Class (Pusat Logika)
+  class Controller {
+      public function middleware() {
+          return "Mengecek keamanan...";
+      }
+  }
+
+  // Child Class (Spesifik untuk Siswa)
+  class SiswaController extends Controller {
+      public function index() {
+          // Kita bisa panggil fungsi 'middleware' dari parent
+          echo $this->middleware(); 
+          return "Menampilkan daftar siswa.";
+      }
+  }
+
+  $app = new SiswaController();
+  echo $app->index();
+?&gt;</code></pre>
+            </div>
+
+            <div class="laravel-note">
+                <p class="font-bold text-rose-800 text-sm">KENAPA INI PENTING DI LARAVEL?</p>
+                <p class="text-rose-700 text-sm italic">Karena kamu akan sering menulis: <code>class SiswaController extends Controller</code>. Tanpa <b>extends</b>, controller kamu tidak punya kekuatan untuk melakukan validasi atau menampilkan view.</p>
+            </div>
+
+            <h2 class="section-title">2. Interface (Kontrak Standardisasi)</h2>
+            <p>Interface di Laravel sering disebut sebagai <b>Contracts</b>. Gunanya untuk memastikan bahwa class yang berbeda memiliki "cara pakai" yang sama.</p>
+            
+            <div class="bg-yellow-50 p-4 rounded-xl border-l-4 border-yellow-500 my-4 text-yellow-800 text-sm">
+                <strong>Analogi:</strong> Ibarat **Colokan Listrik**. Tidak peduli merek kulkas atau TV kamu, colokannya harus sama (Interface). Jika tidak mengikuti standar colokan, perangkatmu tidak akan bisa mendapat listrik (Error).
+            </div>
+
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // Perjanjian: Semua sistem Notifikasi HARUS punya fungsi 'kirim'
+  interface NotificationInterface {
+      public function kirim($pesan);
+  }
+
+  class EmailNotification implements NotificationInterface {
+      public function kirim($pesan) {
+          echo "Mengirim email: $pesan";
+      }
+  }
+
+  class WhatsAppNotification implements NotificationInterface {
+      public function kirim($pesan) {
+          echo "Mengirim WA: $pesan";
+      }
+  }
+?&gt;</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">3. Ringkasan untuk Laravel</h2>
+            <table class="table-custom rounded-lg overflow-hidden shadow-sm">
+                <thead>
+                    <tr>
+                        <th class="w-1/2">Inheritance (extends)</th>
+                        <th class="w-1/2">Interface (implements)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Digunakan untuk **berbagi fungsi** yang sama.</td>
+                        <td>Digunakan untuk **mewajibkan** adanya fungsi tertentu.</td>
+                    </tr>
+                    <tr>
+                        <td>Hubungan: "Adalah" (Guru *adalah* Pengguna).</td>
+                        <td>Hubungan: "Mampu" (Email *mampu* kirim notif).</td>
+                    </tr>
+                    <tr>
+                        <td class="italic text-blue-600">Dipakai di: Controller & Model Laravel.</td>
+                        <td class="italic text-blue-600">Dipakai di: Service & Repository Pattern.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Pahami bahwa **Inheritance** adalah tentang <i>siapa kamu</i> (keturunan siapa), sedangkan **Interface** adalah tentang <i>apa yang bisa kamu lakukan</i> (mengikuti standar apa). Di Laravel, keduanya bekerja sama agar kodemu rapi dan tidak berantakan.</p>
+        </div>
+    </div>
+</body>
+</html>

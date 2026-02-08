@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Routing</title>
+    <style>
+      body {
+        font-family: "Segoe UI", system-ui, sans-serif;
+        line-height: 1.8;
+        color: #334155;
+        background: #f8fafc;
+        margin: 0;
+        padding: 40px 20px;
+      }
+      .container {
+        max-width: 850px;
+        margin: 0 auto;
+      }
+      .btn-back {
+        display: inline-block;
+        margin-bottom: 20px;
+        color: #3b82f6;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 0.9rem;
+      }
+      .materi-card {
+        background: #fff;
+        padding: 45px;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+      h1 {
+        font-size: 2.5rem;
+        color: #0f172a;
+        margin-top: 0;
+        border-bottom: 4px solid #3b82f6;
+        padding-bottom: 10px;
+      }
+      h3 {
+        margin-top: 35px;
+        color: #1e293b;
+        font-size: 1.5rem;
+        border-left: 5px solid #3b82f6;
+        padding-left: 15px;
+      }
+      p {
+        margin-bottom: 1.25rem;
+        font-size: 1.1rem;
+      }
+      pre {
+        background: #1e1e2e;
+        color: #f8f8f2;
+        padding: 20px;
+        border-radius: 12px;
+        overflow-x: auto;
+        margin: 25px 0;
+      }
+      code {
+        font-family: "Consolas", monospace;
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+      }
+      pre code {
+        background: none;
+        color: inherit;
+        padding: 0;
+        font-size: inherit;
+      }
+      img {
+        max-width: 100%;
+        border-radius: 12px;
+        margin: 30px 0;
+        display: block;
+        border: 1px solid #e2e8f0;
+      }
+      blockquote {
+        border-left: 5px solid #3b82f6;
+        background: #eff6ff;
+        padding: 15px 25px;
+        border-radius: 0 10px 10px 0;
+        font-style: italic;
+        margin: 25px 0;
+      }
+      ul.table-of-contents {
+        background: #f1f5f9;
+        padding: 25px;
+        border-radius: 12px;
+        list-style: none;
+        border: 1px solid #e2e8f0;
+      }
+      .table-of-contents a {
+        color: #3b82f6;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      a {
+        color: #2563eb;
+      }
+      /* Style tambahan untuk tabel agar lebih rapi */
+      .table-responsive {
+        overflow-x: auto;
+        margin: 20px 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1rem;
+        background-color: transparent;
+      }
+      table th,
+      table td {
+        padding: 12px;
+        border: 1px solid #e2e8f0;
+        text-align: left;
+      }
+      table thead {
+        background-color: #f8fafc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="index.html" class="btn-back">← Daftar Isi</a>
+      <article class="materi-card">
+        <main
+          class="flex-1 min-w-0 lg:ml-80 mr-0 xl:mr-64 transition-all duration-300 pt-10 md:pt-0"
+        >
+          <div class="max-w-full mx-auto px-4 sm:px-6 md:px-8 py-5">
+            <h1
+              class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3"
+            >
+              Routing
+            </h1>
+            <div
+              class="prose lg:prose-lg prose-a:text-blue-500 dark:prose-a:text-blue-400 dark:prose-invert w-full max-w-full"
+            >
+              <div
+                x-data=""
+                x-init="let t=document.querySelector('.table-of-contents'),d=document.querySelector('.toc'),m=document.querySelector('.toc-mobile'),b=document.querySelector('.btn-toc');if(t&amp;&amp;t.querySelectorAll('li').length&gt;0){d.appendChild(t.cloneNode(true));m.appendChild(t.cloneNode(true))}else b?.classList.add('hidden');$nextTick(()=&gt;{document.querySelectorAll(`.prose a[href^='http']`).forEach(a=&gt;{a.href.includes(location.hostname)||(a.target='_blank',a.rel='noopener noreferrer')})})"
+              ></div>
+              <ul class="table-of-contents">
+                <li>
+                  <a href="#content-jenis-jenis-method-route"
+                    >Jenis-jenis Method Route</a
+                  >
+                </li>
+                <li><a href="#content-route-parameter">Route Parameter</a></li>
+                <li><a href="#content-route-name">Route Name</a></li>
+                <li><a href="#content-route-group">Route Group</a></li>
+                <li><a href="#content-route-prefix">Route Prefix</a></li>
+                <li>
+                  <a href="#content-manual-resource"
+                    >Penerapan Manual Resource (CRUD)</a
+                  >
+                </li>
+              </ul>
+              <p>
+                Di dalam <strong>Laravel</strong> ada fitur yang bernama
+                <em>route</em>. <em>Route</em> ini digunakan sebagai penghubung
+                antara <em>user</em> dengan aplikasi. Maksudnya,
+                <em>URL</em> yang kita tulis di dalam browser akan melewati yang
+                namanya <em>route</em>. Dan di dalam <em>route</em> tersebut
+                baru akan ditentukan mau diarahkan kemana, apakah ke
+                <em>controller</em> atau langsung ke dalam <em>view</em>.
+              </p>
+              <p>
+                Konfigurasi <em>route</em> di dalam <strong>Laravel</strong> ada
+                beberapa jenis, tapi yang akan sering kita gunakan yaitu
+                <code>web</code> dan <code>api</code>. Keduanya berada di dalam
+                <em>folder</em> berikut ini.
+              </p>
+              <ol>
+                <li>
+                  <code>routes/web.php</code> - digunakan untuk <em>route</em>
+                  <em>web</em>.
+                </li>
+                <li>
+                  <code>routes/api.php</code> - digunakan untuk <em>route</em>
+                  <em>Rest</em> <em>API</em>.
+                </li>
+              </ol>
+              <p>
+                Berikut ini contoh sederhana penulisan <em>route</em> di
+                <strong>Laravel</strong>.
+              </p>
+              <pre><code>use Illuminate\Support\Facades\Route;
+ 
+Route::get('/santri', function () {
+    return 'Santri Koding';
+});
+</code></pre>
+              <p>
+                Di atas, kita melakukan definisi <em>route</em> baru dengan
+                <em>path</em> / <em>URL</em> <code>/santri</code>. Dan
+                <em>route</em> tersebut menggunakan <em>method</em>
+                <code>GET</code>.
+              </p>
+              <p>
+                Jika <em>route</em> di atas diakses di dalam <em>browser</em>,
+                maka akan menampilkan kata <code>Santri Koding</code>, karena di
+                dalam <em>route</em> tersebut kita melakukan <em>return</em> ke
+                dalam <em>text</em> <code>Santri Koding</code>.
+              </p>
+              <p>
+                <img
+                  alt=""
+                  src="https://raw.githubusercontent.com/maulayyacyber/assets-images-ebooks/main/laravel-untuk-pemula/hello.png"
+                />
+              </p>
+              <h3>
+                <a
+                  aria-hidden="true"
+                  class="heading-permalink"
+                  href="#content-jenis-jenis-method-route"
+                  id="content-jenis-jenis-method-route"
+                  title="Permalink"
+                ></a
+                >Jenis-jenis Method Route
+              </h3>
+              <p>
+                <em>Route</em> memiliki beberapa jenis <em>method</em>, berikut
+                ini penjelasannya.
+              </p>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>METHOD</th>
+                      <th>DESCRIPTION</th>
+                      <th>RESPONSE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>GET</code></td>
+                      <td>
+                        <em>route</em> yang bisa diakses langsung melalui
+                        <em>URL</em> <em>browser</em> dan digunakan untuk
+                        menampilkan <em>list</em> data dari <em>database</em>.
+                      </td>
+                      <td>200 - Ok</td>
+                    </tr>
+                    <tr>
+                      <td><code>POST</code></td>
+                      <td>
+                        <em>route</em> yang biasanya digunakan di dalam
+                        <em>form</em> untuk proses <em>insert</em> data ke dalam
+                        <em>database</em>
+                      </td>
+                      <td>201 - Created</td>
+                    </tr>
+                    <tr>
+                      <td><code>PUT</code></td>
+                      <td>
+                        <em>route</em> yang biasa digunakan di dalam
+                        <em>form</em> untuk proses <em>update</em> data ke
+                        <em>database</em>.
+                      </td>
+                      <td>200 - Ok</td>
+                    </tr>
+                    <tr>
+                      <td><code>PATCH</code></td>
+                      <td>
+                        <em>route</em> yang biasa digunakan di dalam
+                        <em>form</em> untuk proses <em>update</em> data ke
+                        <em>database</em>.
+                      </td>
+                      <td>200 - Ok</td>
+                    </tr>
+                    <tr>
+                      <td><code>DELETE</code></td>
+                      <td>
+                        <em>route</em> yang biasa digunakan untuk hapus data
+                        dari <em>database</em>.
+                      </td>
+                      <td>200 - Ok</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <pre><code>Route::get($uri, $callback);
+Route::post($uri, $callback);
+Route::put($uri, $callback);
+Route::patch($uri, $callback);
+Route::delete($uri, $callback);
+</code></pre>
+              <h3>
+                <a
+                  aria-hidden="true"
+                  class="heading-permalink"
+                  href="#content-route-parameter"
+                  id="content-route-parameter"
+                  title="Permalink"
+                ></a
+                >Route Parameter
+              </h3>
+              <p>
+                Di <strong>Laravel</strong> ada 2 jenis <em>parameter</em>
+                <em>route</em>, yaitu <em>parameter</em> yang wajib diisi dan
+                <em>parameter</em> yang tidak wajib diisi (opsional).
+              </p>
+              <p>
+                <em>Parameter</em> biasanya kita gunakan untuk mengambil
+                <em>value</em> dari suatu data, misalnya kita ingin mengambil
+                nilai <code>ID</code> dari user di <em>URL</em>
+                <em>browser</em>.
+              </p>
+              <p>
+                <em><strong>Parameter yang Wajib Diisi</strong></em>
+              </p>
+              <p>
+                Berikut ini contoh penulisan <em>route</em>
+                <strong>Laravel</strong> dengan <em>parameter</em> yang wajib
+                diisi.
+              </p>
+              <pre><code>Route::get('/user/{id}', function ($id) {
+    return 'User '.$id;
+});
+</code></pre>
+              <p>
+                Untuk contoh <em>route</em> di atas, kita bisa menjalankan di
+                <em>browser</em> dengan <em>URL</em>
+                <code>http://localhost:8000/user/{id}</code>. Nilai
+                <code>{id}</code> bisa kita tulis berapapun, misalnya angka
+                <code>1</code>.
+              </p>
+              <p>Maka hasilnya akan seperti berikut ini.</p>
+              <p>
+                <img
+                  alt=""
+                  src="https://raw.githubusercontent.com/maulayyacyber/assets-images-ebooks/main/laravel-untuk-pemula/route-user.png"
+                />
+              </p>
+              <p>
+                <em><strong>Parameter yang Tidak Wajib Diisi</strong></em>
+              </p>
+              <p>
+                Kadang kita juga membutuhkan <em>parameter</em> yang sifatnya
+                opsional, yaitu bisa diisi atau juga bisa dikosongkan nilai-nya.
+              </p>
+              <p>
+                Di dalam <strong>Laravel</strong>, untuk membuat
+                <em>parameter</em> yang bersifat opsional kita hanya perlu
+                menambahkan karakter <code>?</code> di dalam definisi
+                <em>route</em>-nya.
+              </p>
+              <p>
+                Berikut ini contoh penulisan <em>parameter</em> yang bersifat
+                opsional.
+              </p>
+              <pre><code>Route::get('/user/{name?}', function ($name = null) {
+    return $name;
+});
+</code></pre>
+              <p>
+                Dari penulisan <em>route</em> di atas, pada parameter
+                <code>name</code> kita tambahkan karakter <code>?</code> yang
+                menandakan <em>parameter</em> tersebut bersifat opsional.
+              </p>
+              <p>
+                Dan di dalam <em>clousure</em> <em>function</em> kita
+                definisikan <em>default</em> <em>value</em> jika
+                <em>parameter</em> tersebut tidak diisi, yaitu
+                <code>null</code>. Kita juga bisa menambahkan <em>value</em>
+                <em>default</em> lainnya, misalnya seperti berikut ini.
+              </p>
+              <pre><code>Route::get('/user/{name?}', function ($name = 'John') {
+    return $name;
+});
+</code></pre>
+              <p>
+                Jika dijalankan di dalam <em>browser</em> tanpa menambahkan
+                <em>parameter</em>, maka hasilnya akan seperti berikut ini.
+              </p>
+              <p>
+                <img
+                  alt=""
+                  src="https://raw.githubusercontent.com/maulayyacyber/assets-images-ebooks/main/laravel-untuk-pemula/params-opsional-1.png"
+                />
+              </p>
+              <p>
+                Di atas, kita tidak memberikan <em>parameter</em> setelah
+                <em>URL</em> <code>/user</code>, sehingga nilai
+                <em>default</em>-nya yang akan ditampilkan, yaitu
+                <code>John</code>.
+              </p>
+              <p>
+                Sekarang, jika kita berikan <em>parameter</em> setelah
+                <code>/user</code>, maka hasilnya akan seperti berikut ini.
+              </p>
+              <p>
+                <img
+                  alt=""
+                  src="https://raw.githubusercontent.com/maulayyacyber/assets-images-ebooks/main/laravel-untuk-pemula/params-opsional-2.png"
+                />
+              </p>
+              <h3>
+                <a
+                  aria-hidden="true"
+                  class="heading-permalink"
+                  href="#content-route-name"
+                  id="content-route-name"
+                  title="Permalink"
+                ></a
+                >Route Name
+              </h3>
+              <p>
+                <em>Route</em> <em>Name</em> biasanya digunakan untuk
+                mempermudah kita dalam pemanggilan sebuah <em>route</em> saat
+                membangun aplikasi. Jadi kita cukup memanggil <em>name</em> dari
+                <em>route</em> tersebut.
+              </p>
+              <p>
+                Berikut ini contoh penulisan <em>route</em> <em>name</em> di
+                <strong>Laravel</strong>.
+              </p>
+              <pre><code>Route::get('/user/profile', function () {
+    //
+})-&gt;name('profile');
+</code></pre>
+              <p>
+                Di atas, untuk memanggil <em>route</em> kita cukup menggunakan
+                <code>profile</code> dibandingkan harus menuliskan
+                <code>/user/profile</code>.
+              </p>
+              <blockquote>
+                <p>
+                  <strong>INFORMASI !</strong> : <em>Route</em>
+                  <em>Name</em> bersifat unik dan tidak boleh ada yang sama.
+                </p>
+              </blockquote>
+              <h3>
+                <a
+                  aria-hidden="true"
+                  class="heading-permalink"
+                  href="#content-route-group"
+                  id="content-route-group"
+                  title="Permalink"
+                ></a
+                >Route Group
+              </h3>
+              <p>
+                <em>Route</em> <em>Group</em> digunakan untuk mengelompokan
+                <em>route</em>-<em>route</em> yang memiliki kondisi yang sama.
+                Misalnya ada beberapa <em>route</em> yang membutuhkan
+                <em>middleware</em>, maka kita bisa menggunakan fitur ini.
+              </p>
+              <p>
+                Berikut contoh <em>route</em> tanpa <code>Route Group</code>.
+              </p>
+              <pre><code>Route::get('/user', [UserController, 'index'])-&gt;middleware('auth');
+Route::get('/post', [PostController, 'index'])-&gt;middleware('auth');
+Route::get('/event', [EventController, 'index'])-&gt;middleware('auth');
+</code></pre>
+              <p>
+                Dari penulisan <em>route</em> di atas, kita bisa gunakan fitur
+                <em>Route</em> <em>Group</em> agar penulisan
+                <code>middleware</code> tidak berulang-ulang. Contohnya seperti
+                berikut ini.
+              </p>
+              <pre><code>Route::middleware('auth')-&gt;group(function () {
+
+    Route::get('/user', [UserController, 'index']);
+    Route::get('/post', [PostController, 'index']);
+    Route::get('/event', [EventController, 'index']);
+    
+});
+</code></pre>
+              <h3>
+                <a
+                  aria-hidden="true"
+                  class="heading-permalink"
+                  href="#content-route-prefix"
+                  id="content-route-prefix"
+                  title="Permalink"
+                ></a
+                >Route Prefix
+              </h3>
+              <p>
+                <em>Route</em> <em>Prefix</em> bisa digunakan untuk menambahkan
+                awalan <em>URL</em>. Contohnya kita ingin menambahkan awalan
+                <code>admin</code> pada setiap <em>URL</em> <em>route</em>.
+              </p>
+              <p>Berikut ini contoh penggunaan <code>Route Prefix</code>.</p>
+              <pre><code>Route::prefix('admin')-&gt;group(function () {
+
+    Route::get('/user', [UserController, 'index']);
+    Route::get('/post', [PostController, 'index']);
+    Route::get('/event', [EventController, 'index']);
+
+});
+</code></pre>
+              <p>
+                Jika dijalankan, maka <em>route</em>-<em>route</em> di atas
+                otomatis ditambahkan awalan <code>admin</code> pada awal
+                URL-nya. Sehingga hasilnya akan menjadi seperti berikut ini.
+              </p>
+              <pre><code>http://localhost:8000/admin/user
+</code></pre>
+              <pre><code>http://localhost:8000/admin/post
+</code></pre>
+              <pre><code>http://localhost:8000/admin/event
+</code></pre>
+
+              <h3 id="content-manual-resource">
+                <a
+                  aria-hidden="true"
+                  class="heading-permalink"
+                  href="#content-manual-resource"
+                  title="Permalink"
+                ></a
+                >Penerapan Manual Resource (CRUD)
+              </h3>
+              <p>
+                Seringkali kita perlu membuat <em>route</em> lengkap untuk
+                proses <em>CRUD</em> (Create, Read, Update, Delete).
+                Dibandingkan menggunakan satu fungsi otomatis, menulisnya secara
+                manual memberikan kontrol penuh atas keamanan dan struktur
+                <em>URL</em> kita.
+              </p>
+              <p>
+                Berikut adalah contoh penerapan
+                <strong>Manual Routing</strong> yang digabungkan dengan
+                <strong>Prefix</strong> dan <strong>Name</strong> untuk fitur
+                manajemen siswa:
+              </p>
+              <pre><code>Route::prefix('siswa')-&gt;name('siswa.')->group(function () {
+    
+    Route::get('/', [SiswaController::class, 'index'])-&gt;name('index');          // Daftar Siswa
+    Route::get('/tambah', [SiswaController::class, 'create'])-&gt;name('create');    // Form Tambah
+    Route::post('/simpan', [SiswaController::class, 'store'])-&gt;name('store');     // Proses Simpan
+    Route::get('/{id}/edit', [SiswaController::class, 'edit'])-&gt;name('edit');     // Form Edit
+    Route::put('/{id}/update', [SiswaController::class, 'update'])-&gt;name('update'); // Proses Update
+    Route::delete('/{id}/hapus', [SiswaController::class, 'destroy'])-&gt;name('destroy'); // Proses Hapus
+
+});
+</code></pre>
+              <p>
+                Untuk memanggil <em>route</em> manual tersebut di dalam template
+                <strong>Blade (HTML)</strong>, kita bisa menggunakan potongan
+                kode berikut ini:
+              </p>
+              <pre><code>&lt;!-- Tombol Edit --&gt;
+&lt;a href="{{ route('siswa.edit', $s-&gt;id) }}"&gt;Edit&lt;/a&gt;
+
+&lt;!-- Form Hapus (Wajib Method DELETE) --&gt;
+&lt;form action="{{ route('siswa.destroy', $s-&gt;id) }}" method="POST"&gt;
+    @csrf
+    @method('DELETE')
+    &lt;button type="submit"&gt;Hapus Data&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+              <blockquote>
+                <p>
+                  <strong>PENTING !</strong> : Saat menggunakan <em>method</em>
+                  <code>PUT</code> atau <code>DELETE</code> di dalam
+                  <em>form</em> HTML, kita wajib menambahkan helper
+                  <code>@method()</code> karena browser secara default hanya
+                  mendukung <code>GET</code> dan <code>POST</code>.
+                </p>
+              </blockquote>
+            </div>
+            <div
+              class="border-t border-neutral-200 dark:border-neutral-700 mt-8 pt-6"
+            >
+              <div class="flex justify-end">
+                <a
+                  :aria-busy="loading ? 'true' : 'false'"
+                  :class="loading ? 'opacity-60 pointer-events-none' : ''"
+                  class="inline-flex items-center gap-2 px-6 py-3 bg-red-700 hover:bg-red-800 dark:bg-neutral-600 dark:hover:bg-neutral-700 text-white text-sm font-medium rounded-full transition-colors duration-200"
+                  data-id="1560"
+                  href="#"
+                  x-data="lessonComplete(28, '1.1.0', '#')"
+                  x-on:click.prevent="complete($event)"
+                >
+                  <span
+                    x-text="loading ? 'Processing…' : 'Complete &amp; Continue'"
+                  ></span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </main>
+      </article>
+    </div>
+  </body>
+</html>

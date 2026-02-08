@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eloquent Relationships : One to One</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; color: #334155; background: #f8fafc; margin: 0; padding: 40px 20px; }
+        .container { max-width: 850px; margin: 0 auto; }
+        .btn-back { display: inline-block; margin-bottom: 20px; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+        .materi-card { background: #fff; padding: 45px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h1 { font-size: 2.5rem; color: #0f172a; margin-top: 0; border-bottom: 4px solid #3b82f6; padding-bottom: 10px; }
+        h3 { margin-top: 35px; color: #1e293b; font-size: 1.5rem; border-left: 5px solid #3b82f6; padding-left: 15px; }
+        pre { background: #1e1e2e; color: #f8f8f2; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 25px 0; }
+        code { font-family: 'Consolas', monospace; background: #fee2e2; color: #991b1b; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; color: inherit; padding: 0; }
+        img { max-width: 100%; border-radius: 12px; margin: 30px 0; display: block; border: 1px solid #e2e8f0; }
+        blockquote { border-left: 5px solid #3b82f6; background: #eff6ff; padding: 15px 25px; border-radius: 0 10px 10px 0; font-style: italic; margin: 25px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="btn-back">← Kembali ke Daftar Isi</a>
+        <article class="materi-card">
+            <main class="flex-1 min-w-0 lg:ml-80 mr-0 xl:mr-64 transition-all duration-300 pt-10 md:pt-0">
+<div class="max-w-full mx-auto px-4 sm:px-6 md:px-8 py-5">
+<h1 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">Eloquent Relationships : One to One</h1>
+<div class="prose lg:prose-lg prose-a:text-blue-500 dark:prose-a:text-blue-400 dark:prose-invert w-full max-w-full">
+<div x-data="" x-init="let t=document.querySelector('.table-of-contents'),d=document.querySelector('.toc'),m=document.querySelector('.toc-mobile'),b=document.querySelector('.btn-toc');if(t&amp;&amp;t.querySelectorAll('li').length&gt;0){d.appendChild(t.cloneNode(true));m.appendChild(t.cloneNode(true))}else b?.classList.add('hidden');$nextTick(()=&gt;{document.querySelectorAll(`.prose a[href^='http']`).forEach(a=&gt;{a.href.includes(location.hostname)||(a.target='_blank',a.rel='noopener noreferrer')})})">
+</div>
+<ul class="table-of-contents">
+<li><a href="#content-apa-itu-relasi-one-to-one-">Apa itu Relasi One to One ?</a></li>
+<li><a href="#content-menyiapkan-table-users-dan-phones-menggunakan-migration">Menyiapkan Table users dan phones Menggunakan Migration.</a></li>
+<li><a href="#content-mendefinisikan-method-relasi-di-model-user-dan-phone">Mendefinisikan Method Relasi di Model User dan Phone</a></li>
+</ul>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-apa-itu-relasi-one-to-one-" id="content-apa-itu-relasi-one-to-one-" title="Permalink"></a>Apa itu Relasi <code>One to One</code> ?</h3>
+<p><code>One to One</code> <em>relationship</em> terjadi jika data di dalam <em>table</em> <strong>A</strong> hanya boleh memiliki satu data di dalam <em>table</em> <strong>B</strong> (A has one B) dan data <strong>B</strong> hanya boleh dimiliki oleh data di <em>table</em> <strong>A</strong> (B Belongs to A).</p>
+<p>Dalam kasus ini, kita cukup memberikan sebuah <em>foreign key</em> di dalam <em>table</em> <strong>B</strong>, dimana <em>foreign key</em> ini akan diisi dengan ID yang ada di dalam <em>table</em> <strong>A</strong>. Contohnya seperti berikut ini :</p>
+<p><a href="https://raw.githubusercontent.com/maulayyacyber/assets-articles/main/laravel-eloquent-relationships/one-to-one.png"><img alt="img" src="https://raw.githubusercontent.com/maulayyacyber/assets-articles/main/laravel-eloquent-relationships/one-to-one.png"/></a></p>
+<p><em><strong>table <code>users</code></strong></em></p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th align="left">id</th>
+<th align="left">name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">1</td>
+<td align="left">Fika Ridaul Maulayya</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Rizqi Maulana</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">Yudi Purwanto</td>
+</tr>
+</tbody>
+</table></div>
+<p><em><strong>table <code>phones</code></strong></em></p>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th align="left">id</th>
+<th align="left">phone</th>
+<th align="left">user_id</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">1</td>
+<td align="left">085785852224</td>
+<td align="left">2</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">081200046719</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">089223918038</td>
+<td align="left">3</td>
+</tr>
+</tbody>
+</table></div>
+<p><em>field</em> <code>user_id</code> di dalam <em>table</em> <code>phones</code> akan menyimpan nilai <code>id</code> dari <em>table</em> <code>users</code>, dengan begitu maka relasi <code>one-to-one</code> bisa terpenuhi.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-menyiapkan-table-users-dan-phones-menggunakan-migration" id="content-menyiapkan-table-users-dan-phones-menggunakan-migration" title="Permalink"></a>Menyiapkan Table <code>users</code> dan <code>phones</code> Menggunakan Migration.</h3>
+<p>Berikut ini <em>schema</em> untuk <em>table</em> <code>users</code>.</p>
+<pre><code>public function up(): void
+{
+    Schema::create('users', function (Blueprint $table) {
+        $table-&gt;id();
+        $table-&gt;string('name');
+        $table-&gt;string('email')-&gt;unique();
+        $table-&gt;string('password');
+    });
+}
+</code></pre>
+<p>Di atas kita membuat <em>schema</em> untuk <em>table</em> <code>users</code> dan di dalamnya tidak ada hal yang sepesial, karena yang perlu kita konfigurasi ada di dalam <em>table</em> <code>phones</code> dengan menambahkan <em>foreign</em> <em>key</em>.</p>
+<pre><code>public function up(): void
+{
+    Schema::create('phones', function (Blueprint $table) {
+        $table-&gt;id();
+        $table-&gt;string('phone');
+        $table-&gt;foreignId('user_id')-&gt;references('id')-&gt;on('users')-&gt;unique();
+    });
+}
+</code></pre>
+<p>Pada <em>file</em> <em>migration</em> di atas, kita menambahkan <em>field</em> <code>user_id</code> dengan mereferensikan <code>id</code> yang ada di dalam <em>table</em> <code>users</code>. Dan <em>foreign</em> <em>key</em> <code>user_id</code> harus bersifat unik atau tidak boleh ada data yang sama.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-mendefinisikan-method-relasi-di-model-user-dan-phone" id="content-mendefinisikan-method-relasi-di-model-user-dan-phone" title="Permalink"></a>Mendefinisikan Method Relasi di Model <code>User</code> dan <code>Phone</code></h3>
+<p>Agar mudah dalam menggunakan relasi di dalam <strong>Laravel</strong>, maka kita perlu mendefinisikan <em>method</em> relasi pada kedua <em>model</em>, yaitu <code>User</code> dan <code>Phone</code>.</p>
+<p>Untuk <em>model</em> <code>User</code> kita harus menambahkan kode seperti berikut ini.</p>
+<pre><code>public function phone()
+{
+    return $this-&gt;hasOne(Phone::class);
+}
+</code></pre>
+<p>Kode di atas artinya kita memberi tahu <strong>Laravel</strong> bahwa kita akan membuat relasi <code>HasOne</code> dari <em>model</em> <code>User</code> ke <em>model</em> <code>Phone</code> atau <em>table</em> <code>phones</code>.</p>
+<p>Setelah itu, kita juga perlu menambahkan <em>method</em> relasi di dalam <em>model</em> <code>Phone</code>.</p>
+<pre><code>public function user()
+{
+    return $this-&gt;belongsTo(User::class);
+}
+</code></pre>
+<p>Kode di atas fungsinya untuk memberitahu <strong>Laravel</strong> bahwa <em>model</em> <code>Phone</code> ini dimiliki oleh <code>User</code>.</p>
+<p>Sehingga kita bisa memanggil data <code>phone</code> yang dimiliki oleh <em>user</em> menggunakan kode seperti berikut ini.</p>
+<pre><code>//mencari data user dengan ID "1"
+$user = User::find(1);
+
+//tampilkan nomor HP user
+$user-&gt;phone;
+</code></pre>
+<p>Atau kita juga bisa mencari data <em>user</em> berdasarkan nomor, kurang lebih seperti ini ini.</p>
+<pre><code>//cari data nomor dengan "085785852224"
+$phone = Phone::where('nomor', 085785852224)-&gt;first();
+
+//tampilkan data user
+$phone-&gt;user;
+</code></pre>
+</div>
+<!-- Div pembatas dengan content -->
+<div class="border-t border-neutral-200 dark:border-neutral-700 mt-8 pt-6">
+<div class="flex justify-end">
+<a :aria-busy="loading ? 'true' : 'false'" :class="loading ? 'opacity-60 pointer-events-none' : ''" class="inline-flex items-center gap-2 px-6 py-3 bg-red-700 hover:bg-red-800 dark:bg-neutral-600 dark:hover:bg-neutral-700 text-white text-sm font-medium rounded-full transition-colors duration-200" data-id="1571" href="https://santrikoding.com/account/my-courses/laravel-untuk-pemula/1572?version=1.1.0" x-data="lessonComplete(28, '1.1.0', 'https://santrikoding.com/account/my-courses/laravel-untuk-pemula/lesson/completed')" x-on:click.prevent="complete($event)">
+ <span x-text="loading ? 'Processing…' : 'Complete &amp; Continue'"></span>
+ </a>
+</div>
+</div>
+</div>
+</main><aside :class="tocVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'" class="hidden xl:block fixed right-0 top-14 bottom-0 w-64 overflow-y-auto border-l border-neutral-200 dark:border-neutral-700/80 bg-white/95 dark:bg-neutral-900 backdrop-blur-sm transition-all duration-300 z-30" x-cloak="">
+<!-- Header dengan glass effect -->
+<div class="sticky top-0 z-10 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-b border-neutral-200/50 dark:border-neutral-700/50 px-4 py-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="p-1.5 bg-primary/10 rounded-lg">
+
+</div>
+<div>
+<h3 class="text-sm font-semibold text-neutral-900 dark:text-neutral-100">On This Page</h3>
+</div>
+</div>
+
+</div>
+</div>
+<!-- Progress Indicator yang benar-benar visible -->
+<div class="px-4 py-3 border-b border-neutral-200/50 dark:border-neutral-700/50" x-data="{
+            scrollProgress: 0,
+            updateProgress() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                this.scrollProgress = docHeight &gt; 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+            }
+         }" x-init="updateProgress(); $watch('scrollProgress', () =&gt; {}); window.addEventListener('scroll', () =&gt; updateProgress())">
+<div class="flex items-center justify-between text-xs mb-2">
+<span class="text-neutral-600 dark:text-neutral-400">Reading Progress</span>
+<span class="text-primary font-medium" x-text="Math.round(scrollProgress) + '%'"></span>
+</div>
+<!-- Progress Bar dengan warna yang kontras -->
+<div class="w-full bg-neutral-300 dark:bg-neutral-600 rounded-full h-2 shadow-inner">
+<div :style="'width: ' + scrollProgress + '%'" class="bg-gradient-to-r from-emerald-300 to-emerald-600 h-2 rounded-full transition-all duration-300 shadow-sm"></div>
+</div>
+</div>
+<!-- Table of Contents Content -->
+
+<!-- Footer dengan quick actions -->
+<div class="sticky bottom-0 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-t border-neutral-200/50 dark:border-neutral-700/50 p-3">
+<div class="flex items-center justify-between text-xs">
+
+
+</div>
+</div>
+</aside>
+        </article>
+    </div>
+</body>
+</html>

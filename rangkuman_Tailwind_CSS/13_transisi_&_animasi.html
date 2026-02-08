@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Tailwind: Transisi & Animasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { background: #1a1b26 !important; padding: 1.5rem !important; border-radius: 1rem !important; border: 1px solid #334155; overflow-x: auto; }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        .utility-name { font-family: 'Fira Code', monospace; color: #2563eb; font-weight: bold; background: #cbd5e1; padding: 2px 4px; border-radius: 4px; }
+        
+        .info-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+        .info-table th { background: #334155; color: white; padding: 12px; text-align: left; font-size: 0.85rem; }
+        .info-table td { padding: 12px; border-bottom: 1px solid #e2e8f0; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Transisi & Animasi
+        </h1>
+
+        <div class="card">
+            <p>Tailwind CSS memungkinkan kita membuat antarmuka yang dinamis tanpa perlu menulis property CSS yang rumit. Dengan sistem utility-nya, kita bisa mengatur durasi, timing, hingga transformasi elemen secara instan.</p>
+
+            <h2 class="section-title">1. Transisi & Durasi</h2>
+            <p>Gunakan class <span class="utility-name">transition</span> untuk menentukan properti apa yang akan berubah, dan <span class="utility-name">duration-{n}</span> untuk kecepatannya.</p>
+            
+            <div class="my-6 p-8 bg-white rounded-xl flex justify-center gap-4 border-2 border-dashed border-slate-300">
+                <button class="bg-blue-600 hover:bg-orange-500 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-500 shadow-lg">
+                    Hover Warna (500ms)
+                </button>
+            </div>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!-- Warna berubah secara halus selama 500 milidetik --&gt;
+&lt;button class="transition-colors duration-500 bg-blue-600 hover:bg-orange-500 text-white"&gt;
+  Interactive Button
+&lt;/button&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">2. Timing Function (Ease)</h2>
+            <p>Mengontrol percepatan transisi agar gerakan terlihat lebih alami.</p>
+            
+            <table class="info-table shadow-sm">
+                <thead>
+                    <tr><th>Class</th><th>Efek Visual</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="utility-name">ease-linear</td><td>Kecepatan konstan dari awal sampai akhir</td></tr>
+                    <tr><td class="utility-name">ease-in</td><td>Lambat di awal, cepat di akhir</td></tr>
+                    <tr><td class="utility-name">ease-out</td><td>Cepat di awal, lambat di akhir</td></tr>
+                    <tr><td class="utility-name">ease-in-out</td><td>Lambat di awal dan di akhir (paling natural)</td></tr>
+                </tbody>
+            </table>
+
+            
+
+            <h2 class="section-title">3. Transformasi (Transform)</h2>
+            <p>Memungkinkan elemen untuk berputar, membesar, atau bergeser saat terjadi interaksi.</p>
+            
+            <div class="my-6 p-8 bg-white rounded-xl flex justify-center gap-8 border-2 border-dashed border-slate-300">
+                <div class="bg-blue-500 w-16 h-16 rounded transition-transform duration-300 hover:scale-125 cursor-pointer flex items-center justify-center text-white font-bold shadow-md">Scale</div>
+                <div class="bg-blue-500 w-16 h-16 rounded transition-transform duration-500 hover:rotate-45 cursor-pointer flex items-center justify-center text-white font-bold shadow-md">Rotate</div>
+                <div class="bg-blue-500 w-16 h-16 rounded transition-transform duration-300 hover:-translate-y-4 cursor-pointer flex items-center justify-center text-white font-bold shadow-md">Move</div>
+            </div>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!-- Menggabungkan pembesaran dan pergeseran --&gt;
+&lt;div class="transition-transform duration-300 hover:scale-110 hover:-translate-y-2"&gt;
+  Hover Effect
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">4. Animasi Bawaan (Keyframes)</h2>
+            <p>Tailwind menyediakan 4 animasi siap pakai yang paling sering dibutuhkan:</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
+                <div class="p-4 bg-white rounded-lg text-center shadow">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full mx-auto animate-spin mb-2"></div>
+                    <span class="text-[10px] font-bold uppercase">animate-spin</span>
+                </div>
+                <div class="p-4 bg-white rounded-lg text-center shadow">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full mx-auto animate-ping mb-2"></div>
+                    <span class="text-[10px] font-bold uppercase">animate-ping</span>
+                </div>
+                <div class="p-4 bg-white rounded-lg text-center shadow">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full mx-auto animate-pulse mb-2"></div>
+                    <span class="text-[10px] font-bold uppercase">animate-pulse</span>
+                </div>
+                <div class="p-4 bg-white rounded-lg text-center shadow">
+                    <div class="w-8 h-8 bg-blue-500 rounded-full mx-auto animate-bounce mb-2"></div>
+                    <span class="text-[10px] font-bold uppercase">animate-bounce</span>
+                </div>
+            </div>
+
+            <h2 class="section-title">Contoh Lengkap: Interactive Card</h2>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;div class="group relative bg-white p-6 rounded-2xl shadow-lg transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 cursor-pointer overflow-hidden border border-slate-100"&gt;
+  &lt;div class="absolute top-0 left-0 w-2 h-full bg-blue-600 transition-all duration-500 group-hover:w-full opacity-10"&gt;&lt;/div&gt;
+  &lt;h3 class="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors duration-300"&gt;Tailwind Animation&lt;/h3&gt;
+  &lt;p class="text-slate-600"&gt;Arahkan kursor ke sini untuk melihat efek gabungan transisi, transform, dan group-hover.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>States dan Animasi memberikan nyawa pada desain Anda. Selalu gunakan <span class="utility-name">transition</span> agar perubahan gaya terasa premium dan tidak kaku. Untuk efek yang lebih kompleks, jangan lupa manfaatkan fitur <span class="utility-name">group-hover</span>.</p>
+
+            <div class="mt-10 pt-6 border-t border-slate-300">
+                <p class="text-sm font-bold text-slate-500 italic uppercase">Selanjutnya:</p>
+                <p class="text-lg font-bold text-blue-600">Final Project: Membangun Website Portfolio &raquo;</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

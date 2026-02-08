@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial JavaScript - Destructuring & Restructuring</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #f0fdf4; border: 2px dashed #16a34a; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Destructuring & Restructuring</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Apa Itu Destructuring?</h2>
+            <p><strong>Destructuring</strong> adalah fitur ES6 yang memungkinkan kita untuk membongkar nilai dari <em>array</em> atau <em>object</em> ke dalam variabel individu dengan sintaksis yang sangat singkat.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan Anda memiliki sebuah <strong>Koper (Array/Object)</strong> yang berisi baju, celana, dan sepatu. <strong>Tanpa Destructuring</strong>, Anda harus membuka koper, mencari satu per satu, dan meletakkannya di lemari. <strong>Dengan Destructuring</strong>, Anda seolah-olah memiliki kekuatan sihir untuk langsung memindahkan semua isi koper ke tempatnya masing-masing hanya dengan satu jentikan jari.</p>
+            </div>
+
+            
+
+            <h2 class="section-title">1. Destructuring Array</h2>
+            <p>Alih-alih mengakses index satu per satu menggunakan <span class="inline-code">[0]</span>, kita langsung mendefinisikan nama variabel di dalam kurung siku.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">const warna = ["Merah", "Hijau", "Biru"];
+
+// Destructuring
+const [w1, w2, w3] = warna;
+
+console.log(w1); // Merah
+console.log(w2); // Hijau</code></pre>
+            </div>
+
+            <h3 class="font-bold mb-2">Skip Item & Rest Parameter</h3>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">const angka = [1, 2, 3, 4, 5];
+
+// Melewati angka 2, dan mengambil sisanya
+const [satu, , tiga, ...sisanya] = angka;
+
+console.log(satu);    // 1
+console.log(tiga);    // 3
+console.log(sisanya); // [4, 5]</code></pre>
+            </div>
+
+            <h2 class="section-title">2. Destructuring Object</h2>
+            <p>Pada object, kita menggunakan kurung kurawal <span class="inline-code">{}</span>. Nama variabel harus sesuai dengan nama <em>key</em> properti di dalam object tersebut.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">const user = { nama: "Rudi", umur: 30 };
+
+// Destructuring
+const { nama, umur } = user;
+
+console.log(nama); // Rudi</code></pre>
+            </div>
+
+            <h3 class="font-bold mb-2">Alias (Mengganti Nama Variabel)</h3>
+            <div class="relative">
+                <pre><code class="language-javascript">const { nama: namaLengkap } = user;
+console.log(namaLengkap); // Rudi</code></pre>
+            </div>
+
+            <h2 class="section-title">Apa Itu Restructuring?</h2>
+            <p><strong>Restructuring</strong> adalah proses mengumpulkan kembali variabel-variabel individu menjadi sebuah <em>Object</em> atau <em>Array</em>. Di JavaScript modern, jika nama variabel sama dengan nama key object, kita cukup menulisnya sekali.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">const merk = "Toyota";
+const tahun = 2024;
+
+// Restructuring (Shorthand Property)
+const mobil = { merk, tahun };
+
+console.log(mobil); // { merk: "Toyota", tahun: 2024 }</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Destructuring dan Restructuring adalah teknik wajib bagi developer JavaScript modern. Fitur ini sangat sering digunakan dalam pengerjaan <strong>React</strong>, terutama saat mengelola <em>Props</em> dan <em>State</em> agar kode tetap bersih dan mudah dibaca.</p>
+            
+            <p>Di artikel berikutnya, kita akan membahas <strong>Template Literals</strong>: Cara elegan menggabungkan teks dan variabel tanpa ribet dengan tanda plus!</p>
+        </div>
+    </div>
+</body>
+</html>

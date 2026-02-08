@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; /* Menjaga baris baru kodingan <?php ?> */
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Konfigurasi File System</h1>
+        <div class="card"><p>Konfigurasi ini penting karena kita akan melakukan <em>upload</em> gambar. Dengan konfigurasi yang tepat, <em>file</em> yang diunggah akan disimpan di <em>folder</em> <em>storage</em> dengan akses <em>public</em>.</p><h2 class="section-title">Langkah 1 - Konfigurasi File .env</h2><p>Pertama, kita akan melakukan konfigurasi di dalam <em>file</em> <code>.env</code>, dimana kita akan mengubah <em>driver</em> yang digunakan oleh <strong>Laravel</strong> dalam menyimpan <em>file</em> yang diunggah.</p><p>Silahkan buka <em>file</em> <code>.env</code>, kemudian cari kode berikut ini.</p><p>.env</p><p>Kemudian ubah menjadi seperti berikut ini.</p><p>Dari perubahan kode di atas, kita mengubah <em>default</em> <em>driver</em> yang digunakan oleh <em>file</em> <em>system</em> yang semula adalah <code>local</code> menjadi <code>public</code>.</p><p>Di atas, jika kita menggunakan <em>driver</em> <code>local</code>, maka <em>file</em> yang diunggah akan masuk ke dalam <em>folder</em> <code>storage/app/private</code>, sehingga kita tidak bisa langsung mengaksesnya. Oleh karena itu, kita mengubahnya ke <em>driver</em> <code>public</code>, agar <em>file</em> yang diunggah disimpan di <code>storage/app/public</code>, sehingga dapat diakses dengan mudah.</p><h2 class="section-title">Langkah 2 - Menjalankan Storage Link</h2><p>Perlu teman-teman ketahui, <strong>Laravel</strong> hanya bisa mengakses <em>file</em> yang ada di dalam <em>folder</em> <code>public</code>. Sementara itu, <em>file</em> yang diunggah tersimpan di dalam <em>folder</em> <code>storage</code>. Lalu, bagaimana agar <em>file</em>-<em>file</em> tersebut bisa diakses melalui <em>folder</em> <code>public</code>?</p><p>Caranya adalah dengan membuat <em>symlink</em> (symbolic link) atau menghubungkan <em>folder</em> <code>storage/app/public</code> ke dalam <em>folder</em> <code>public</code> yang ada di <em>root</em> <em>project</em>.</p><p><strong>Laravel</strong> sudah menyediakan perintah khusus untuk melakukan proses <em>linking</em> ini, yaitu <code>storage:link</code>. Jadi sekarang silahkan teman-teman jalankan perintah berikut ini di dalam terminal/CMD dan pastikan berada di dalam <em>project</em> <strong>Laravel</strong>-nya.</p><p>Jika perintah di atas berhasil dijalankan, kita akan melihat <em>folder</em> atau <em>shortcut</em> baru bernama <code>storage</code> di dalam <em>folder</em> <code>public</code>. <em>Folder</em> ini merupakan <em>linking folder</em> yang memungkinkan akses langsung ke <em>file</em> yang diunggah.</p><h2 class="section-title">Kesimpulan</h2><p>Pada artikel kali ini, kita semua telah belajar melakukan konfigurasi <em>File</em> <em>System</em> yang ada di dalam <em>project</em> <strong>Laravel</strong> <strong>12</strong>, sehingga proses unggah <em>file</em> akan bersifat <em>public</em> dan bisa dengan mudah digunakan.</p><p>Pada artikel berikutnya, kita semua akan belajar bagaimana cara membuat <em>Model</em> dan <em>Migration</em> di dalam <strong>Laravel</strong> <strong>12</strong>.</p></div>
+    </div>
+</body>
+</html>

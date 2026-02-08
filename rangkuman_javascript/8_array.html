@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial JavaScript - Array Lengkap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #fdf2f8; border: 2px dashed #db2777; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Array</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Apa Itu Array?</h2>
+            <p><strong>Array</strong> adalah sebuah struktur data di JavaScript yang digunakan untuk menyimpan banyak nilai dalam satu variabel. Jika variabel biasa ibarat sebuah kotak tunggal, maka <em>array</em> adalah kotak panjang yang memiliki banyak sekat di dalamnya.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan sebuah <strong>Lemari Laci</strong>. Seluruh lemari tersebut adalah <strong>Array</strong>. Setiap laci memiliki nomor urut (<strong>Index</strong>) yang dimulai dari angka 0. Di dalam setiap laci, Anda bisa menyimpan barang (<strong>Data</strong>). Jika Anda ingin mengambil baju, Anda cukup ingat baju tersebut ada di laci nomor berapa.</p>
+            </div>
+
+            
+
+            <h2 class="section-title">Membuat Array di JavaScript</h2>
+            <p>Cara paling umum dan direkomendasikan adalah menggunakan tanda kurung siku <span class="inline-code">[]</span>.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">// Cara 1: Menggunakan literal []
+let buah = ["Apel", "Pisang", "Jeruk"];
+
+// Cara 2: Menggunakan new Array()
+let angka = new Array(1, 2, 3, 4, 5);</code></pre>
+            </div>
+
+            <h2 class="section-title">Mengakses & Mengubah Data</h2>
+            <p>Data diakses menggunakan nomor <strong>index</strong>. Ingat, index selalu dimulai dari <strong>0</strong>.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let buah = ["Apel", "Pisang", "Jeruk"];
+
+console.log(buah[0]); // Apel
+console.log(buah[1]); // Pisang
+
+// Mengubah data
+buah[2] = "Mangga"; 
+console.log(buah); // ["Apel", "Pisang", "Mangga"]</code></pre>
+            </div>
+
+            <h2 class="section-title">Method Penting Array</h2>
+            <p>JavaScript menyediakan banyak fungsi (method) bawaan untuk mempermudah kita mengolah data array:</p>
+
+            <ul>
+                <li><strong>push()</strong>: Menambah item di akhir.</li>
+                <li><strong>pop()</strong>: Menghapus item terakhir.</li>
+                <li><strong>shift()</strong>: Menghapus item pertama.</li>
+                <li><strong>unshift()</strong>: Menambah item di awal.</li>
+                <li><strong>length</strong>: Properti untuk mengecek jumlah data.</li>
+            </ul>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let hewan = ["Kucing", "Anjing"];
+
+hewan.push("Kelinci"); // ["Kucing", "Anjing", "Kelinci"]
+hewan.pop();           // ["Kucing", "Anjing"]
+console.log(hewan.length); // 2</code></pre>
+            </div>
+
+            <h2 class="section-title">Iterasi & Transformasi</h2>
+            <p>Untuk mengolah setiap data di dalam array secara otomatis, kita bisa menggunakan method tingkat tinggi (Higher Order Functions):</p>
+
+            <h3 class="font-bold mb-2">1. map()</h3>
+            <p>Digunakan untuk membuat array baru berdasarkan proses tertentu dari array lama.</p>
+            <div class="relative">
+                <pre><code class="language-javascript">let angka = [1, 2, 3];
+let kaliDua = angka.map(x => x * 2); // [2, 4, 6]</code></pre>
+            </div>
+
+            <h3 class="font-bold mb-2">2. filter()</h3>
+            <p>Menyaring data berdasarkan kondisi tertentu.</p>
+            <div class="relative">
+                <pre><code class="language-javascript">let nilai = [50, 80, 40, 90];
+let lulus = nilai.filter(n => n >= 75); // [80, 90]</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Array adalah jantung dari pengelolaan data di JavaScript. Dengan memahami cara menyimpan, mengakses, dan memanipulasi data melalui method-method di atas, Anda sudah siap untuk menangani data yang lebih kompleks.</p>
+            
+            <p>Di artikel berikutnya, kita akan membahas tentang <strong>Object di JavaScript</strong>: cara menyimpan data yang memiliki identitas lebih spesifik!</p>
+        </div>
+    </div>
+</body>
+</html>

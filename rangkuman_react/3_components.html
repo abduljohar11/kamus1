@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Components - React Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Components</h1>
+        
+        <div class="card">
+            <p>Pada artikel kali ini, kita akan membahas <strong>Components</strong>. Konsep ini sangat penting karena hampir seluruh aplikasi React dibangun dengan komponen.</p>
+            <p>Dengan memahami components, kita akan lebih mudah menyusun aplikasi menjadi potongan-potongan kecil yang bisa digunakan kembali (<em>reusable</em>).</p>
+
+            <h2 class="section-title">Apa Itu Components?</h2>
+            <p><strong>Component</strong> adalah bagian kecil dari UI yang bisa kita buat, gunakan kembali, dan gabungkan untuk membentuk aplikasi yang lebih besar.</p>
+            <p>Jika diibaratkan rumah adalah sebuah website, maka <strong>component</strong> adalah bagian-bagian penyusunnya seperti pintu, jendela, atau meja. Semua bagian itu bisa dipakai ulang di ruangan lain secara independen.</p>
+            
+            
+
+            <p>React mendukung dua jenis komponen:</p>
+            <ul>
+                <li><strong>Functional Component</strong>: Menggunakan fungsi JavaScript biasa (paling populer dan modern).</li>
+                <li><strong>Class Component</strong>: Menggunakan syntax Class ES6 (sudah mulai ditinggalkan namun masih ada di proyek lama).</li>
+            </ul>
+
+            <h2 class="section-title">Membuat Functional Component</h2>
+            <p>Silakan buka file <span class="inline-code">src/App.jsx</span> dan ubah kodenya menjadi seperti berikut:</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">// Ini adalah sebuah Component bernama Welcome
+function Welcome() {
+  return &lt;h1&gt;Selamat Datang di React!&lt;/h1&gt;;
+}
+
+// Ini adalah Component Utama
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Welcome /&gt;
+      &lt;p&gt;Belajar komponen itu sangat mudah.&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+            </div>
+
+            <h2 class="section-title">Component Bisa Dipakai Ulang</h2>
+            <p>Kelebihan utama dari component adalah kemampuannya untuk dipanggil berkali-kali tanpa menulis ulang struktur kodenya.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function App() {
+  return (
+    &lt;div&gt;
+      &lt;Welcome /&gt;
+      &lt;Welcome /&gt;
+      &lt;Welcome /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Aturan Penamaan Component</h2>
+            <p>Di React, ada satu aturan wajib: nama component <strong>harus diawali huruf besar</strong>.</p>
+            <ul>
+                <li><span class="inline-code">&lt;welcome /&gt;</span>: Dianggap oleh React sebagai elemen HTML biasa (yang tidak ada di standar HTML).</li>
+                <li><span class="inline-code">&lt;Welcome /&gt;</span>: Dianggap sebagai component React buatan kita sendiri.</li>
+            </ul>
+
+            <h2 class="section-title">Menyimpan Component di File Terpisah</h2>
+            <p>Supaya kode lebih rapi, biasanya setiap component disimpan di file terpisah. Mari kita coba!</p>
+            <p>1. Buat folder baru <span class="inline-code">src/components</span>, lalu buat file bernama <span class="inline-code">Header.jsx</span>:</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function Header() {
+  return (
+    &lt;header&gt;
+       &lt;h1&gt;Ini adalah Header Aplikasi&lt;/h1&gt;
+    &lt;/header&gt;
+  );
+}
+
+export default Header;</code></pre>
+            </div>
+
+            <p>2. Gunakan di dalam file <span class="inline-code">src/App.jsx</span> dengan cara meng-import-nya:</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import Header from './components/Header';
+
+function App() {
+  return (
+    &lt;div&gt;
+      &lt;Header /&gt;
+      &lt;main&gt;Konten Utama Aplikasi&lt;/main&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default App;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Pada artikel ini, kita sudah belajar tentang <strong>Components</strong> sebagai pondasi modularitas di React. Kita sudah mencoba membuat functional component, memahami aturan penamaan kapital, hingga memisahkan file agar proyek lebih terkelola.</p>
+            <p>Di artikel berikutnya, kita akan membahas tentang <strong>Props</strong>, yaitu cara mengirim data dinamis ke dalam component agar tidak statis.</p>
+        </div>
+    </div>
+</body>
+</html>

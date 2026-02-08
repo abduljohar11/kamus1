@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inertia.js Server Side - Tutorial Laravel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; transform: scale(1.05); }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1.2rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        p { margin-bottom: 1.2rem; line-height: 1.8; color: #1e293b; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; color: #1e293b; }
+        li { margin-bottom: 0.5rem; }
+        
+        .utility-tag { background: #cbd5e1; padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 0.85rem; font-weight: bold; color: #0f172a; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Konfigurasi Inertia Server Side
+        </h1>
+
+        <div class="card">
+            <p>Agar <strong>Laravel</strong> bisa berkomunikasi dengan <strong>React.js</strong> secara mulus, kita perlu melakukan konfigurasi dari sisi server terlebih dahulu.</p>
+            
+            
+
+            <h2 class="section-title">Langkah 1 - Install Inertia Adapter</h2>
+            <p>Jalankan perintah berikut di terminal proyek Laravel kamu untuk menginstal <strong>Inertia Server-side Adapter</strong>:</p>
+            
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-bash">composer require inertiajs/inertia-laravel</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 2 - Middleware Konfigurasi</h2>
+            <p>Publish Middleware Inertia agar kita bisa mengontrol data yang dibagikan (shared data) ke frontend:</p>
+            
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-bash">php artisan inertia:middleware</code></pre>
+            </div>
+
+            <p>Daftarkan middleware tersebut di file <span class="utility-tag">bootstrap/app.php</span> agar aktif secara global:</p>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-php">->withMiddleware(function (Middleware $middleware): void {
+    $middleware->web(append: [
+        \App\Http\Middleware\HandleInertiaRequests::class,
+    ]);
+})</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 3 - Shared Data (Flash Message)</h2>
+            <p>Buka file <span class="utility-tag">app/Http/Middleware/HandleInertiaRequests.php</span>. Pada method <code>share</code>, tambahkan logic untuk menangkap pesan notifikasi (flash session):</p>
+            
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-php">public function share(Request $request): array
+{
+    return array_merge(parent::share($request), [
+        'flash' => [
+            'message' => fn () => $request->session()->get('message'),
+        ],
+    ]);
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 4 - Root View Template</h2>
+            <p>Buat file baru bernama <span class="utility-tag">app.blade.php</span> di folder <span class="utility-tag">resources/views</span>. File ini akan menjadi wadah utama aplikasi SPA kita:</p>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" /&gt;
+    @viteReactRefresh
+    @vite('resources/js/app.jsx')
+    @inertiaHead
+  &lt;/head&gt;
+  &lt;body&gt;
+    @inertia
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Proses konfigurasi <strong>Server-side</strong> telah selesai. Sekarang Laravel sudah siap mengirimkan data ke komponen React. Di tahap berikutnya, kita akan melakukan instalasi <strong>Client-side</strong> (React & Vite).</p>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

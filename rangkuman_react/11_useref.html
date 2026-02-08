@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar useRef - React Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #fff7ed; border: 2px dashed #f97316; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background: white; border-radius: 0.5rem; overflow: hidden; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #334155; color: white; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">useRef</h1>
+        
+        <div class="card">
+            <p>Pada artikel kali ini, kita akan membahas tentang <strong>useRef</strong>. Hook ini sering digunakan untuk menyimpan nilai yang "persisten" namun tidak menyebabkan re-render, serta menjadi gerbang utama untuk berinteraksi langsung dengan elemen DOM.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan sebuah <strong>Kotak Penyimpanan Rahasia</strong> di balik dinding. Anda bisa memasukkan barang ke dalamnya atau menggantinya kapan saja tanpa harus mendekorasi ulang seluruh ruangan (re-render). Ruangan tetap terlihat sama, tapi isi kotak tersebut tetap ada dan bisa Anda ambil kapan pun dibutuhkan.</p>
+            </div>
+
+            <h2 class="section-title">Apa Itu useRef?</h2>
+            <p><strong>useRef</strong> adalah hook bawaan React yang mengembalikan sebuah objek dengan satu properti saja, yaitu <span class="inline-code">.current</span>. Hook ini berguna untuk:</p>
+            <ul>
+                <li>Menyimpan nilai yang bisa diubah tanpa memicu re-render aplikasi.</li>
+                <li>Mengakses elemen DOM secara langsung (seperti <span class="inline-code">document.getElementById</span>).</li>
+            </ul>
+
+            
+
+            <h2 class="section-title">useRef untuk Mengakses DOM</h2>
+            <p>Contoh paling umum adalah memberikan fokus otomatis pada input saat sebuah tombol diklik.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import { useRef } from "react";
+
+function FocusInput() {
+  const inputRef = useRef(null);
+
+  const handleFocus = () => {
+    // Mengakses elemen DOM asli melalui properti .current
+    inputRef.current.focus();
+    inputRef.current.style.backgroundColor = "#fefce8";
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;input ref={inputRef} type="text" placeholder="Klik tombol..." /&gt;
+      &lt;button onClick={handleFocus}&gt;Fokuskan Input&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">useRef vs useState</h2>
+            <p>Kapan harus menggunakan salah satunya? Berikut perbandingannya:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fitur</th>
+                        <th>useState</th>
+                        <th>useRef</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Memicu Re-render?</td>
+                        <td>Ya (Setiap perubahan)</td>
+                        <td>Tidak (Nilai berubah diam-diam)</td>
+                    </tr>
+                    <tr>
+                        <td>Tujuan Utama</td>
+                        <td>Data UI (Tampilan)</td>
+                        <td>Data Internal / Akses DOM</td>
+                    </tr>
+                    <tr>
+                        <td>Sifat Nilai</td>
+                        <td>Asinkron</td>
+                        <td>Sinkron (Langsung berubah)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">useRef untuk Menyimpan Nilai Tanpa Re-render</h2>
+            <p>Gunakan ini jika Anda butuh variabel yang datanya tetap tersimpan meskipun komponen di-render ulang berkali-kali.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function RenderCounter() {
+  const [count, setCount] = useState(0);
+  const renderCount = useRef(0);
+
+  useEffect(() => {
+    // Bertambah tiap render, tapi tidak memicu render tambahan
+    renderCount.current = renderCount.current + 1;
+  });
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;State Count: {count}&lt;/p&gt;
+      &lt;p&gt;Komponen ini sudah dirender: {renderCount.current} kali&lt;/p&gt;
+      &lt;button onClick={() => setCount(count + 1)}&gt;Tambah Count&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">useRef untuk Menyimpan Data Sebelumnya</h2>
+            <p>Kita bisa memantau perubahan state dengan menyimpan nilai lama ke dalam ref sebelum state tersebut diperbarui.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function PreviousValue() {
+  const [text, setText] = useState("");
+  const prevText = useRef("");
+
+  useEffect(() => {
+    prevText.current = text; // Simpan nilai saat ini ke ref
+  }, [text]);
+
+  return (
+    &lt;div&gt;
+      &lt;input value={text} onChange={(e) => setText(e.target.value)} /&gt;
+      &lt;p&gt;Sekarang: {text}&lt;/p&gt;
+      &lt;p&gt;Sebelumnya: {prevText.current}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Pada artikel ini, kita sudah belajar tentang <strong>useRef</strong>. Gunakan hook ini jika Anda ingin berinteraksi dengan elemen DOM atau menyimpan data yang tidak berpengaruh langsung pada tampilan UI agar performa aplikasi lebih optimal.</p>
+            <p>Di artikel berikutnya, kita akan membahas tentang <strong>Memoization di React (React.memo, useMemo, useCallback)</strong> untuk membuat aplikasi Anda secepat kilat!</p>
+        </div>
+    </div>
+</body>
+</html>

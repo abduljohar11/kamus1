@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Grid Layout - Tailwind CSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { background: #1a1b26 !important; padding: 1.5rem !important; border-radius: 1rem !important; border: 1px solid #334155; overflow-x: auto; }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        .utility-name { font-family: 'Fira Code', monospace; color: #2563eb; font-weight: bold; background: #cbd5e1; padding: 2px 4px; border-radius: 4px; }
+        
+        /* Area Simulasi Grid */
+        .demo-grid { background: white; border: 2px dashed #94a3b8; border-radius: 1rem; padding: 1rem; margin-bottom: 1.5rem; }
+        .grid-item { background: #3b82f6; color: white; padding: 1.5rem; border-radius: 0.5rem; font-weight: bold; text-align: center; border: 2px solid #1e40af; }
+        .grid-item-alt { background: #f97316; border-color: #c2410c; }
+        
+        /* Table Style */
+        .info-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+        .info-table th { background: #334155; color: white; padding: 12px; text-align: left; font-size: 0.85rem; }
+        .info-table td { padding: 12px; border-bottom: 1px solid #e2e8f0; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Grid Layout System
+        </h1>
+
+        <div class="card">
+            <p>Berbeda dengan Flexbox yang satu dimensi, <strong>Grid</strong> adalah sistem layout dua dimensi. Artinya, kita bisa mengatur baris dan kolom secara bersamaan dengan sangat presisi.</p>
+
+            <h2 class="section-title">1. Membuat Grid Dasar</h2>
+            <p>Gunakan class <span class="utility-name">grid</span> pada parent, diikuti dengan jumlah kolom menggunakan <span class="utility-name">grid-cols-{n}</span>.</p>
+
+            <div class="demo-grid grid grid-cols-3 gap-4">
+                <div class="grid-item">1</div>
+                <div class="grid-item">2</div>
+                <div class="grid-item">3</div>
+            </div>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!-- Membuat grid dengan 3 kolom --&gt;
+&lt;div class="grid grid-cols-3 gap-4"&gt;
+  &lt;div&gt;Item 1&lt;/div&gt;
+  &lt;div&gt;Item 2&lt;/div&gt;
+  &lt;div&gt;Item 3&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">2. Jarak (Gap)</h2>
+            <p>Sama seperti Flexbox, Grid menggunakan <span class="utility-name">gap</span> untuk mengatur jarak antar elemen.</p>
+            <table class="info-table shadow-sm">
+                <thead>
+                    <tr><th>Class</th><th>Keterangan</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="utility-name">gap-{n}</td><td>Jarak horizontal dan vertikal sama</td></tr>
+                    <tr><td class="utility-name">gap-x-{n}</td><td>Hanya jarak horizontal (kolom)</td></tr>
+                    <tr><td class="utility-name">gap-y-{n}</td><td>Hanya jarak vertikal (baris)</td></tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">3. Grid Column Span</h2>
+            <p>Kadang kita ingin satu item memakan ruang lebih dari satu kolom. Gunakan <span class="utility-name">col-span-{n}</span>.</p>
+
+            <div class="demo-grid grid grid-cols-3 gap-4">
+                <div class="grid-item col-span-2 grid-item-alt">Span 2 Kolom</div>
+                <div class="grid-item">3</div>
+                <div class="grid-item">4</div>
+                <div class="grid-item col-span-2 grid-item-alt">Span 2 Kolom</div>
+            </div>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!-- Item pertama memakan 2 kolom --&gt;
+&lt;div class="grid grid-cols-3 gap-4"&gt;
+  &lt;div class="col-span-2 bg-orange-500"&gt;Besar&lt;/div&gt;
+  &lt;div class="bg-blue-500"&gt;Kecil&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">4. Contoh Lengkap: Layout Galeri</h2>
+            <p>Implementasi grid untuk layout galeri atau dashboard yang rapi.</p>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-white rounded-xl shadow"&gt;
+  &lt;div class="bg-slate-200 h-24 rounded flex items-center justify-center font-bold"&gt;1&lt;/div&gt;
+  &lt;div class="bg-slate-200 h-24 rounded flex items-center justify-center font-bold"&gt;2&lt;/div&gt;
+  &lt;div class="bg-slate-200 h-24 rounded flex items-center justify-center font-bold"&gt;3&lt;/div&gt;
+  &lt;div class="bg-slate-200 h-24 rounded flex items-center justify-center font-bold"&gt;4&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p><strong>Grid</strong> sangat cocok untuk layout besar (halaman utama, galeri, form), sedangkan <strong>Flexbox</strong> lebih cocok untuk layout mikro (navbar, isi card, perataan icon). Gunakan keduanya secara kombinasi untuk hasil terbaik.</p>
+
+            <div class="mt-10 pt-6 border-t border-slate-300">
+                <p class="text-sm font-bold text-slate-500 italic uppercase">Selanjutnya:</p>
+                <p class="text-lg font-bold text-blue-600">Responsive Design: Mobile First &raquo;</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

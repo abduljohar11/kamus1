@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengenalan & Instalasi Tailwind CSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2rem; border-radius: 1.5rem; border: 1px solid #94a3b8; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        
+        .code-container { position: relative; margin-bottom: 1.5rem; }
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 0.75rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 10;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.5rem; font-weight: 900; margin-top: 2.5rem; margin-bottom: 1rem; border-left: 6px solid #2563eb; padding-left: 1rem; text-transform: uppercase; color: #0f172a; }
+        p { margin-bottom: 1.25rem; line-height: 1.7; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        li { margin-bottom: 0.5rem; }
+        .step-title { font-weight: bold; color: #2563eb; display: block; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Pengenalan & Instalasi Tailwind CSS
+        </h1>
+
+        <div class="card">
+            <p>Dengan memahami Tailwind CSS, kita bisa membangun antarmuka yang cantik dan responsif hanya dengan menambahkan class-class langsung pada elemen HTML, tanpa perlu menulis CSS secara manual.</p>
+
+            <h2 class="section-title">Apa Itu Tailwind CSS?</h2>
+            <p><em>Tailwind CSS</em> adalah sebuah <strong>utility-first CSS framework</strong>, menyediakan banyak <em>utility class</em> siap pakai untuk mengatur layout, spacing, warna, dan tipografi.</p>
+
+            <h2 class="section-title">Kenapa Menggunakan Tailwind?</h2>
+            <ul>
+                <li><strong>Cepat dan Fleksibel:</strong> Cukup tambahkan class di HTML.</li>
+                <li><strong>Tanpa Custom CSS:</strong> Mengurangi tumpukan file CSS eksternal.</li>
+                <li><strong>Responsive-ready:</strong> Kontrol breakpoint langsung di elemen.</li>
+                <li><strong>Produktivitas:</strong> Fokus pada logika tampilan di satu tempat.</li>
+            </ul>
+
+            <h2 class="section-title">Cara Instalasi</h2>
+            
+            <h3 class="font-bold text-xl mb-2">1. Menggunakan CDN</h3>
+            <p>Metode tercepat untuk belajar atau prototyping sederhana.</p>
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1 class="text-2xl text-green-600 font-semibold"&gt;Hello Tailwind!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+
+            <h3 class="font-bold text-xl mb-2 mt-8">2. Menggunakan Tailwind CLI</h3>
+            <p>Direkomendasikan untuk proyek nyata agar performa lebih optimal.</p>
+
+            <span class="step-title">Langkah 1: Setup Folder</span>
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-bash">mkdir proyek-tailwind && cd proyek-tailwind
+npm init -y</code></pre>
+            </div>
+
+            <span class="step-title">Langkah 2: Instalasi</span>
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-bash">npm install tailwindcss @tailwindcss/cli</code></pre>
+            </div>
+
+            <span class="step-title">Langkah 3: Konfigurasi Input CSS</span>
+            <p>Buat file <code>src/input.css</code> dan masukkan baris berikut:</p>
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-css">@import "tailwindcss";</code></pre>
+            </div>
+
+            <span class="step-title">Langkah 4: Jalankan Build</span>
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-bash">npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <ul class="bg-white/50 p-4 rounded-lg">
+                <li>Tailwind memindahkan styling langsung ke dalam atribut class HTML.</li>
+                <li>Gunakan <strong>CDN</strong> untuk eksperimen cepat.</li>
+                <li>Gunakan <strong>CLI</strong> untuk proyek profesional agar ukuran file CSS tetap kecil.</li>
+            </ul>
+
+            <p class="mt-6 italic text-slate-600">
+                Di artikel selanjutnya, kita akan belajar tentang <strong>struktur utility class</strong> — cara menggunakan <code>text-center</code>, <code>p-4</code>, dan lainnya.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Inisialisasi Highlight.js
+        hljs.highlightAll();
+
+        // Fungsi Copy Code
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = 'COPY';
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

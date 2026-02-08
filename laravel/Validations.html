@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validations</title>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; color: #334155; background: #f8fafc; margin: 0; padding: 40px 20px; }
+        .container { max-width: 850px; margin: 0 auto; }
+        .btn-back { display: inline-block; margin-bottom: 20px; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
+        .materi-card { background: #fff; padding: 45px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h1 { font-size: 2.5rem; color: #0f172a; margin-top: 0; border-bottom: 4px solid #3b82f6; padding-bottom: 10px; }
+        h3 { margin-top: 35px; color: #1e293b; font-size: 1.5rem; border-left: 5px solid #3b82f6; padding-left: 15px; }
+        pre { background: #1e1e2e; color: #f8f8f2; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 25px 0; }
+        code { font-family: 'Consolas', monospace; background: #fee2e2; color: #991b1b; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; color: inherit; padding: 0; }
+        img { max-width: 100%; border-radius: 12px; margin: 30px 0; display: block; border: 1px solid #e2e8f0; }
+        blockquote { border-left: 5px solid #3b82f6; background: #eff6ff; padding: 15px 25px; border-radius: 0 10px 10px 0; font-style: italic; margin: 25px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="btn-back">← Kembali ke Daftar Isi</a>
+        <article class="materi-card">
+            <main class="flex-1 min-w-0 lg:ml-80 mr-0 xl:mr-64 transition-all duration-300 pt-10 md:pt-0">
+<div class="max-w-full mx-auto px-4 sm:px-6 md:px-8 py-5">
+<h1 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">Validations</h1>
+<div class="prose lg:prose-lg prose-a:text-blue-500 dark:prose-a:text-blue-400 dark:prose-invert w-full max-w-full">
+<div x-data="" x-init="let t=document.querySelector('.table-of-contents'),d=document.querySelector('.toc'),m=document.querySelector('.toc-mobile'),b=document.querySelector('.btn-toc');if(t&amp;&amp;t.querySelectorAll('li').length&gt;0){d.appendChild(t.cloneNode(true));m.appendChild(t.cloneNode(true))}else b?.classList.add('hidden');$nextTick(()=&gt;{document.querySelectorAll(`.prose a[href^='http']`).forEach(a=&gt;{a.href.includes(location.hostname)||(a.target='_blank',a.rel='noopener noreferrer')})})">
+</div>
+<ul class="table-of-contents">
+<li><a href="#content-membuat-validasi">Membuat Validasi</a></li>
+<li><a href="#content-menampilkan-error-validasi">Menampilkan Error Validasi</a></li>
+<li><a href="#content-aturan-validasi-yang-tersedia">Aturan Validasi Yang Tersedia</a></li>
+</ul>
+<p><code>Validation</code> merupakan hal yang sangat penting saat membuat aplikasi. <code>Validation</code> merupakan metode yang digunakan untuk memvalidasi permintaan <em>HTTP</em> yang masuk dengan berbagai aturan validasi yang kuat.</p>
+<p>Secara <em>default</em> <em>class</em> <em>controller</em> di dalam <strong>Laravel</strong> memiliki <em>Traits</em> yang bernama <code>ValidatesRequests</code>, sehingga kita bisa menggunakan validasi di dalam <em>controller</em> secara langsung.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-membuat-validasi" id="content-membuat-validasi" title="Permalink"></a>Membuat Validasi</h3>
+<p>Berikut ini contoh penulisan validasi di <strong>Laravel</strong>.</p>
+<pre><code>public function store(Request $request)
+{
+    $request-&gt;validate([
+        'title' =&gt; 'required|unique:posts|max:255',
+        'body' =&gt; 'required',
+    ]);
+ 
+    // The blog post is valid...
+}
+</code></pre>
+<p>Di atas, kita bisa melakukan define validasi menggunakan <em>method</em> <code>validate</code> dan di dalamnya kita berikan validasi yang diinginkan.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-menampilkan-error-validasi" id="content-menampilkan-error-validasi" title="Permalink"></a>Menampilkan Error Validasi</h3>
+<p>Untuk menampilkan validasi, kita harus menulis kode-nya di dalam <em>view</em>, berikut ini contoh untuk menampilkan <em>error</em> validasi pada halaman <em>view</em>.</p>
+<pre><code>@error('title')
+    &lt;div class="alert alert-danger"&gt;{{ $message }}&lt;/div&gt;
+@enderror
+</code></pre>
+<p>Di atas kita menggunakan <em>directive</em> <code>@error</code> dan di dalamnya berisi <em>key</em> validasi yang di definisikan di dalam <em>controller</em>. Dan untuk menampilkan pesan <em>error</em>nya, kita menggunakan <code>$message</code>.</p>
+<h3><a aria-hidden="true" class="heading-permalink" href="#content-aturan-validasi-yang-tersedia" id="content-aturan-validasi-yang-tersedia" title="Permalink"></a>Aturan Validasi Yang Tersedia</h3>
+<p>Untuk list <em>rule</em> / aturan validasi yang tersedia di dalam <strong>Laravel</strong>, teman-teman bisa melihatnya melalui <em>link</em> berikut ini : <a href="https://laravel.com/docs/9.x/validation#available-validation-rules">https://laravel.com/docs/9.x/validation#available-validation-rules</a></p>
+</div>
+<!-- Div pembatas dengan content -->
+<div class="border-t border-neutral-200 dark:border-neutral-700 mt-8 pt-6">
+<div class="flex justify-end">
+<a :aria-busy="loading ? 'true' : 'false'" :class="loading ? 'opacity-60 pointer-events-none' : ''" class="inline-flex items-center gap-2 px-6 py-3 bg-red-700 hover:bg-red-800 dark:bg-neutral-600 dark:hover:bg-neutral-700 text-white text-sm font-medium rounded-full transition-colors duration-200" data-id="1566" href="https://santrikoding.com/account/my-courses/laravel-untuk-pemula/1567?version=1.1.0" x-data="lessonComplete(28, '1.1.0', 'https://santrikoding.com/account/my-courses/laravel-untuk-pemula/lesson/completed')" x-on:click.prevent="complete($event)">
+ <span x-text="loading ? 'Processing…' : 'Complete &amp; Continue'"></span>
+ </a>
+</div>
+</div>
+</div>
+</main><aside :class="tocVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'" class="hidden xl:block fixed right-0 top-14 bottom-0 w-64 overflow-y-auto border-l border-neutral-200 dark:border-neutral-700/80 bg-white/95 dark:bg-neutral-900 backdrop-blur-sm transition-all duration-300 z-30" x-cloak="">
+<!-- Header dengan glass effect -->
+<div class="sticky top-0 z-10 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-b border-neutral-200/50 dark:border-neutral-700/50 px-4 py-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="p-1.5 bg-primary/10 rounded-lg">
+
+</div>
+<div>
+<h3 class="text-sm font-semibold text-neutral-900 dark:text-neutral-100">On This Page</h3>
+</div>
+</div>
+
+</div>
+</div>
+<!-- Progress Indicator yang benar-benar visible -->
+<div class="px-4 py-3 border-b border-neutral-200/50 dark:border-neutral-700/50" x-data="{
+            scrollProgress: 0,
+            updateProgress() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                this.scrollProgress = docHeight &gt; 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
+            }
+         }" x-init="updateProgress(); $watch('scrollProgress', () =&gt; {}); window.addEventListener('scroll', () =&gt; updateProgress())">
+<div class="flex items-center justify-between text-xs mb-2">
+<span class="text-neutral-600 dark:text-neutral-400">Reading Progress</span>
+<span class="text-primary font-medium" x-text="Math.round(scrollProgress) + '%'"></span>
+</div>
+<!-- Progress Bar dengan warna yang kontras -->
+<div class="w-full bg-neutral-300 dark:bg-neutral-600 rounded-full h-2 shadow-inner">
+<div :style="'width: ' + scrollProgress + '%'" class="bg-gradient-to-r from-emerald-300 to-emerald-600 h-2 rounded-full transition-all duration-300 shadow-sm"></div>
+</div>
+</div>
+<!-- Table of Contents Content -->
+
+<!-- Footer dengan quick actions -->
+<div class="sticky bottom-0 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-t border-neutral-200/50 dark:border-neutral-700/50 p-3">
+<div class="flex items-center justify-between text-xs">
+
+
+</div>
+</div>
+</aside>
+        </article>
+    </div>
+</body>
+</html>

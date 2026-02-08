@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Styling di React - React Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #faf5ff; border: 2px dashed #a855f7; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Styles</h1>
+        
+        <div class="card">
+            <p>Styling adalah elemen vital dalam membangun aplikasi yang user-friendly. Di React, cara kita memberikan gaya sedikit berbeda dari HTML tradisional karena kita bekerja dalam ekosistem JavaScript.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan Anda sedang <strong>Mengecat Rumah</strong>. <strong>Inline Style</strong> seperti mencelupkan kuas dan mengecat satu bata secara langsung. <strong>CSS Eksternal</strong> seperti memiliki buku panduan warna di luar rumah. Sedangkan <strong>CSS Modules</strong> adalah cat khusus yang hanya menempel pada satu bata spesifik tanpa merembet ke bata lain di rumah tetangga.</p>
+            </div>
+
+            <h2 class="section-title">Inline Style</h2>
+            <p>Di React, inline style ditulis menggunakan objek JavaScript. Properti CSS yang biasanya menggunakan tanda hubung (dash) diubah menjadi <strong>camelCase</strong>.</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function App() {
+  const headerStyle = {
+    color: "white",
+    backgroundColor: "DodgerBlue",
+    padding: "20px",
+    fontFamily: "Arial"
+  };
+
+  return &lt;h1 style={headerStyle}&gt;Halo React!&lt;/h1&gt;;
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">File CSS Eksternal</h2>
+            <p>Ini adalah cara klasik. Kita membuat file CSS dan mengimpornya langsung ke dalam file komponen menggunakan <span class="inline-code">import</span>.</p>
+            
+            <p>Buat file <span class="inline-code">App.css</span>:</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-css">.container {
+  padding: 2rem;
+  background-color: #f1f5f9;
+  border-radius: 8px;
+}</code></pre>
+            </div>
+
+            <p>Lalu gunakan di <span class="inline-code">App.jsx</span>:</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import './App.css';
+
+function App() {
+  return &lt;div className="container"&gt;Konten bergaya CSS Eksternal&lt;/div&gt;;
+}</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">CSS Modules</h2>
+            <p>Masalah CSS tradisional adalah lingkup globalnya. CSS Modules memecahkan ini dengan memberikan nama unik ke setiap class secara otomatis sehingga tidak terjadi bentrokan style antar komponen.</p>
+            
+            <p>Buat file <span class="inline-code">Button.module.css</span>:</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-css">.btnBlue {
+  background-color: blue;
+  color: white;
+}</code></pre>
+            </div>
+
+            <p>Gunakan di komponen:</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import styles from './Button.module.css';
+
+function MyButton() {
+  return &lt;button className={styles.btnBlue}&gt;Klik Biru&lt;/button&gt;;
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Menggunakan Library Styling</h2>
+            <p>Dua metode paling populer saat ini:</p>
+            <ul>
+                <li><strong>Tailwind CSS</strong>: Menggunakan utility classes langsung di JSX (sangat cepat).</li>
+                <li><strong>Styled Components</strong>: Menulis CSS murni di dalam variabel JavaScript.</li>
+            </ul>
+
+            <p>Contoh dengan <strong>Styled Components</strong>:</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import styled from 'styled-components';
+
+const Wrapper = styled.div`
+  background: palevioletred;
+  padding: 10px;
+  border-radius: 5px;
+`;
+
+function App() {
+  return &lt;Wrapper&gt;Saya adalah komponen bergaya!&lt;/Wrapper&gt;;
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Setiap cara styling memiliki keunggulannya masing-masing. Untuk proyek kecil, CSS biasa sudah cukup. Namun untuk aplikasi skala besar, <strong>CSS Modules</strong> atau <strong>Tailwind CSS</strong> sangat disarankan untuk menjaga kode tetap rapi dan terhindar dari konflik style.</p>
+            <p>Di artikel berikutnya, kita akan membahas tentang <strong>Class dan Dynamic Class</strong>, yaitu teknik mengatur class CSS secara otomatis berdasarkan state atau kondisi tertentu!</p>
+        </div>
+    </div>
+</body>
+</html>

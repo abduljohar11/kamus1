@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Conditional Rendering - React Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #f0fdf4; border: 2px dashed #22c55e; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Conditional Rendering</h1>
+        
+        <div class="card">
+            <p>Pada artikel kali ini, kita akan membahas tentang <strong>Conditional Rendering</strong> di React. Dengan teknik ini, kita bisa menampilkan elemen atau komponen secara dinamis berdasarkan kondisi tertentu.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan sebuah <strong>Lampu Lalu Lintas</strong>. Aturannya sederhana: <strong>JIKA</strong> lampu hijau, maka kendaraan jalan. <strong>JIKA</strong> lampu merah, maka kendaraan berhenti. Tampilan di jalan raya (UI) berubah total hanya berdasarkan status (state) warna lampu tersebut.</p>
+            </div>
+
+            <h2 class="section-title">Apa Itu Conditional Rendering?</h2>
+            <p><strong>Conditional Rendering</strong> adalah teknik untuk menentukan elemen mana yang akan dirender oleh React berdasarkan logika tertentu. Jika kondisi bernilai benar (<em>true</em>), maka elemen akan ditampilkan, sebaliknya jika salah (<em>false</em>) elemen tidak ditampilkan atau menampilkan alternatif lain.</p>
+            
+            
+
+            <p>Di React, kita bisa menggunakan beberapa cara:</p>
+            <ul>
+                <li><strong>if/else</strong>: Digunakan di dalam tubuh fungsi sebelum return.</li>
+                <li><strong>Operator Ternary</strong> (<span class="inline-code">? :</span>): Cocok untuk kondisi singkat di dalam JSX.</li>
+                <li><strong>Logical &&</strong>: Digunakan jika hanya ingin menampilkan sesuatu jika benar saja.</li>
+            </ul>
+
+            <h2 class="section-title">Menggunakan if/else</h2>
+            <p>Cara ini paling mudah dipahami, kita melakukan pengecekan logika sebelum komponen mengembalikan (return) JSX.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function Greeting({ isLoggedIn }) {
+  if (isLoggedIn) {
+    return &lt;h1&gt;Selamat datang kembali!&lt;/h1&gt;;
+  }
+  
+  return &lt;h1&gt;Silakan login terlebih dahulu.&lt;/h1&gt;;
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Menggunakan Operator Ternary</h2>
+            <p>Ini adalah cara paling populer karena kita bisa menyisipkan logika langsung di tengah-tengah kode JSX.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function App() {
+  const isLoggedIn = true;
+
+  return (
+    &lt;div&gt;
+      {isLoggedIn ? &lt;p&gt;Sudah Login&lt;/p&gt; : &lt;p&gt;Belum Login&lt;/p&gt;}
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Menggunakan Operator &&</h2>
+            <p>Terkadang kita hanya ingin menampilkan elemen jika kondisi terpenuhi, dan tidak ingin menampilkan apa pun jika gagal.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function Notification({ unreadCount }) {
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;Halo!&lt;/h1&gt;
+      {unreadCount > 0 && (
+        &lt;p&gt;Kamu memiliki {unreadCount} pesan belum dibaca.&lt;/p&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Conditional Rendering dengan State</h2>
+            <p>Inilah kekuatan asli React. UI akan berubah secara otomatis saat kita memperbarui state.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import { useState } from "react";
+
+function AuthButton() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  return (
+    &lt;div&gt;
+      &lt;h1&gt;{isLoggedIn ? "Selamat Datang" : "Silakan Login"}&lt;/h1&gt;
+      &lt;button onClick={() => setIsLoggedIn(!isLoggedIn)}&gt;
+        {isLoggedIn ? "Logout" : "Login"}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Pada artikel ini, kita sudah belajar tentang <strong>Conditional Rendering</strong>. Kita bisa menggunakan <span class="inline-code">if/else</span> untuk logika kompleks, operator ternary untuk pilihan dua arah, dan <span class="inline-code">&&</span> untuk tampilan opsional. Teknik ini membuat aplikasi kita terasa cerdas karena mampu menyesuaikan diri dengan data.</p>
+            <p>Di artikel berikutnya, kita akan membahas tentang <strong>List & Keys</strong>, yaitu cara menampilkan daftar data (seperti daftar produk atau berita) dengan lebih efisien.</p>
+        </div>
+    </div>
+</body>
+</html>

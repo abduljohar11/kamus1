@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial JavaScript - Pengenalan & Installasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        .analogy-box { background: #fefce8; border: 2px dashed #eab308; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+        strong { color: #0f172a; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Pengenalan & Installasi JavaScript</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Apa Itu JavaScript?</h2>
+            <p>JavaScript adalah bahasa pemrograman yang digunakan untuk membuat <em>website</em> menjadi lebih interaktif. Bersama dengan <strong>HTML</strong> dan <strong>CSS</strong>, JavaScript membentuk pondasi utama dari pengembangan <em>web</em> <em>modern</em>.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy-box">
+                <p class="italic mb-0">Bayangkan sebuah <strong>Mobil</strong>:</p>
+                <ul class="mb-0">
+                    <li><strong>HTML</strong> adalah rangka dan bodi mobil (Struktur).</li>
+                    <li><strong>CSS</strong> adalah cat dan desain interior (Tampilan).</li>
+                    <li><strong>JavaScript</strong> adalah mesin, rem, dan sistem kelistrikannya. Tanpa JS, mobil hanyalah pajangan; dengan JS, mobil bisa berjalan, mengerem, dan menyalakan lampu (Interaksi).</li>
+                </ul>
+            </div>
+
+            
+
+            <p>JavaScript juga kini digunakan di luar <em>browser</em>, contohnya di sisi <em>server</em> menggunakan <strong>Node.js</strong>.</p>
+
+            <h2 class="section-title">Kenapa Harus Belajar JavaScript?</h2>
+            <ul>
+                <li><strong>Mudah Dipelajari:</strong> Cocok untuk pemula yang baru mulai belajar <em>coding</em>.</li>
+                <li><strong>Fleksibel:</strong> Bisa digunakan untuk <em>frontend</em>, <em>backend</em>, hingga <em>mobile</em> <em>app</em>.</li>
+                <li><strong>Populer:</strong> Banyak perusahaan membutuhkan <em>developer</em> JavaScript.</li>
+                <li><strong>Banyak Framework:</strong> Seperti React, Vue, Angular, dan lainnya.</li>
+            </ul>
+
+            <h2 class="section-title">Bagaimana Cara Menjalankan JavaScript?</h2>
+            <p>Ada dua cara paling umum:</p>
+            <ul>
+                <li><strong>Langsung dari Browser:</strong> Semua <em>browser</em> <em>modern</em> sudah menyediakan <strong>JavaScript Engine</strong> yang memungkinkan kita menjalankan JavaScript langsung.</li>
+                <li><strong>Menggunakan Node.js:</strong> Node.js adalah <em>runtime</em> JavaScript di luar <em>browser</em>. Dengan Node.js, kita bisa menjalankan JavaScript dari terminal.</li>
+            </ul>
+
+            <h2 class="section-title">Menjalankan JavaScript di Browser</h2>
+            <p>Untuk menjalankan JavaScript di <em>browser</em> ada 2 cara, yaitu:</p>
+
+            <h3 class="font-bold text-lg mb-2">Cara 1: Melalui Developer Tools (Console)</h3>
+            <p>Buka browser (Chrome/Edge/Firefox). Tekan <kbd class="px-2 py-1 bg-slate-300 rounded text-xs">Ctrl + Shift + I</kbd> atau klik kanan ➔ "Inspect" ➔ pilih tab <strong>Console</strong>. Ketik kode berikut:</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">console.log('Hello, World!');
+alert('Belajar JS itu seru!');</code></pre>
+            </div>
+
+            <h3 class="font-bold text-lg mb-2">Cara 2: Menjalankan File .html di Browser</h3>
+            <p>Gunakan tag <span class="inline-code">&lt;script&gt;</span> di dalam file HTML Anda.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="id"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Belajar JavaScript&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello JavaScript&lt;/h1&gt;
+
+  &lt;script&gt;
+    console.log('Hello dari file HTML!');
+    document.querySelector('h1').innerText = 'Struktur HTML Diubah JS!';
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Menjalankan JavaScript dengan Node.js</h2>
+            <p><strong>Node.js</strong> memungkinkan kita menjalankan JavaScript di terminal tanpa perlu membuka browser.</p>
+
+            <h3 class="font-bold text-lg mb-2">Cara Install Node.js</h3>
+            <p>Download versi <strong>LTS</strong> dari situs resmi: <a href="https://nodejs.org/" class="text-blue-600 font-bold hover:underline">https://nodejs.org/</a></p>
+
+            <h3 class="font-bold text-lg mb-2">Cek Hasil Installasi</h3>
+            <p>Ketikkan perintah berikut di terminal/CMD untuk memastikan Node.js sudah aktif:</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">node --version
+npm --version</code></pre>
+            </div>
+
+            <h3 class="font-bold text-lg mb-2">Menjalankan File JavaScript</h3>
+            <p>Buat file bernama <span class="inline-code">hello.js</span>, lalu jalankan lewat terminal:</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">// hello.js
+console.log('Hello dari Node.js!');</code></pre>
+            </div>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">node hello.js</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Pada artikel ini, kita sudah belajar apa itu JavaScript, fungsinya dalam web, dan cara menjalankannya baik di sisi klien (browser) maupun sisi server (Node.js).</p>
+            <p>Di artikel berikutnya, kita akan masuk ke materi teknis pertama kita: <strong>Tipe Data di JavaScript</strong>.</p>
+        </div>
+    </div>
+</body>
+</html>

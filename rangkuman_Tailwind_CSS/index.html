@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Rangkuman Tailwind CSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
+    </style>
+</head>
+<body class="bg-slate-100 p-4 md:p-12">
+    <div class="max-w-4xl mx-auto">
+        <a href="../index.html" class="mb-8 inline-flex items-center font-bold text-blue-600 uppercase text-xs hover:text-blue-800 transition-colors group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Kembali ke Beranda Utama
+        </a>
+
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter uppercase leading-none">
+                📚 Daftar Rangkuman<br>
+                <span class="text-blue-600">Tailwind CSS v4</span>
+            </h1>
+            <p class="mt-4 text-slate-600 font-medium">Kumpulan panduan cepat untuk menguasai desain modern dengan engine v4 terbaru.</p>
+        </header>
+
+        
+
+        <div class="grid gap-4 md:grid-cols-2">
+            <a href="1_pengenalan_&_instalasi_tailwind_css.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 01</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Pengenalan & Instalasi</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🚀</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Mulai dari nol dan cara setup proyek v4.</p>
+            </a>
+
+            <a href="2_struktur_utility-first_tailwind.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 02</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Struktur Utility-First</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🧩</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Memahami konsep "LEGO" di dalam CSS.</p>
+            </a>
+
+            <a href="3_styling_text_dan_font.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 03</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Styling Text dan Font</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">✍️</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Mengatur ukuran, ketebalan, dan font family.</p>
+            </a>
+
+            <a href="4_layout_dengan_margin_&_padding.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 04</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Margin & Padding</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">↔️</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Menguasai sistem spacing dan box model.</p>
+            </a>
+
+            <a href="5_warna__background__dan_border.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 05</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Warna & Border</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🎨</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Mempercantik elemen dengan palet warna v4.</p>
+            </a>
+
+            <a href="6_flexbox_di_tailwind.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 06</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Flexbox Mastery</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">📐</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Penyusunan elemen horizontal dan vertikal.</p>
+            </a>
+
+            <a href="7_grid_layout_dengan_tailwind.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 07</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Grid Layout</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🏁</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Sistem layout dua dimensi yang powerful.</p>
+            </a>
+
+            <a href="8_responsive_design.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 08</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Responsive Design</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">📱</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Teknik mobile-first agar web rapi di semua layar.</p>
+            </a>
+
+            <a href="9_hover__focus__dan_state.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 09</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Hover, Focus & State</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🖱️</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Menambahkan interaksi aktif pada elemen.</p>
+            </a>
+
+            <a href="10_custom_breakpoints.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 10</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Custom Breakpoints</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">⚙️</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Konfigurasi v4 via CSS-First @theme.</p>
+            </a>
+
+            <a href="11_typography_plugin.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 11</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Typography Plugin</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">📑</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Membuat artikel otomatis rapi (prose).</p>
+            </a>
+
+            <a href="12_dark_mode.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 12</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Dark Mode</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🌙</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Implementasi tema gelap yang modern.</p>
+            </a>
+
+            <a href="13_transisi_&_animasi.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 13</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Transisi & Animasi</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">✨</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Memberikan nyawa pada antarmuka web.</p>
+            </a>
+
+            <a href="14_variabel_&_extend_theme.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 14</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Variabel & Theme</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🛠️</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Kustomisasi token desain di engine v4.</p>
+            </a>
+
+            <a href="15_tips_&_best_practice_menggunakan_tailwind.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all border border-slate-200 border-l-8 border-l-blue-600 hover:-translate-y-1">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">Materi 15</span>
+                        <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight transition-colors">Tips & Best Practice</h3>
+                    </div>
+                    <span class="text-2xl group-hover:scale-125 transition-transform">🏆</span>
+                </div>
+                <p class="text-slate-500 text-sm mt-2 font-medium">Panduan agar kodingan tetap bersih.</p>
+            </a>
+        </div>
+
+        <footer class="mt-20 pb-10 text-center text-slate-400 text-xs font-bold tracking-widest uppercase">
+            <p>© 2026 - Tailwind CSS v4 Mastery Journey</p>
+        </footer>
+    </div>
+</body>
+</html>

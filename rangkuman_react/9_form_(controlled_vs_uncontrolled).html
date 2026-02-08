@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Form React - Controlled vs Uncontrolled</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #fdf2f8; border: 2px dashed #db2777; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background: white; border-radius: 0.5rem; overflow: hidden; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #334155; color: white; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Form (Controlled vs Uncontrolled)</h1>
+        
+        <div class="card">
+            <p>Pada artikel kali ini, kita akan membahas tentang <strong>Form di React</strong>. Memahami cara kerja form sangat krusial karena hampir setiap aplikasi memerlukan input dari pengguna, mulai dari pencarian sederhana hingga pendaftaran akun yang kompleks.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan sebuah <strong>Mobil</strong>. <strong>Controlled Component</strong> seperti mobil modern dengan layar digital; setiap kali Anda memutar setir sedikit saja, sensor mendeteksi dan memperbarui angka di layar (state). <strong>Uncontrolled Component</strong> seperti mobil tua tanpa indikator; Anda bebas memutar setir, dan Anda baru tahu posisinya saat Anda menoleh keluar jendela untuk mengecek roda (direct DOM access).</p>
+            </div>
+
+            
+
+            <h2 class="section-title">Apa Itu Form di React?</h2>
+            <p>Di React, ada dua cara utama untuk mengelola data dari elemen input seperti <span class="inline-code">&lt;input&gt;</span>, <span class="inline-code">&lt;textarea&gt;</span>, dan <span class="inline-code">&lt;select&gt;</span>:</p>
+            <ul>
+                <li><strong>Controlled Component</strong>: React memegang kendali penuh atas nilai input melalui state.</li>
+                <li><strong>Uncontrolled Component</strong>: Browser atau DOM memegang nilai tersebut, dan kita hanya mengambilnya saat dibutuhkan menggunakan <span class="inline-code">ref</span>.</li>
+            </ul>
+
+            <h2 class="section-title">Controlled Component</h2>
+            <p>Inilah cara yang paling direkomendasikan. Nilai input selalu sinkron dengan state React.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import { useState } from "react";
+
+function ControlledForm() {
+  const [name, setName] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Nama yang dikirim: " + name);
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input 
+        type="text" 
+        value={name} 
+        onChange={(e) => setName(e.target.value)} 
+      /&gt;
+      &lt;button type="submit"&gt;Kirim&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Uncontrolled Component</h2>
+            <p>Cara ini menggunakan <span class="inline-code">useRef</span> untuk menarik nilai dari DOM saat dibutuhkan (biasanya saat submit).</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import { useRef } from "react";
+
+function UncontrolledForm() {
+  const inputRef = useRef(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Nama dari DOM: " + inputRef.current.value);
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit}&gt;
+      &lt;input type="text" ref={inputRef} /&gt;
+      &lt;button type="submit"&gt;Kirim&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Perbedaan Utama</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fitur</th>
+                        <th>Controlled</th>
+                        <th>Uncontrolled</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sumber Kebenaran</td>
+                        <td>React State</td>
+                        <td>DOM Elemen</td>
+                    </tr>
+                    <tr>
+                        <td>Validasi Instan</td>
+                        <td>Mudah (Real-time)</td>
+                        <td>Sulit</td>
+                    </tr>
+                    <tr>
+                        <td>Update Berdasarkan State</td>
+                        <td>Ya</td>
+                        <td>Tidak</td>
+                    </tr>
+                    <tr>
+                        <td>Cocok Untuk</td>
+                        <td>Form Kompleks</td>
+                        <td>Form Sangat Sederhana</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">Form dengan Beberapa Input</h2>
+            <p>Untuk form yang memiliki banyak field, kita bisa menggunakan satu state object agar kode tetap ringkas.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">function MultiInputForm() {
+  const [form, setForm] = useState({ email: "", password: "" });
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  return (
+    &lt;form&gt;
+      &lt;input name="email" onChange={handleChange} placeholder="Email" /&gt;
+      &lt;input name="password" type="password" onChange={handleChange} /&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Kita telah belajar bahwa <strong>Controlled Component</strong> adalah standar industri karena memberikan kendali penuh untuk validasi dan manipulasi data. Namun, <strong>Uncontrolled Component</strong> bisa menjadi solusi cepat jika Anda hanya butuh mengambil satu nilai saat submit tanpa perlu re-render setiap ketikan.</p>
+            <p>Di artikel berikutnya, kita akan membahas tentang <strong>useEffect</strong>, Hook yang sangat sakti untuk menangani efek samping seperti mengambil data dari API!</p>
+        </div>
+    </div>
+</body>
+</html>

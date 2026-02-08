@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial JavaScript - Default Parameters</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #f0fdf4; border: 2px dashed #16a34a; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Default Parameters</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Apa Itu Default Parameters?</h2>
+            <p><strong>Default Parameters</strong> adalah fitur ES6 yang memungkinkan kita memberikan nilai cadangan (default) pada parameter fungsi. Jika saat fungsi dipanggil kita tidak mengirimkan nilai (argumen), maka nilai cadangan inilah yang akan digunakan.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan Anda memesan <strong>Nasi Goreng</strong> di warung. Jika Anda bilang "Pak, beli nasi goreng satu", maka penjual akan memberikan level pedas <strong>Sedang</strong> secara otomatis (ini adalah nilai default). Namun, jika Anda bilang "Pak, beli nasi goreng satu, level <strong>Sangat Pedas</strong>", maka penjual akan mengikuti instruksi Anda dan mengabaikan nilai default tadi.</p>
+            </div>
+
+            
+
+            <h2 class="section-title">Contoh Tanpa Default Parameters</h2>
+            <p>Sebelum adanya ES6, kita harus mengecek secara manual di dalam blok kode fungsi menggunakan pengkondisian <span class="inline-code">if</span> atau operator OR.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">function sapa(nama) {
+  let user = nama || "Tamu";
+  console.log("Halo, " + user);
+}
+
+sapa(); // Halo, Tamu
+sapa("Riza"); // Halo, Riza</code></pre>
+            </div>
+
+            <h2 class="section-title">Contoh Dengan Default Parameters</h2>
+            <p>Sekarang, kita bisa langsung menetapkan nilai default tepat di samping nama parameter saat mendefinisikan fungsi.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">function sapa(nama = "Tamu") {
+  console.log(`Halo, ${nama}`);
+}
+
+sapa();      // Output: Halo, Tamu
+sapa("Budi"); // Output: Halo, Budi</code></pre>
+            </div>
+
+            <h2 class="section-title">Cara Kerja Default Parameters</h2>
+            <ul>
+                <li><strong>Gunakan Default:</strong> Jika argumen tidak diisi atau bernilai <span class="inline-code">undefined</span>.</li>
+                <li><strong>Gunakan Argumen:</strong> Jika Anda mengirimkan nilai apa pun (String, Number, dll) saat pemanggilan fungsi.</li>
+            </ul>
+
+            <h2 class="section-title">Default Parameters dengan Expression</h2>
+            <p>Hebatnya, nilai default tidak harus berupa teks statis. Kita bisa menggunakan ekspresi matematika atau bahkan variabel lain sebagai default.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">function hitungLuas(panjang, lebar = panjang) {
+  // Jika lebar tidak diisi, otomatis dianggap persegi (lebar = panjang)
+  return panjang * lebar;
+}
+
+console.log(hitungLuas(10));     // 100 (10 * 10)
+console.log(hitungLuas(10, 5));  // 50 (10 * 5)</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p><strong>Default Parameters</strong> membuat fungsi kita lebih tangguh (<em>robust</em>) karena dapat mencegah error ketika ada argumen yang lupa dikirimkan. Ini juga membuat kode jauh lebih bersih karena kita tidak perlu lagi menulis banyak pengecekan manual di dalam tubuh fungsi.</p>
+            
+            <p>Pada artikel berikutnya, kita akan membahas <strong>Ternary Operator</strong>: Cara menulis logika IF-ELSE hanya dalam satu baris kode!</p>
+        </div>
+    </div>
+</body>
+</html>

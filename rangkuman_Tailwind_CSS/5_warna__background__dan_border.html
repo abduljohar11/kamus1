@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Tailwind: Background & Border</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { background: #1a1b26 !important; padding: 1.5rem !important; border-radius: 1rem !important; border: 1px solid #334155; overflow-x: auto; }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        p { margin-bottom: 1.2rem; line-height: 1.8; }
+        .utility-tag { background: #cbd5e1; padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 0.85rem; font-weight: bold; color: #1d4ed8; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Visual: Color, Bg & Border
+        </h1>
+
+        <div class="card">
+            <p>Tailwind menyediakan sistem warna berbasis palet yang konsisten. Memahami cara menggabungkan warna latar, teks, dan garis tepi adalah kunci dalam menciptakan desain yang kontras dan profesional.</p>
+
+            <h2 class="section-title">1. Sistem Pewarnaan</h2>
+            <p>Warna di Tailwind menggunakan format <span class="utility-tag">{properti}-{warna}-{tingkat}</span>. Tingkat warna berkisar dari <code>50</code> (paling terang) hingga <code>950</code> (paling gelap).</p>
+
+            <div class="grid grid-cols-5 md:grid-cols-10 gap-2 my-6">
+                <div class="h-10 bg-blue-50 rounded shadow-sm flex items-center justify-center text-[10px] font-bold">50</div>
+                <div class="h-10 bg-blue-100 rounded shadow-sm flex items-center justify-center text-[10px] font-bold">100</div>
+                <div class="h-10 bg-blue-300 rounded shadow-sm flex items-center justify-center text-[10px] font-bold">300</div>
+                <div class="h-10 bg-blue-500 rounded shadow-sm flex items-center justify-center text-[10px] font-bold text-white">500</div>
+                <div class="h-10 bg-blue-700 rounded shadow-sm flex items-center justify-center text-[10px] font-bold text-white">700</div>
+                <div class="h-10 bg-blue-900 rounded shadow-sm flex items-center justify-center text-[10px] font-bold text-white">900</div>
+            </div>
+            
+
+            <h2 class="section-title">2. Background & Text</h2>
+            <p>Gunakan <span class="utility-tag">bg-{color}</span> untuk latar belakang. Pastikan kontras teks terjaga.</p>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!-- Latar belakang gelap, teks terang --&gt;
+&lt;div class="bg-slate-900 text-white p-4"&gt;
+  Konten dengan kontras tinggi
+&lt;/div&gt;
+
+&lt;!-- Latar belakang terang (Soft), teks gelap --&gt;
+&lt;div class="bg-emerald-100 text-emerald-800 p-4"&gt;
+  Pesan Sukses
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">3. Border & Rounding</h2>
+            <p>Untuk mengaktifkan border, kamu wajib menuliskan class <span class="utility-tag">border</span>. Kemudian tambahkan ketebalan dan warna.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
+                <div class="p-4 border border-slate-400 rounded-none bg-white text-center text-xs">rounded-none</div>
+                <div class="p-4 border-2 border-blue-500 rounded-lg bg-white text-center text-xs">border-2 rounded-lg</div>
+                <div class="p-4 border-4 border-orange-500 rounded-full bg-white text-center text-xs">border-4 rounded-full</div>
+            </div>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!-- Border tipis, sudut membulat, warna abu --&gt;
+&lt;div class="border border-slate-300 rounded-xl p-6 shadow-sm"&gt;
+  Konten di dalam box bergaris.
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Contoh Lengkap: Alert Component</h2>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-md"&gt;
+  &lt;h3 class="text-amber-800 font-bold"&gt;Perhatian!&lt;/h3&gt;
+  &lt;p class="text-amber-700 text-sm"&gt;
+    Sesi Anda akan segera berakhir. Silakan simpan pekerjaan Anda.
+  &lt;/p&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Kombinasi warna, latar, dan border membantu pengguna membedakan hierarki informasi. Gunakan warna-warna lembut (tingkat 50-100) untuk latar belakang blok konten agar mata tidak cepat lelah.</p>
+
+            <div class="mt-10 pt-6 border-t border-slate-300 flex justify-between items-center">
+                <div>
+                    <p class="text-sm font-bold text-slate-500 italic uppercase">Selanjutnya:</p>
+                    <p class="text-lg font-bold text-blue-600">Layout: Flexbox & Grid &raquo;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

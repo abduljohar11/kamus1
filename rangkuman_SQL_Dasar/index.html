@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roadmap SQL Dasar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-100 p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <a href="../index.html" class="mb-6 inline-flex items-center font-bold text-blue-600 uppercase text-xs hover:text-blue-800 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Kembali ke Beranda Utama
+        </a>
+
+        <header class="mb-10">
+            <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tighter uppercase leading-none">
+                🗄️ Roadmap SQL Dasar
+            </h1>
+            <p class="text-slate-600 mt-2 font-medium italic">
+                Panduan lengkap pengelolaan database MySQL untuk persiapan Laravel 12.
+            </p>
+        </header>
+
+        
+
+        <div class="grid gap-4 md:grid-cols-2">
+            <a href="1_pengenalan_sql_&_instalasi_mysql.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-blue-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight">1. Pengenalan & Instalasi</h3>
+                <p class="text-slate-500 text-sm mt-1">Langkah awal mengenal MySQL dan persiapan environment.</p>
+            </a>
+
+            <a href="2_struktur_database_&_tipe_data.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-blue-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-blue-600 tracking-tight">2. Struktur & Tipe Data</h3>
+                <p class="text-slate-500 text-sm mt-1">Memahami cara MySQL menyimpan angka, teks, dan tanggal.</p>
+            </a>
+
+            <a href="3_perintah_select_dasar.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-emerald-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-emerald-600 tracking-tight">3. Perintah SELECT Dasar</h3>
+                <p class="text-slate-500 text-sm mt-1">Cara mengambil data dari tabel secara efektif.</p>
+            </a>
+
+            <a href="4_where_-_and_-_or_-_not.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-emerald-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-emerald-600 tracking-tight">4. Filter Data (WHERE)</h3>
+                <p class="text-slate-500 text-sm mt-1">Menyaring data menggunakan operator logika.</p>
+            </a>
+
+            <a href="5_order_by_-_limit_-_dan_offset.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-emerald-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-emerald-600 tracking-tight">5. Urutan & Pagination</h3>
+                <p class="text-slate-500 text-sm mt-1">Mengatur urutan tampilan dan membatasi data.</p>
+            </a>
+
+            <a href="8_insert_into_(menambahkan_data).html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-emerald-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-emerald-600 tracking-tight">6. INSERT: Tambah Data</h3>
+                <p class="text-slate-500 text-sm mt-1">Memasukkan informasi baru ke database.</p>
+            </a>
+
+            <a href="9_update_&_delete.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-rose-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-rose-600 tracking-tight">7. UPDATE & DELETE</h3>
+                <p class="text-slate-500 text-sm mt-1">Mengubah dan menghapus data dengan aman.</p>
+            </a>
+
+            <a href="10_primary_key_&_auto_increment.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-indigo-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-indigo-600 tracking-tight">8. Primary Key & ID</h3>
+                <p class="text-slate-500 text-sm mt-1">Identitas unik untuk setiap baris data.</p>
+            </a>
+
+            <a href="11_foreign_key_&_relasi_tabel.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-indigo-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-indigo-600 tracking-tight">9. Foreign Key & Relasi</h3>
+                <p class="text-slate-500 text-sm mt-1">Menghubungkan antar tabel database.</p>
+            </a>
+
+            <a href="12_join_(inner_-_left_-_right_-_full).html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-indigo-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-indigo-600 tracking-tight">10. JOIN (Gabung Tabel)</h3>
+                <p class="text-slate-500 text-sm mt-1">Menggabungkan data dari banyak tabel.</p>
+            </a>
+
+            <a href="6_fungsi_agregat_(count_-_sum_-_avg_-_min_-_max).html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-amber-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-amber-600 tracking-tight">11. Fungsi Agregat</h3>
+                <p class="text-slate-500 text-sm mt-1">Menghitung total, rata-rata, dan statistik.</p>
+            </a>
+
+            <a href="7_group_by_dan_having.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-amber-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-amber-600 tracking-tight">12. GROUP BY & HAVING</h3>
+                <p class="text-slate-500 text-sm mt-1">Mengelompokkan data berdasarkan kategori.</p>
+            </a>
+
+            <a href="13_subquery_(query_di_dalam_query).html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-purple-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-purple-600 tracking-tight">13. Subquery</h3>
+                <p class="text-slate-500 text-sm mt-1">Menjalankan kueri di dalam kueri lainnya.</p>
+            </a>
+
+            <a href="14_alias_&_fungsi_string.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-slate-400">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-slate-600 tracking-tight">14. Alias & Fungsi String</h3>
+                <p class="text-slate-500 text-sm mt-1">Merapikan tampilan teks hasil kueri.</p>
+            </a>
+
+            <a href="15_fungsi_tanggal_&_waktu.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-sky-500">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-sky-600 tracking-tight">15. Tanggal & Waktu</h3>
+                <p class="text-slate-500 text-sm mt-1">Memproses data waktu dan selisih hari.</p>
+            </a>
+
+            <a href="16_view_(tabel_virtual_dari_query).html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-teal-600">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-teal-600 tracking-tight">16. VIEW (Tabel Virtual)</h3>
+                <p class="text-slate-500 text-sm mt-1">Menyimpan kueri kompleks untuk dipanggil ulang.</p>
+            </a>
+
+            <a href="17_index_&_optimasi_query.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-orange-500">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-orange-600 tracking-tight">17. Index & Optimasi</h3>
+                <p class="text-slate-500 text-sm mt-1">Teknik mempercepat pencarian data besar.</p>
+            </a>
+
+            <a href="18_import_&_export_data_mysql.html" class="group block p-6 bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all border border-slate-200 border-l-8 border-l-slate-800">
+                <h3 class="text-xl font-black text-slate-800 group-hover:text-black tracking-tight">18. Import & Export</h3>
+                <p class="text-slate-500 text-sm mt-1">Cara backup dan restore database.</p>
+            </a>
+        </div>
+
+        <footer class="mt-12 text-center text-slate-400 text-xs uppercase font-bold tracking-widest">
+            Selesai Materi Dasar &bull; Siap Menuju Laravel 12
+        </footer>
+    </div>
+</body>
+</html>

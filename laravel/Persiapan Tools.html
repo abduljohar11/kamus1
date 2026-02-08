@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persiapan Tools</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            --code-bg: #1e1e2e;
+        }
+
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            line-height: 1.7; 
+            color: var(--text-main); 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            background-color: var(--bg-body); 
+        }
+
+        .materi-wrapper { 
+            background: var(--bg-card); 
+            padding: 50px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border); 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+        }
+
+        h1 { 
+            font-size: 2.5rem; 
+            font-weight: 800; 
+            color: #0f172a; 
+            margin-top: 0; 
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        h3 { 
+            font-size: 1.5rem; 
+            margin-top: 2.5rem; 
+            color: #334155;
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        p { margin-bottom: 1.25rem; font-size: 1.1rem; }
+
+        /* Link Styling */
+        a { color: var(--primary); text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+
+        /* Table of Contents Styling */
+        .table-of-contents { 
+            background: #f1f5f9; 
+            padding: 20px 25px; 
+            border-radius: 10px; 
+            list-style-type: none; 
+            margin: 2rem 0;
+        }
+        .table-of-contents li { margin-bottom: 8px; }
+        .table-of-contents a { color: #475569; font-size: 0.95rem; }
+
+        /* Code & Pre Styling */
+        pre { 
+            background: var(--code-bg); 
+            color: #f8f8f2; 
+            padding: 20px; 
+            border-radius: 12px; 
+            overflow-x: auto; 
+            font-size: 14px;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        code { 
+            font-family: 'Fira Code', 'Consolas', monospace; 
+            background: #fee2e2; 
+            color: #991b1b; 
+            padding: 2px 6px; 
+            border-radius: 4px; 
+            font-size: 0.9em;
+        }
+        pre code { background: none; color: inherit; padding: 0; }
+
+        /* Blockquote Styling */
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.5rem;
+            background: #eff6ff;
+            border-left: 5px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+        }
+
+        /* Image Styling */
+        img { 
+            max-width: 100%; 
+            height: auto; 
+            border-radius: 12px; 
+            margin: 30px 0; 
+            display: block;
+            border: 1px solid var(--border);
+        }
+
+        /* Utility */
+        .mb-3 { margin-bottom: 0.75rem; }
+        strong { color: #000; }
+    </style>
+</head>
+<body>
+    <article class="materi-wrapper">
+        <main
+  class="flex-1 min-w-0 lg:ml-80 mr-0 xl:mr-64 transition-all duration-300 pt-10 md:pt-0"
+>
+  <div class="max-w-full mx-auto px-4 sm:px-6 md:px-8 py-5">
+    <h1 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">
+      Persiapan Tools
+    </h1>
+
+    <div
+      class="prose lg:prose-lg prose-a:text-blue-500 dark:prose-a:text-blue-400 dark:prose-invert w-full max-w-full"
+    >
+      <div
+        x-data
+        x-init="let t=document.querySelector('.table-of-contents'),d=document.querySelector('.toc'),m=document.querySelector('.toc-mobile'),b=document.querySelector('.btn-toc');if(t&&t.querySelectorAll('li').length>0){d.appendChild(t.cloneNode(true));m.appendChild(t.cloneNode(true))}else b?.classList.add('hidden');$nextTick(()=>{document.querySelectorAll(`.prose a[href^='http']`).forEach(a=>{a.href.includes(location.hostname)||(a.target='_blank',a.rel='noopener noreferrer')})})"
+      ></div>
+
+      <ul class="table-of-contents">
+        <li>
+          <a href="#content-langkah-1---installasi-text-editor"
+            >Langkah 1 - Installasi Text Editor</a
+          >
+        </li>
+        <li>
+          <a href="#content-langkah-2---installasi-web-server"
+            >Langkah 2 - Installasi Web Server</a
+          >
+        </li>
+        <li>
+          <a href="#content-langkah-3---installasi-composer"
+            >Langkah 3 - Installasi Composer</a
+          >
+        </li>
+      </ul>
+      <p>
+        Sebelum belajar <strong>Laravel</strong> kita harus menyiapkan beberapa
+        <em>tools</em>-nya terlebih dahulu, seperti <strong>PHP</strong>,
+        <em>Web</em> <em>Server</em>, <strong>MySQL</strong>,
+        <strong>Composer</strong>, <em>Text</em> <em>Editor</em> dan lain
+        sebagainya. Berikut ini beberapa <em>tools</em> yang wajib teman-teman
+        install sebelum melanjutkan ke materi berikutnya.
+      </p>
+      <h3>
+        <a
+          id="content-langkah-1---installasi-text-editor"
+          href="#content-langkah-1---installasi-text-editor"
+          class="heading-permalink"
+          aria-hidden="true"
+          title="Permalink"
+        ></a
+        >Langkah 1 - Installasi Text Editor
+      </h3>
+      <p>
+        <em>Text</em> <em>Editor</em> akan kita gunakan untuk menulis kode
+        program yang kita buat dan disini saya akan merekomendasikan
+        <em>Text</em> <em>Editor</em> yang populer seperti
+        <strong>Visual</strong> <strong>Studi</strong> <strong>Code</strong>.
+      </p>
+      <p>
+        Untuk melakukan installasi, teman-teman bisa buka <em>link</em> berikut
+        ini dan silahkan disesuaikan dengan sistem operasi yang digunakan.
+      </p>
+      <blockquote>
+        <p>
+          <strong>DOWNLOAD</strong> :
+          <a href="https://code.visualstudio.com/"
+            >https://code.visualstudio.com/</a
+          >
+        </p>
+      </blockquote>
+      <p>
+        Setelah <strong>Visual Studio Code</strong> berhasil terinsall, sekarang
+        saya akan rekomendasikan beberapa <em>plugin</em> yang akan kita gunakan
+        dalam pengembangan aplikasi menggunakan <strong>Laravel</strong>.
+      </p>
+      <p><strong>Plugin Visual Studio Code untuk PHP</strong></p>
+      <ul>
+        <li>
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=hakcorp.php-awesome-snippets"
+            >https://marketplace.visualstudio.com/items?itemName=hakcorp.php-awesome-snippets</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client"
+            >https://marketplace.visualstudio.com/items?itemName=bmewburn.vscode-intelephense-client</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=MehediDracula.php-namespace-resolver"
+            >https://marketplace.visualstudio.com/items?itemName=MehediDracula.php-namespace-resolver</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=rexshi.phpdoc-comment-vscode-plugin"
+            >https://marketplace.visualstudio.com/items?itemName=rexshi.phpdoc-comment-vscode-plugin</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=ronvanderheijden.phpdoc-generator"
+            >https://marketplace.visualstudio.com/items?itemName=ronvanderheijden.phpdoc-generator</a
+          >
+        </li>
+      </ul>
+      <p><strong>Plugin Visual Studio Code untuk Laravel</strong></p>
+      <ul>
+        <li>
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=amirmarmul.laravel-blade-vscode"
+            >https://marketplace.visualstudio.com/items?itemName=amirmarmul.laravel-blade-vscode</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=austenc.laravel-blade-spacer"
+            >https://marketplace.visualstudio.com/items?itemName=austenc.laravel-blade-spacer</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=codingyu.laravel-goto-view"
+            >https://marketplace.visualstudio.com/items?itemName=codingyu.laravel-goto-view</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=stef-k.laravel-goto-controller"
+            >https://marketplace.visualstudio.com/items?itemName=stef-k.laravel-goto-controller</a
+          >
+        </li>
+        <li>
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=amiralizadeh9480.laravel-extra-intellisense"
+            >https://marketplace.visualstudio.com/items?itemName=amiralizadeh9480.laravel-extra-intellisense</a
+          >
+        </li>
+      </ul>
+      <h3>
+        <a
+          id="content-langkah-2---installasi-web-server"
+          href="#content-langkah-2---installasi-web-server"
+          class="heading-permalink"
+          aria-hidden="true"
+          title="Permalink"
+        ></a
+        >Langkah 2 - Installasi Web Server
+      </h3>
+      <p>
+        Untuk <em>Web Server</em>, PHP dan <em>Database</em> disini kita bisa
+        menggunakan <em>tools</em> yang sudah di <em>bundle</em> menjadi 1,
+        seperti
+        <strong
+          ><a href="https://www.apachefriends.org/download.html"
+            >XAMPP</a
+          ></strong
+        >
+        atau <strong><a href="https://laragon.org/download/">Laragon</a></strong
+        >.
+      </p>
+      <p>
+        Disini kita bisa memilih menggunakan <strong>XAMPP</strong> atau
+        <strong>Laragon</strong>, sesuai dengan selera masing-masing, kelebihan
+        menggunakan <strong>Laragon</strong> dibandingkan
+        <strong>XAMPP</strong> adalah dapat berganti-ganti versi PHP dengan
+        lebih mudah dan hal tersebut belum bisa dilakukan oleh
+        <strong>XAMPP</strong> untuk saat ini.
+      </p>
+      <p>
+        Dan kekurangan <strong>Laragon</strong> sendiri belum memiliki
+        <em>Database Manager</em> seperti <strong>phpMyAdmin</strong>, tapi kita
+        kita bisa menginstallnya sendiri dengan mudah.
+      </p>
+      <p>
+        Disini disarakan menggunakan PHP versi <code>8.2.x</code> di dalam
+        <strong>XAMPP</strong> ataupun <strong>Laragon</strong>. Berikut ini
+        <em>link</em> yang bisa teman-teman pakai untuk mengunduh aplikasi-nya.
+      </p>
+      <p><strong>Link Unduh XAMPP</strong></p>
+      <ul>
+        <li>
+          <a href="https://www.apachefriends.org/download.html"
+            >https://www.apachefriends.org/download.html</a
+          >
+        </li>
+      </ul>
+      <p><strong>Link Unduh Laragon</strong></p>
+      <ul>
+        <li>
+          <a href="https://laragon.org/download/"
+            >https://laragon.org/download/</a
+          >
+        </li>
+      </ul>
+      <h3>
+        <a
+          id="content-langkah-3---installasi-composer"
+          href="#content-langkah-3---installasi-composer"
+          class="heading-permalink"
+          aria-hidden="true"
+          title="Permalink"
+        ></a
+        >Langkah 3 - Installasi Composer
+      </h3>
+      <p>
+        Jika menggunakan <strong>XAMPP</strong>, maka untuk
+        <strong>Composer</strong> kita harus melakukan installasi manual, karena
+        tidak ikut di dalam aplikasi <strong>XAMPP</strong> tersebut, akan
+        tetapi jika menggunakan
+        <strong
+          ><a href="https://laravel.com/docs/8.x/homestead#introduction"
+            >Homestead</a
+          ></strong
+        >
+        maka kita tidak perlu melakukan installasi <strong>Composer</strong>,
+        karena secara <em>default</em>, paket <strong>Composer</strong> sudah
+        tersedia di dalamnya.
+      </p>
+      <p>
+        Berikut ini <em>link</em> untuk melakukan installasi
+        <strong>Composer</strong> dan silahkan di sesuaikan dengan sistem
+        operasi yang digunakan.
+      </p>
+      <ul>
+        <li>
+          Installation - Linux / Unix / macOS :
+          <a
+            href="https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos"
+            >https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos</a
+          >
+        </li>
+        <li>
+          Installation - Windows :
+          <a href="https://getcomposer.org/doc/00-intro.md#installation-windows"
+            >https://getcomposer.org/doc/00-intro.md#installation-windows</a
+          >
+        </li>
+      </ul>
+      <p>
+        Untuk memverifikasi apakah <strong>Composer</strong> sudah berhasil
+        terinstall di dalam komputer, kita bisa menjalankan perintah berikut ini
+        di dalam CMD/terminal :
+      </p>
+      <pre><code>composer
+</code></pre>
+      <p>
+        <img
+          src="https://cdn.jsdelivr.net/gh/maulayyacyber/assets-images-ebooks/laravel-untuk-pemula-laravel-11/composer.png"
+          alt=""
+        />
+      </p>
+    </div>
+  </div>
+</main>
+
+    </article>
+</body>
+</html>

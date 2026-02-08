@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; /* Menjaga baris baru kodingan <?php ?> */
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Insert Data ke Dalam Database</h1>
+        <div class="card"><p>Selain itu, untuk input teks yang lebih bagus (<strong><em>rich</em> <em>text</em></strong>) seperti deskripsi produk, kita akan menggunakan <strong>CKEditor</strong> sebagai <em>WYSIWYG editor</em>. Dengan <em>CKEditor</em>, kita dapat mengatur format teks, menambahkan gambar, tautan, dan fitur lainnya dengan lebih mudah.</p><p>Dengan memahami materi ini, teman-teman akan dapat membuat fitur <strong><em>form</em> <em>input</em></strong>, <strong>validasi data</strong>, dan <strong>penyimpanan <em>file</em> gambar</strong> di <strong>Laravel</strong> <strong>12</strong> secara optimal.</p><h2 class="section-title">Langkah 1 - Membuat Method Create dan Store di Controller</h2><p>Karena sudah memiliki <em>controller</em> untuk <em>product</em>, maka sekarang kita tinggal menambahkan 2 <em>method</em> saja di dalamnya, 2 <em>method</em> tersebut adalah:</p><p>Silahkan teman-teman buka <em>file</em> <code>app/Http/Controllers/ProductController.php</code>, kemudian ubah semua kode-nya menjadi seperti berikut ini.</p><p>app/Http/Controllers/ProductController.php</p>
+                        <div class="code-wrap relative my-8">
+                            <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                            <pre><code class="language-php"><?php
+
+namespace App\Http\Controllers;
+
+//import model product
+use App\Models\Product; 
+
+//import return type View
+use Illuminate\View\View;
+
+//import return type redirectResponse
+use Illuminate\Http\RedirectResponse;
+
+//import Http Request
+use Illuminate\Http\Request;
+
+class ProductController extends Controller
+{
+    /**
+     * index
+     *
+     * @return void
+     */
+    public function index() : View
+    {
+        //get all products
+        $products = Product::latest()->paginate(10);
+
+        //render view with products
+        return view('products.index', compact('products'));
+    }
+
+    /**
+     * create
+     *
+     * @return View
+     */
+    public function create(): View
+    {
+        return view('products.create');
+    }
+
+    /**
+     * store
+     *
+     * @param  mixed $request
+     * @return RedirectResponse
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        //validate form
+        $request->validate([
+            'image'         => 'required|image|mimes:jpeg,jpg,png|max:2048',
+            'title'         => 'required|min:5',
+            'description'   => 'required|min:10',
+            'price'         => 'required|numeric',
+            'stock'         => 'required|numeric'
+        ]);
+
+        //upload image
+        $image = $request->file('image');
+        $image->storeAs('products', $image->hashName());
+
+        //create product
+        Product::create([
+            'image'         => $image->hashName(),
+            'title'         => $request->title,
+            'description'   => $request->description,
+            'price'         => $request->price,
+            'stock'         => $request->stock
+        ]);
+
+        //redirect to index
+        return redirect()->route('products.index')->with(['success' => 'Data Berhasil Disimpan!']);
+    }
+}</code></pre>
+                        </div><p>Dari perubahan kode di atas, pertama kita <em>import</em> <em>return</em> <em>type</em> <code>RedirectResponse</code>.</p><p>kemudian kita <em>import</em> juga <em>Http</em> <em>Request</em>.</p><p>Setelah itu, di dalam <em>class</em> <code>ProductController</code> kita menambahkan 2 <em>method</em> baru:</p><li><code>function create</code></li><li><code>function store</code></li><p><em><strong>Function Create</strong></em></p><p><em>Method</em> ini akan kita gunakan untuk menampilkan halaman <em>form</em> tambah data <em>product</em>. Pada <em>method</em> ini kita hanya melakukan <em>return</em> ke dalam sebuah <em>view</em>.</p><p><em><strong>Function Store</strong></em></p><p><em>Method</em> ini akan kita gunakan untuk melakukan proses <em>insert</em> data ke dalam <em>database</em> dan juga <em>upload</em> gambar.</p><p>Di dalam <em>method</em> tersebut, hal pertama yang kita lakukan adalah membuat validasi, yaitu untuk memeriksa apakah data yang dikirimkan sudah sesuai atau belum.</p><p>Dari kode validasi di atas, berikut ini penjelasan lengkapnya.</p><p>Setelah itu, kita melakukan <em>upload</em> gambar menggunakan <em>method</em> <code>storeAs</code>.</p><p>Jika proses upload gambar berhasil dilakukan, maka langkah selanjutnya adalah melakukan proses <em>insert</em> data ke dalam <em>database</em> menggunakan <em>Model</em>.</p><p>Dari kode insert data di atas, berikut penjelasannya.</p><p>Jika proses <em>insert</em> data berhasil dilakukan, maka kita akan <em>redirect</em> ke dalam <em>route</em> yang bernama <code>products.index</code> dan tentu saja kita tambahkan sebuah session <em>flash</em> data untuk menampilkan notifikasi.</p><h2 class="section-title">Langkah 2 - Membuat Form Tambah Data</h2><p>Setelah kita menambahkan <em>method</em> <code>create</code> dan <code>store</code> di dalam <em><strong>ProductController</strong></em>, sekarang kita akan membuat tampilan untuk <em>form</em> tambah data produk.</p><p>Silakan teman-teman buat <em>file</em> baru di dalam <em>folder</em> <code>resources/views/products/</code> dengan nama <code>create.blade.php</code>, kurang lebih struktur <em>folder</em>nya akan terlihat seperti ini:</p><p>Setelah itu, silahkan buka <em>file</em>-nya dan tambahkan kode berikut ini di dalamnya.</p><p>resources/views/products/create.blade.php</p><p>Dari penambahan kode di atas, jika teman-teman perhatikan pada bagian <em>form</em> <em>action</em>, kita arahkan ke dalam <em>route</em> yang bernama <code>products.store</code>. Artinya itu akan memanggil <em>method</em> yang bernama <code>store</code> yang berada di dalam <em>controller</em>.</p><p>Pada bagian <em>form</em> kita tambahkan <em>attribute</em> <code>enctype="multipart/form-data"</code>. Ini ditambahkan jika ada sebuah <em>upload</em> file di dalam <em>form</em>-nya.</p><p>Kemudian di dalam <em>JavaScript</em>, teman-teman bisa perhatikan kita melakukan inisialisasi <em>Rich</em> <em>Text</em> Editor menggunakan <strong>CKEdtor</strong>. Dan kita akan terapkan ke dalam <em>textarea</em> yang memiliki <em>name</em> <code>description</code>.</p><h2 class="section-title">Langkah 3 - Uji Coba Insert Data</h2><p>Setelah kita selesai membuat <strong><em>form</em> tambah data</strong> pada langkah sebelumnya, sekarang saatnya melakukan <strong>uji coba <em>insert</em> data</strong> ke dalam <em>database</em> untuk memastikan semua proses berjalan dengan baik.</p><p>Silahkan teman-teman klik <em>button</em> <code>ADD PRODUCT</code> yang ada pada halaman produk <em>index</em>, atau bisa juga melalui <em>URL</em> berikut ini <a href="http://localhost:8000/products/create">http://localhost:8000/products/create</a>. Jika berhasil maka akan menampilkan hasil seperti berikut ini.</p><p>Silahkan klik <em>button</em> <code>SAVE</code> tanpa mengisi data apapun, jika berhasil maka akan menampilkan validasi yang kurang lebih serti berikut ini.</p><p>Sekarang, silahkan masukkan data di dalam <em>form</em> dan klik <em>button</em> <code>SAVE</code>, jika berhasil maka akan menampilkan hasil seperti berikut ini.</p><h2 class="section-title">Kesimpulan</h2><p>Pada artikel ini, kita telah berhasil melakukan <strong><em>insert</em> data dan upload gambar</strong> ke dalam <em>database</em> di <strong>Laravel</strong> <strong>12</strong>.</p><p>Pada artikel selanjutnya, kita akan belajar bagaimana cara <strong>Menampilkan <em>Detail</em> Produk Berdasarkan ID di Laravel 12</strong>.</p></div>
+    </div>
+</body>
+</html>

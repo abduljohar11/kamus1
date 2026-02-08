@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Pengenalan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        ol { list-style: decimal; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        blockquote { background: #d1d5db; border-left: 4px solid #4b5563; padding: 1rem; margin-bottom: 1.5rem; border-radius: 0.5rem; font-style: italic; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">PHP Pengenalan</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Apa Itu PHP?</h2>
+            <p><strong>PHP</strong> (<em>Hypertext Preprocessor</em>) adalah bahasa pemrograman <em>server-side</em> yang dirancang khusus untuk pengembangan web. Awalnya dibuat oleh <strong>Rasmus Lerdorf</strong> pada tahun 1994.</p>
+
+            <h2 class="section-title">Kenapa Harus Belajar PHP?</h2>
+            <p>Banyak platform besar seperti <strong>WordPress</strong>, <strong>Facebook</strong>, dan <strong>Wikipedia</strong> dibangun dengan PHP. Selain itu, PHP juga punya banyak framework keren seperti <strong>Laravel</strong> yang mempercepat pengembangan.</p>
+
+            <h2 class="section-title">Langkah 1 - Cara Install PHP</h2>
+            <p>Kita bisa menggunakan paket seperti <strong>XAMPP</strong> atau <strong>Laragon</strong> yang sudah menyertakan PHP, Apache, dan MySQL.</p>
+
+            <h3 class="text-xl font-bold mb-4">Opsi 1: Install via XAMPP (Windows/macOS)</h3>
+            <ol>
+                <li>Buka situs resmi: <a href="https://www.apachefriends.org/download.html" class="text-blue-600 underline">Apache Friends</a></li>
+                <li>Download XAMPP sesuai sistem operasi Anda.</li>
+                <li>Jalankan installer, klik "Next" sampai selesai.</li>
+                <li>Buka <strong>XAMPP Control Panel</strong> dan start <strong>Apache</strong>.</li>
+            </ol>
+            <blockquote>
+                Tips: XAMPP sangat cocok untuk pemula karena instalasinya yang mudah.
+            </blockquote>
+
+            <h3 class="text-xl font-bold mb-4">Opsi 2: Install Manual (Linux)</h3>
+            <div class="code-wrap my-4">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">sudo apt update
+sudo apt install php
+php -v</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 2 - Hello World Dengan PHP</h2>
+            <p>Mari kita buat program pertama kita. Ikuti instruksi di bawah ini:</p>
+
+            <div class="code-wrap my-4">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">// 1. Buat folder project
+mkdir belajar-php
+cd belajar-php
+
+// 2. Buat file index.php dan isi dengan:
+&lt;?php
+    echo "Hello, World!";
+?&gt;
+
+// 3. Jalankan built-in server
+php -S localhost:8000</code></pre>
+            </div>
+
+            <p>Buka browser dan kunjungi <a href="http://localhost:8000" class="text-blue-600 underline">http://localhost:8000</a> untuk melihat hasilnya.</p>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Kita sudah berhasil menginstal PHP dan menjalankan program "Hello World". Di seri berikutnya, kita akan membahas <strong>Struktur Dasar Program PHP</strong>.</p>
+        </div>
+    </div>
+</body>
+</html>

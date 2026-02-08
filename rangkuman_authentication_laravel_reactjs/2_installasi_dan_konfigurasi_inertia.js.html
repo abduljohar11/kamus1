@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installasi dan Konfigurasi Inertia.js</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Installasi dan Konfigurasi Inertia.js</h1>
+        <div class="card">
+            <p>Perlu teman-teman ketahui, untuk menggunakan <strong>Inertia.js</strong> kita perlu melakukan 2 jenis konfigurasi, yaitu konfigurasi dari sisi <em>server</em> <em>side</em> (<em>backend</em>) dan konfigurasi dari sisi <em>client</em> <em>side</em> (<em>frontend</em>). </p>
+            
+            
+
+            <h2 class="section-title">Langkah 1 - Installasi Inertia.js "server-side"</h2>
+            <p>Silahkan teman-teman masuk ke dalam <em>folder</em> <em>project</em>nya, kemudian jalankan perintah berikut ini di dalam terminal/CMD.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">composer require inertiajs/inertia-laravel</code></pre>
+            </div>
+
+            <p>Silahkan tunggu proses installasi-nya sampai selesai dan pastikan teman-teman harus terhubung dengan <em>internet</em>.</p>
+
+            <h2 class="section-title">Langkah 2 - Publish Dan Register Middleware Inertia.js</h2>
+            <p>Kita lanjutkan melakukan <em>publish</em> <em>middleware</em> dari <strong>Inertia.js</strong>. Middleware inilah yang akan berperan menghubungkan data dari <em>backend</em> ke <em>frontend</em>.</p>
+            <p>Silahkan teman-teman jalankan perintah berikut ini di dalam terminal/CMD :</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">php artisan inertia:middleware</code></pre>
+            </div>
+
+            <p>Jika perintah di atas berhasil dijalanakan, maka kita akan mendapatkan 1 <em>file</em> <em>Middleware</em> baru dari <strong>Inertia</strong> yang berada di dalam <em>folder</em> <span class="inline-code">app/Http/Middleware/HandleInertiaRequests.php</span>.</p>
+            <p>Setelah <em>file</em> <em>Middleware</em> berhasil dibuat, maka sekarang kita akan lanjutkan untuk melakukan <em>register</em> <em>Midlleware</em> tersebut. Silahkan buka file <span class="inline-code">bootstrap/app.php</span>, kemudian tambahkan kode berikut ini di dalam <span class="inline-code">->withMiddleware</span>.</p>
+            
+            <p>Jika ditulis dengan lengkap kurang lebih seperti berikut ini :</p>
+            
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
+
+return Application::configure(basePath: dirname(__DIR__))
+    ->withRouting(
+        web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
+        health: '/up',
+    )
+    ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->web(append: [
+            \App\Http\Middleware\HandleInertiaRequests::class,
+        ]);
+    })
+    ->withExceptions(function (Exceptions $exceptions): void {
+        //
+    })->create();</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 3 - Konfigurasi Shared Data</h2>
+            <p>Disini kita akan menambahkan <em>Shared</em> <em>Data</em> di dalam <em>middleware</em> <strong>Inertia.js</strong>. <em>Shared</em> <em>Data</em> digunakan untuk membuat data menjadi <em>global</em> dan bisa dipanggil di dalam semua <em>view</em> di <strong>React.js</strong>.</p>
+            <p>Disini kita akan menambahkan untuk data <em>user</em> yang sudah login dan <em>session</em> untuk <em>flash</em> <em>message</em>. Silahkan teman-teman buka <em>file</em> <span class="inline-code">app/Http/Middleware/HandleInertiaRequests.php</span>, pada <span class="inline-code">function share</span> ubah menjadi seperti berikut ini.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">public function share(Request $request): array
+{
+    return array_merge(parent::share($request), [
+        'auth' => [
+            'user' => $request->user(),
+        ],
+        'session' => [
+            'status' => fn () => $request->session()->get('status'),
+            'success' => fn () => $request->session()->get('success'),
+            'error' => fn () => $request->session()->get('error'),
+        ],
+    ]);
+}</code></pre>
+            </div>
+
+            <p>Di atas, kita menambahkan <em>array</em> <span class="inline-code">session</span> dengan <em>key</em> <span class="inline-code">status</span>, dimana isinya akan mengambil sebuah <em>request</em> <em>session</em> yang bernama <code>status</code>.</p>
+            <p>Dan <em>array</em> <span class="inline-code">auth</span>, yang berisi <em>key</em> <span class="inline-code">user</span> dengan informasi data <em>user</em> yang sedang <em>login</em>.</p>
+
+            <h2 class="section-title">Langkah 4 - Konfigurasi Root Template</h2>
+            <p><strong>Inertia.js</strong> membutuhkan sebuah <em>root</em> <em>template</em>, pada <em>template</em> ini biasanya akan digunakan untuk meletakkan <em>file</em>-<em>file</em> <em>assets</em>, seperti <strong>CSS</strong> dan <strong>JavaScript</strong>.</p>
+            <p>Silahkan buat <em>file</em> baru dengan nama <span class="inline-code">app.blade.php</span> di dalam <em>folder</em> <span class="inline-code">resources/views</span>, kemudian masukkan kode berikut ini di dalamnya.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html lang="{{ str_replace('_', '-', app()->getLocale()) }}"&gt;
+&lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    &lt;title&gt;Laravel Inertia React&lt;/title&gt;
+    @viteReactRefresh
+    @vite('resources/js/app.jsx')
+    @inertiaHead
+&lt;/head&gt;
+&lt;body&gt;
+    @inertia
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+
+            <p>Di atas, kita memanggil <em>directive</em> <span class="inline-code">@viteReactRefresh</span>, yang fungsinya agar <em>hot</em> <em>reload</em> dijalankan atau kita tidak perlu melakukan <em>refresh</em> halaman secara manual ketika terjadi perubahan.</p>
+            <p>Kemudian kita panggil <em>file</em> <span class="inline-code">app.jsx</span> menggunakan <em>Vite</em>. <em>File</em> tersebut akan kita buat nanti saat konfigurasi <em>client</em>-<em>side</em>.</p>
+            <p>Setelah itu, kita juga memanggil <span class="inline-code">@inertiaHead</span>.</p>
+            <p>Terakhir, kita juga menambahkan <em>directive</em> <span class="inline-code">@inertia</span> yang nanti digunakan untuk me-<em>render</em> setiap <em>component</em> yang menggunakan <em>template</em> ini.</p>
+            
+            <p>Sampai disini pembahasan kita bagaimana cara melakukan installasi dan konfigurasi <strong>Inertia.js</strong> dari sisi <em>server</em> <em>side</em>. Pada artikel selanjutnya kita akan belajar melakukan installasi dan konfigurasi <strong>Inertia.js</strong> pada sisi <em>client</em> <em>side</em>.</p>
+        </div>
+    </div>
+</body>
+</html>

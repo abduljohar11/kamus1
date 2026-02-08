@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Array - Persiapan Laravel & React</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; }
+        .badge { background: #2563eb; color: white; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; }
+        .laravel-note { background: #fff1f2; border-left: 4px solid #f43f5e; padding: 1rem; margin: 1.5rem 0; border-radius: 0.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">PHP Array & Laravel</h1>
+        
+        <div class="card">
+            <p>Di dunia Laravel, <strong>Array</strong> adalah cara utama kita mengemas data dari Database untuk dikirim ke React. Memahami struktur Array berarti kamu memahami bagaimana data mengalir di aplikasi modern.</p>
+
+            <h2 class="section-title">1. Associative Array (Data Satuan)</h2>
+            <p>Bayangkan satu baris data siswa di database. Isinya bukan cuma nama, tapi ada ID, Kelas, dan Alamat. Kita menggunakan <strong>Key (Label)</strong> agar data tidak tertukar.</p>
+            
+            <div class="bg-blue-50 p-4 rounded-xl border-l-4 border-blue-500 my-4">
+                <strong>Analogi:</strong> Seperti <b>Label Nama</b> pada laci. Kamu tidak mencari barang berdasarkan "laci nomor 1", tapi berdasarkan tulisan "Laci Kaus Kaki".
+            </div>
+
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // Representasi satu data user/guru di Laravel
+  $guru = [
+      "id" => 1,
+      "nama" => "Pak Ismail",
+      "mapel" => "Informatika"
+  ];
+
+  echo $guru["nama"]; // Output: Pak Ismail
+?&gt;</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">2. Multidimensional Array (Data Massal)</h2>
+            <p>Inilah bentuk data yang akan kamu kirim dari Laravel Controller ke React. Isinya adalah <strong>daftar</strong> dari banyak baris data.</p>
+
+            <div class="laravel-note">
+                <p class="font-bold text-rose-800 text-sm">INFO LARAVEL:</p>
+                <p class="text-rose-700 text-sm italic">Hasil dari <code>Siswa::all()</code> di Laravel akan menghasilkan struktur seperti ini (dalam bentuk Collection/Array).</p>
+            </div>
+
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  $siswa_list = [
+      ["id" => 1, "nama" => "Andi", "nilai" => 80],
+      ["id" => 2, "nama" => "Siti", "nilai" => 95],
+      ["id" => 3, "nama" => "Budi", "nilai" => 70]
+  ];
+
+  // Mengambil nama siswa kedua (Siti)
+  echo $siswa_list[1]["nama"]; 
+?&gt;</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">3. Array dalam Laravel Inertia</h2>
+            <p>Nantinya, di Laravel Controller, kamu akan mengirimkan array ini ke React menggunakan fungsi <code>Inertia::render</code>.</p>
+            
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // Gambaran kodingan kamu di Laravel nanti
+  return Inertia::render('Siswa/Index', [
+      'siswa' => $siswa_list,
+      'title' => 'Daftar Nilai Siswa'
+  ]);
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">4. Tips Navigasi Array</h2>
+            <ul class="space-y-4">
+                <li class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <span class="badge">foreach</span> : Digunakan di PHP untuk memproses data sebelum dikirim.
+                </li>
+                <li class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+                    <span class="badge">json_encode()</span> : Fungsi PHP yang mengubah Array kamu menjadi format yang dimengerti oleh JavaScript/React.
+                </li>
+            </ul>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Kuasai cara mengambil data dari <strong>Multidimensional Array</strong>. Jika kamu sudah lancar memanggil <code>$data[0]['nama']</code>, maka belajar Laravel akan terasa jauh lebih mudah.</p>
+            
+            <p class="mt-8 font-bold text-center text-blue-700 italic">Materi Selanjutnya: Function & Method - Mesin Pengolah Data Array!</p>
+        </div>
+    </div>
+</body>
+</html>

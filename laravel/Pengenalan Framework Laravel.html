@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengenalan Framework Laravel</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            --code-bg: #1e1e2e;
+        }
+
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            line-height: 1.7; 
+            color: var(--text-main); 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 40px 20px; 
+            background-color: var(--bg-body); 
+        }
+
+        .materi-wrapper { 
+            background: var(--bg-card); 
+            padding: 50px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border); 
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); 
+        }
+
+        h1 { 
+            font-size: 2.5rem; 
+            font-weight: 800; 
+            color: #0f172a; 
+            margin-top: 0; 
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        h3 { 
+            font-size: 1.5rem; 
+            margin-top: 2.5rem; 
+            color: #334155;
+            border-left: 4px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        p { margin-bottom: 1.25rem; font-size: 1.1rem; }
+
+        /* Link Styling */
+        a { color: var(--primary); text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
+
+        /* Table of Contents Styling */
+        .table-of-contents { 
+            background: #f1f5f9; 
+            padding: 20px 25px; 
+            border-radius: 10px; 
+            list-style-type: none; 
+            margin: 2rem 0;
+        }
+        .table-of-contents li { margin-bottom: 8px; }
+        .table-of-contents a { color: #475569; font-size: 0.95rem; }
+
+        /* Code & Pre Styling */
+        pre { 
+            background: var(--code-bg); 
+            color: #f8f8f2; 
+            padding: 20px; 
+            border-radius: 12px; 
+            overflow-x: auto; 
+            font-size: 14px;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+        code { 
+            font-family: 'Fira Code', 'Consolas', monospace; 
+            background: #fee2e2; 
+            color: #991b1b; 
+            padding: 2px 6px; 
+            border-radius: 4px; 
+            font-size: 0.9em;
+        }
+        pre code { background: none; color: inherit; padding: 0; }
+
+        /* Blockquote Styling */
+        blockquote {
+            margin: 2rem 0;
+            padding: 1rem 1.5rem;
+            background: #eff6ff;
+            border-left: 5px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+            font-style: italic;
+        }
+
+        /* Image Styling */
+        img { 
+            max-width: 100%; 
+            height: auto; 
+            border-radius: 12px; 
+            margin: 30px 0; 
+            display: block;
+            border: 1px solid var(--border);
+        }
+
+        /* Utility */
+        .mb-3 { margin-bottom: 0.75rem; }
+        strong { color: #000; }
+    </style>
+</head>
+<body>
+    <article class="materi-wrapper">
+               <main class="flex-1 min-w-0 lg:ml-80 mr-0 xl:mr-64 transition-all duration-300 pt-10 md:pt-0">
+            <div class="max-w-full mx-auto px-4 sm:px-6 md:px-8 py-5">
+                <h1 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">Pengenalan Framework Laravel</h1>
+
+                <div class="prose lg:prose-lg prose-a:text-blue-500 dark:prose-a:text-blue-400 dark:prose-invert w-full max-w-full">
+                    <div x-data x-init="let t=document.querySelector('.table-of-contents'),d=document.querySelector('.toc'),m=document.querySelector('.toc-mobile'),b=document.querySelector('.btn-toc');if(t&&t.querySelectorAll('li').length>0){d.appendChild(t.cloneNode(true));m.appendChild(t.cloneNode(true))}else b?.classList.add('hidden');$nextTick(()=>{document.querySelectorAll(`.prose a[href^='http']`).forEach(a=>{a.href.includes(location.hostname)||(a.target='_blank',a.rel='noopener noreferrer')})})">
+                    </div>
+
+                                            <ul class="table-of-contents">
+<li><a href="#content-apa-itu-mvc-">Apa itu MVC ?</a></li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/maulayyacyber/assets-images-ebooks/main/laravel-untuk-pemula/laravel.png" alt="" /></p>
+<p><strong>Laravel</strong> adalah <em>web</em> <em>framework</em> yang dikembangkan menggunakan bahasa <em>pemogramman</em> <strong>PHP</strong> dan bersifat <em>open</em> <em>source</em>.</p>
+<p><strong>Laravel</strong> menjadi <em>web</em> <em>framework</em> populer karena banyaknya fitur-fitur ajaib yang tersedia di dalamnya, sehingga mempermudah pada <em>developer</em> dalam mengembangkan aplikasi.</p>
+<p><strong>Laravel</strong> memiliki komunitas yang sangat besar di dunia dan ekosistem pendukungnya juga sangat banyak dikembangkan baik secara <em>official</em> maupun <em>developer</em> lain.</p>
+<p><strong>Laravel</strong> pertama kali rilis pada tahun 2011. Dan semakin berkembang baik dari sisi <strong>Laravel</strong>-nya maupun penggunannya di seluruh Dunia.. <strong>Laravel</strong> mendapatkan bintang yang paling banyak di dalam <strong>GitHub</strong> dibandingkan <em>framework</em> lainnya, sehingga anggapan populer tersebut memang layak disandang oleh <em>framework</em> yang satu ini.</p>
+<p><strong>Laravel</strong> menggunakan <em>pattern</em> yang bernama <strong>MVC</strong> atau <em>Model</em>, <em>View</em> dan <em>Controller</em>. Berikut ini penjelasan singkat terkait <strong>MVC</strong>.</p>
+<h3><a id="content-apa-itu-mvc-" href="#content-apa-itu-mvc-" class="heading-permalink" aria-hidden="true" title="Permalink"></a>Apa itu MVC ?</h3>
+<p><img src="https://raw.githubusercontent.com/maulayyacyber/assets-images-ebooks/main/laravel-untuk-pemula/konsep-mvc_evfvmq.png" alt="" /></p>
+<p><strong>MVC</strong> merupakan singkatan dari <em>Mode</em>, <em>View</em> dan <em>Controller</em> dan merupakan pattern / pola arsitektur yang digunakan di dalam mengembangkan aplikasi. <strong>MVC</strong> dipecah menjadi beberapa bagian sesuai dengan namanya, yaitu :</p>
+<ol>
+<li>
+<p><strong>Model</strong></p>
+<p><em>Model</em> digunakan untuk melakukan manipulasi data yang berhubungan dengan <em>database</em>, baik itu proses <em>insert</em>, <em>update</em>, <em>delete</em> dan lain-lain.</p>
+</li>
+<li>
+<p><strong>View</strong></p>
+<p><em>View</em> digunakan untuk menampilkan data di dalam layar <em>browser</em>, <em>view</em> bisanya berupa <em>file</em>-<em>file</em> <strong>HTML</strong>, <strong>CSS</strong> dan <strong>JavaScript</strong>.</p>
+</li>
+<li>
+<p><strong>Controller</strong></p>
+<p><em>Controller</em> digunakan untuk menulis logika aplikasi dan biasanya digunakan untuk menghubungkan antara <em>Model</em> dan <em>View</em>.</p>
+</li>
+</ol>
+<p>Dengan menerapkan konsep <strong>MVC</strong> di <strong>Laravel</strong>, maka akan mempermudah <em>developer</em> dalam mengembangkan aplikasi, karena para <em>developer</em> tersebut bisa fokus pada bagian-bagian tertentu sesuai dengan <em>job</em> <em>desk</em>-nya.</p>
+
+                                    </div>
+    </article>
+</body>
+</html>

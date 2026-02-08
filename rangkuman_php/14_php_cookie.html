@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Cookie - Panduan Lengkap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; }
+        .badge { background: #2563eb; color: white; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; }
+        .vs-table { width: 100%; border-collapse: collapse; background: white; border-radius: 1rem; overflow: hidden; margin: 1.5rem 0; }
+        .vs-table th, .vs-table td { padding: 1rem; border: 1px solid #cbd5e1; text-align: left; }
+        .vs-table th { background: #f1f5f9; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">PHP Cookie</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Apa Itu Cookie?</h2>
+            <p><strong>Cookie</strong> adalah data kecil yang dititipkan oleh server untuk disimpan di dalam <strong>Browser Pengguna</strong>. Jika Session hilang saat browser ditutup, Cookie bisa bertahan berhari-hari, berbulan-bulan, bahkan bertahun-tahun.</p>
+
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 my-6">
+                <strong>Analogi Kartu Member:</strong><br>
+                Session itu seperti gelang wahana (langsung dibuang), sedangkan <b>Cookie itu seperti Kartu Member Alfamart</b>. Kartunya kamu bawa pulang di dompet (Browser), dan besok saat kamu datang lagi, kasir (Server) bisa tahu siapa kamu hanya dengan melihat kartu itu.
+            </div>
+
+            
+
+            <h2 class="section-title">1. Membuat Cookie</h2>
+            <p>Gunakan fungsi <span class="badge">setcookie()</span>. Ingat: fungsi ini harus diletakkan sebelum tag HTML apapun.</p>
+            
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // Nama Cookie, Nilai, Waktu Kadaluarsa (Sekarang + 1 Hari)
+  $waktu = time() + (60 * 60 * 24); 
+  setcookie("user_pref", "dark_mode", $waktu);
+
+  echo "Preferensi tampilan disimpan!";
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">2. Mengakses & Menghapus</h2>
+            <p>Akses menggunakan variabel superglobal <span class="badge">$_COOKIE</span>. Untuk menghapus, cukup setel waktunya ke masa lalu.</p>
+
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // Membaca Cookie
+  if(isset($_COOKIE['user_pref'])) {
+      echo "Mode Anda: " . $_COOKIE['user_pref'];
+  }
+
+  // Menghapus Cookie (Set waktu ke 1 jam yang lalu)
+  setcookie("user_pref", "", time() - 3600);
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Cookie vs Session</h2>
+            <table class="vs-table">
+                <thead>
+                    <tr>
+                        <th>Fitur</th>
+                        <th>Session</th>
+                        <th>Cookie</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Penyimpanan</strong></td>
+                        <td>Server (Aman)</td>
+                        <td>Browser (Kurang Aman)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Masa Aktif</strong></td>
+                        <td>Habis saat browser tutup</td>
+                        <td>Bisa diatur manual (Lama)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Kegunaan</strong></td>
+                        <td>Login, Keranjang Belanja</td>
+                        <td>Ingat Saya, Tema Web</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            [Image showing the difference between Session storage on server and Cookie storage on client browser]
+
+            <h2 class="section-title">💡 Implementasi: "Ingat Saya"</h2>
+            <p>Dalam proyek "Buku Guru", Cookie sangat berguna untuk fitur <strong>Remember Me</strong> agar guru tidak perlu login ulang setiap pagi.</p>
+            
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  // Jika guru centang "Ingat Saya" saat login
+  if ($login_berhasil && $_POST['remember_me']) {
+      setcookie("user_login", $username, time() + (86400 * 30), "/");
+  }
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Gunakan <strong>Session</strong> untuk data rahasia dan sementara. Gunakan <strong>Cookie</strong> untuk data yang tidak rahasia dan perlu diingat dalam jangka waktu lama. Selamat! Kamu sudah menyelesaikan dasar-dasar PHP!</p>
+            
+          
+    </div>
+</body>
+</html>

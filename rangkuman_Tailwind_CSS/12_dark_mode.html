@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Tailwind v4: Dark Mode</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { background: #1a1b26 !important; padding: 1.5rem !important; border-radius: 1rem !important; border: 1px solid #334155; overflow-x: auto; }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        .utility-name { font-family: 'Fira Code', monospace; color: #2563eb; font-weight: bold; background: #cbd5e1; padding: 2px 4px; border-radius: 4px; }
+        
+        .info-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+        .info-table th { background: #334155; color: white; padding: 12px; text-align: left; font-size: 0.85rem; }
+        .info-table td { padding: 12px; border-bottom: 1px solid #e2e8f0; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Dark Mode
+        </h1>
+
+        <div class="card">
+            <p>Tailwind CSS v4 memudahkan implementasi mode gelap melalui varian <span class="utility-name">dark:</span>. Kamu bisa memilih untuk mengikuti pengaturan sistem pengguna atau memberikan kontrol manual (toggle).</p>
+
+            <h2 class="section-title">1. Mode Sistem (Media Strategy)</h2>
+            <p>Secara default, Tailwind mendeteksi pengaturan sistem (Windows/macOS/Android). Jika pengguna menggunakan tema gelap di perangkatnya, class dengan prefix <code>dark:</code> akan otomatis aktif.</p>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!-- bg-white di mode terang, bg-slate-900 di mode gelap --&gt;
+&lt;div class="bg-white dark:bg-slate-900"&gt;
+  &lt;h1 class="text-slate-900 dark:text-white"&gt;Halo Dunia!&lt;/h1&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">2. Mode Manual (Selector Strategy)</h2>
+            <p>Untuk Tailwind v4, jika ingin menggunakan toggle manual, kamu bisa menentukan strategi di dalam file CSS utama menggunakan <code>@theme</code>:</p>
+            
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-css">@import "tailwindcss";
+
+@theme {
+  /* Menggunakan class .dark pada tag html untuk aktifkan mode gelap */
+  --dark-mode: selector; 
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">3. Simulasi Visual</h2>
+            <p>Berikut adalah perbandingan tampilan elemen dalam satu komponen yang sama:</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
+                <div class="p-6 bg-white border border-slate-200 rounded-xl shadow-sm">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">Tampilan Terang</span>
+                    <h3 class="text-slate-900 font-bold text-lg mt-2">Kartu Informasi</h3>
+                    <p class="text-slate-600 text-sm">Ini adalah contoh teks pada mode terang.</p>
+                </div>
+
+                <div class="p-6 bg-slate-900 border border-slate-700 rounded-xl shadow-sm">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase">Tampilan Gelap</span>
+                    <h3 class="text-white font-bold text-lg mt-2">Kartu Informasi</h3>
+                    <p class="text-slate-400 text-sm">Ini adalah contoh teks pada mode gelap.</p>
+                </div>
+            </div>
+
+            <h2 class="section-title">4. Tips Dark Mode</h2>
+            <ul class="list-disc ml-6 space-y-2 mb-6 text-sm">
+                <li>Gunakan <span class="utility-name">transition-colors</span> agar perpindahan warna tidak kaku saat user menekan toggle.</li>
+                <li>Simpan preferensi tema di <span class="utility-name">localStorage</span> agar saat halaman di-refresh, tema tidak kembali ke awal.</li>
+                <li>Gunakan warna Slate atau Zinc untuk background gelap agar kontras teks tetap nyaman di mata (tidak hitam pekat).</li>
+            </ul>
+
+            <h2 class="section-title">Contoh Skrip Toggle</h2>
+            <p>Gunakan JavaScript sederhana ini untuk membuat tombol switch tema:</p>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-javascript">// Klik tombol untuk tambah/hapus class 'dark' di tag HTML
+document.documentElement.classList.toggle('dark');
+
+// Simpan pilihan ke localStorage
+localStorage.setItem('theme', 'dark');</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Mode gelap bukan lagi sekadar tren, tapi kebutuhan untuk kenyamanan mata pengguna. Dengan Tailwind, kamu cukup memikirkan satu warna alternatif dengan prefix <code>dark:</code> untuk setiap elemen visual.</p>
+
+            <div class="mt-10 pt-6 border-t border-slate-300">
+                <p class="text-sm font-bold text-slate-500 italic uppercase">Selanjutnya:</p>
+                <p class="text-lg font-bold text-blue-600">Optimasi & Build untuk Produksi &raquo;</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

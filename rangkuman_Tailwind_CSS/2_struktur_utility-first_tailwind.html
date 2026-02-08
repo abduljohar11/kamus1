@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Struktur Utility-First Tailwind</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 1.5rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        /* Container untuk blok kode agar tombol copy bisa diposisi absolute */
+        .code-container { position: relative; margin: 1.5rem 0; }
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 10px; border-radius: 6px; z-index: 30;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; transform: scale(1.05); }
+
+        .section-title { font-size: 1.7rem; font-weight: 900; margin-top: 2.5rem; margin-bottom: 1.2rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        p { margin-bottom: 1.2rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        li { margin-bottom: 0.5rem; }
+        a.link { color: #2563eb; font-weight: bold; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Struktur Utility-First Tailwind
+        </h1>
+
+        <div class="card">
+            <p>Dengan pendekatan <strong>utility-first</strong>, kita tidak lagi menulis aturan CSS secara manual di <em>file</em> terpisah. Sebagai gantinya, kita menggunakan banyak <em>utility class</em> langsung di elemen HTML.</p>
+
+            <h2 class="section-title">Apa Itu Utility Class?</h2>
+            <p>Setiap class di Tailwind hanya memiliki satu fungsi spesifik (seperti margin saja, atau warna saja). Kita menggabungkannya seperti menyusun blok bangunan (LEGO) untuk membuat UI.</p>
+
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!-- Contoh penggunaan Utility Class --&gt;
+&lt;button class="bg-blue-500 text-white p-4 rounded-lg shadow-md"&gt;
+  Klik Saya
+&lt;/button&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Struktur Penulisan</h2>
+            <p>Walaupun atribut <code>class</code> terlihat panjang, ini memberikan kontrol penuh tanpa perlu berpindah-pindah file.</p>
+
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;div class="flex items-center justify-between p-6 bg-white rounded-xl shadow-lg border border-gray-200"&gt;
+  &lt;p class="text-gray-700 font-medium"&gt;Konten Terpusat&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Tools untuk Belajar</h2>
+            <p>Gunakan tools interaktif ini untuk mencoba Tailwind secara langsung di browser:</p>
+            <ul>
+                <li><a href="https://play.tailwindcss.com/" class="link">play.tailwindcss.com</a> (Resmi)</li>
+                <li><a href="https://playground.santrikoding.com/" class="link">playground.santrikoding.com</a> (Lokal)</li>
+            </ul>
+
+            <h2 class="section-title">Contoh Lengkap: Kartu Informasi</h2>
+            <p>Berikut adalah implementasi card sederhana menggunakan Tailwind CSS:</p>
+
+            <div class="code-container">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;div class="max-w-sm mx-auto bg-white rounded-2xl shadow-xl p-8"&gt;
+  &lt;h3 class="text-xl font-bold text-blue-600 mb-2"&gt;Tailwind Card&lt;/h3&gt;
+  &lt;p class="text-gray-600"&gt;Dibuat tanpa menulis satu barispun kode CSS manual.&lt;/p&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Pendekatan <strong>utility-first</strong> membuat workflow pengembangan UI menjadi jauh lebih cepat dan konsisten. Kita cukup fokus pada struktur HTML kita.</p>
+
+            <p class="mt-8 italic text-slate-500 border-t border-slate-300 pt-4">
+                Di artikel berikutnya, kita akan membahas lebih dalam tentang <strong>Typography Utilities</strong> untuk mengatur teks.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Inisialisasi Highlight.js
+        hljs.highlightAll();
+
+        // Fungsi Copy Code
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

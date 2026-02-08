@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial JavaScript - Rest Parameter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #f0f9ff; border: 2px dashed #0ea5e9; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; background: white; border-radius: 0.5rem; overflow: hidden; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background: #334155; color: white; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Rest Parameter</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Apa Itu Rest Parameter?</h2>
+            <p><strong>Rest Parameter</strong> digunakan untuk mengumpulkan sisa argumen ke dalam sebuah array tunggal. Meskipun simbolnya sama dengan Spread Operator (<code>...</code>), fungsinya adalah kebalikannya.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan sebuah <strong>Net/Saringan</strong> di kolam bola. Bola-bola yang dilemparkan (argumen fungsi) akan ditangkap dan dikumpulkan ke dalam satu wadah (array). <strong>Spread</strong> menyebarkan bola keluar dari kotak, sedangkan <strong>Rest</strong> menangkap semua bola yang tersisa dan memasukkannya ke dalam kotak.</p>
+            </div>
+
+            
+
+            <h2 class="section-title">1. Menangkap Banyak Argumen</h2>
+            <p>Biasanya, fungsi hanya menerima jumlah parameter yang pasti. Dengan Rest Parameter, kita bisa menerima jumlah input yang tak terbatas.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">// ...angka akan mengumpulkan semua input menjadi array [1, 2, 3, 4]
+function jumlahkanSemua(...angka) {
+  return angka.reduce((total, n) => total + n, 0);
+}
+
+console.log(jumlahkanSemua(1, 2, 3, 4)); // 10</code></pre>
+            </div>
+
+            <h2 class="section-title">2. Rest Parameter Harus di Akhir</h2>
+            <p>Aturannya ketat: Rest parameter wajib diletakkan di posisi paling terakhir dalam daftar parameter fungsi. Anda tidak boleh meletakkan parameter lain setelahnya.</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">function sapaJuara(juara1, juara2, ...pesertaLain) {
+  console.log(`Emas: ${juara1}`);
+  console.log(`Perak: ${juara2}`);
+  console.log(`Peserta lainnya: ${pesertaLain.join(", ")}`);
+}
+
+sapaJuara("Andi", "Budi", "Cici", "Dedi", "Eka");</code></pre>
+            </div>
+
+            <h2 class="section-title">3. Rest pada Destructuring</h2>
+            <p>Sangat berguna saat Anda ingin mengambil beberapa nilai dari data dan menyimpan sisanya ke variabel lain.</p>
+
+            <h3 class="font-bold mb-2">Array Destructuring</h3>
+            <div class="relative">
+                <pre><code class="language-javascript">const angka = [1, 2, 3, 4, 5];
+const [pertama, kedua, ...sisanya] = angka;
+
+console.log(sisanya); // [3, 4, 5]</code></pre>
+            </div>
+
+            <h3 class="font-bold mb-2">Object Destructuring</h3>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">const user = { nama: "Siti", umur: 20, kota: "Bandung" };
+const { nama, ...infoLain } = user;
+
+console.log(infoLain); // { umur: 20, kota: 'Bandung' }</code></pre>
+            </div>
+
+            <h2 class="section-title">Perbedaan Utama</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fitur</th>
+                        <th>Spread Operator</th>
+                        <th>Rest Parameter</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tujuan</td>
+                        <td><strong>Menyebar</strong> isi ke luar</td>
+                        <td><strong>Mengumpulkan</strong> sisa ke dalam</td>
+                    </tr>
+                    <tr>
+                        <td>Lokasi Pakai</td>
+                        <td>Saat memanggil fungsi / di dalam array/obj</td>
+                        <td>Saat definisi fungsi / destructuring</td>
+                    </tr>
+                    <tr>
+                        <td>Hasil Akhir</td>
+                        <td>Nilai individual</td>
+                        <td>Sebuah Array atau Object baru</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p><strong>Rest Parameter (<code>...</code>)</strong> adalah cara modern untuk menangani data yang jumlahnya tidak menentu secara dinamis. Ia membuat kode Anda lebih fleksibel dan bersih, terutama saat bekerja dengan fungsi-fungsi pengolahan data.</p>
+            
+            <p>Di artikel berikutnya, kita akan membahas <strong>Destructuring & Restructuring</strong>: Teknik tingkat lanjut untuk memanipulasi data dengan sangat efisien!</p>
+        </div>
+    </div>
+</body>
+</html>

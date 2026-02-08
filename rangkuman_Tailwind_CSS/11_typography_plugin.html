@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Tailwind: Typography Plugin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { background: #1a1b26 !important; padding: 1.5rem !important; border-radius: 1rem !important; border: 1px solid #334155; overflow-x: auto; }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        .utility-name { font-family: 'Fira Code', monospace; color: #2563eb; font-weight: bold; background: #cbd5e1; padding: 2px 4px; border-radius: 4px; }
+        
+        .info-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+        .info-table th { background: #334155; color: white; padding: 12px; text-align: left; font-size: 0.85rem; }
+        .info-table td { padding: 12px; border-bottom: 1px solid #e2e8f0; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Typography Plugin
+        </h1>
+
+        <div class="card">
+            <p>Plugin ini mempermudah kita dalam menata konten teks panjang seperti artikel, blog post, dan dokumentasi agar tampilannya langsung indah tanpa banyak menulis utility class secara manual.</p>
+
+            <h2 class="section-title">Apa Itu Typography Plugin?</h2>
+            <p>Typography Plugin memberikan utility bernama <span class="utility-name">prose</span>. Saat class ini diberikan pada sebuah container, semua elemen HTML standar di dalamnya akan otomatis memiliki styling yang rapi (tipografi, spasi, warna, dan ukuran).</p>
+
+            <h2 class="section-title">1. Cara Mengaktifkan (v4)</h2>
+            <p>Di Tailwind CSS v4, aktivasi plugin dilakukan langsung di file CSS utama menggunakan directive baru:</p>
+            
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-css">@import "tailwindcss";
+@plugin "@tailwindcss/typography";</code></pre>
+            </div>
+            <p class="text-xs italic text-red-600 font-bold">*Catatan: Ini membutuhkan setup CLI, tidak berfungsi via CDN standar.</p>
+
+            <h2 class="section-title">2. Class Prose & Variasi</h2>
+            <p>Kamu bisa mengatur lebar artikel dan warna elemen menggunakan modifier:</p>
+            
+            <table class="info-table shadow-sm">
+                <thead>
+                    <tr><th>Class</th><th>Kegunaan</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="utility-name">prose</td><td>Mengaktifkan gaya tipografi standar</td></tr>
+                    <tr><td class="utility-name">prose-sm / lg / xl</td><td>Mengatur skala ukuran teks keseluruhan</td></tr>
+                    <tr><td class="utility-name">prose-slate / blue</td><td>Mengubah tema warna elemen (link, heading)</td></tr>
+                    <tr><td class="utility-name">prose-invert</td><td>Mode gelap (untuk background gelap)</td></tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">3. Elemen yang Terdampak</h2>
+            
+            <p>Setelah membungkus konten dengan class <code>prose</code>, elemen berikut akan otomatis tertata:</p>
+            <ul class="list-disc ml-6 space-y-1 mb-6 text-sm">
+                <li>Judul (<code>&lt;h1&gt;</code> sampai <code>&lt;h6&gt;</code>)</li>
+                <li>Paragraf dan Link (<code>&lt;p&gt;</code>, <code>&lt;a&gt;</code>)</li>
+                <li>Daftar (<code>&lt;ul&gt;</code>, <code>&lt;ol&gt;</code>, <code>&lt;li&gt;</code>)</li>
+                <li>Kutipan (<code>&lt;blockquote&gt;</code>)</li>
+                <li>Tabel (<code>&lt;table&gt;</code>, <code>&lt;th&gt;</code>, <code>&lt;td&gt;</code>)</li>
+                <li>Blok Kode (<code>&lt;pre&gt;</code>, <code>&lt;code&gt;</code>)</li>
+            </ul>
+
+            <h2 class="section-title">Contoh Kode: Artikel</h2>
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;article class="prose lg:prose-xl prose-slate mx-auto"&gt;
+  &lt;h1&gt;Judul Artikel Otomatis Rapi&lt;/h1&gt;
+  &lt;p&gt;Paragraf ini tidak butuh class text-lg atau leading-relaxed.&lt;/p&gt;
+  
+  &lt;ul&gt;
+    &lt;li&gt;List otomatis memiliki bullet&lt;/li&gt;
+    &lt;li&gt;Jarak antar list sudah diatur&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;blockquote&gt;
+    "Kutipan ini otomatis memiliki garis samping dan font miring."
+  &lt;/blockquote&gt;
+&lt;/article&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Typography Plugin adalah "cheat sheet" untuk artikel. Kita tidak perlu pusing memikirkan margin antar paragraf atau warna heading; cukup panggil <code>prose</code> dan biarkan Tailwind yang bekerja.</p>
+
+            <div class="mt-10 pt-6 border-t border-slate-300">
+                <p class="text-sm font-bold text-slate-500 italic uppercase">Selanjutnya:</p>
+                <p class="text-lg font-bold text-blue-600">Proyek Mandiri: Membangun Landing Page Sederhana &raquo;</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

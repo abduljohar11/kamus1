@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial Tailwind: Responsive Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code&display=swap');
+        
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 2.5rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        .code-wrapper { position: relative; margin: 1.5rem 0; }
+        pre { background: #1a1b26 !important; padding: 1.5rem !important; border-radius: 1rem !important; border: 1px solid #334155; overflow-x: auto; }
+        code { font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.6; }
+        
+        .copy-btn {
+            position: absolute; right: 12px; top: 12px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 5px 10px; border-radius: 6px; z-index: 10;
+            transition: all 0.2s ease; cursor: pointer; border: none;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.6rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1.2rem; text-transform: uppercase; color: #0f172a; }
+        .utility-name { font-family: 'Fira Code', monospace; color: #2563eb; font-weight: bold; background: #cbd5e1; padding: 2px 4px; border-radius: 4px; }
+        
+        /* Table Style */
+        .info-table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; margin-bottom: 2rem; }
+        .info-table th { background: #334155; color: white; padding: 12px; text-align: left; font-size: 0.85rem; }
+        .info-table td { padding: 12px; border-bottom: 1px solid #e2e8f0; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-6 inline-block font-bold text-blue-700 uppercase text-xs hover:text-blue-900 transition">&larr; Kembali ke Daftar Isi</a>
+        
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">
+            Responsive Design
+        </h1>
+
+        <div class="card">
+            <p>Tailwind menggunakan pendekatan <strong>Mobile-First</strong>. Artinya, class tanpa prefix akan berlaku di layar terkecil, dan prefix seperti <span class="utility-name">md:</span> akan menimpanya saat layar melebar.</p>
+
+            <h2 class="section-title">1. Daftar Breakpoint</h2>
+            <p>Tailwind menyediakan 5 breakpoint standar untuk menargetkan perangkat yang berbeda:</p>
+            
+            <table class="info-table shadow-sm">
+                <thead>
+                    <tr><th>Prefix</th><th>Minimum Width</th><th>Target Perangkat</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="utility-name">sm:</td><td>640px</td><td>Smartphone (Landscape)</td></tr>
+                    <tr><td class="utility-name">md:</td><td>768px</td><td>Tablet</td></tr>
+                    <tr><td class="utility-name">lg:</td><td>1024px</td><td>Laptop / Desktop Kecil</td></tr>
+                    <tr><td class="utility-name">xl:</td><td>1280px</td><td>Desktop Besar</td></tr>
+                    <tr><td class="utility-name">2xl:</td><td>1536px</td><td>Monitor Ultra Wide</td></tr>
+                </tbody>
+            </table>
+
+            
+
+            <h2 class="section-title">2. Konsep Mobile First</h2>
+            <p>Alih-alih menulis media query untuk layar kecil, di Tailwind kita menulis class dasar untuk HP, lalu menambah prefix untuk layar yang lebih lebar.</p>
+            
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!-- text-sm (HP), md:text-xl (Tablet), lg:text-3xl (Laptop) --&gt;
+&lt;h1 class="text-sm md:text-xl lg:text-3xl font-bold"&gt;
+  Judul Responsif
+&lt;/h1&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">3. Simulasi Grid Responsif</h2>
+            <p>Gunakan prefix pada grid untuk mengubah jumlah kolom berdasarkan ukuran layar. Contoh: 1 kolom di HP, 2 kolom di Tablet, dan 3 kolom di Laptop.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 my-6 p-4 border-2 border-dashed border-slate-400 rounded-xl bg-white">
+                <div class="bg-blue-500 text-white p-4 rounded text-center font-bold">Item 1</div>
+                <div class="bg-blue-500 text-white p-4 rounded text-center font-bold">Item 2</div>
+                <div class="bg-blue-500 text-white p-4 rounded text-center font-bold">Item 3</div>
+            </div>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!-- 1 Kolom di HP, 2 di Tablet, 3 di Laptop --&gt;
+&lt;div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"&gt;
+  &lt;div&gt;1&lt;/div&gt;
+  &lt;div&gt;2&lt;/div&gt;
+  &lt;div&gt;3&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">4. Visibility (Show/Hide)</h2>
+            <p>Kamu bisa menyembunyikan elemen di HP dan memunculkannya di Desktop menggunakan class <span class="utility-name">hidden</span> dan <span class="utility-name">block</span>.</p>
+
+            <div class="code-wrapper">
+                <button class="copy-btn" onclick="copyCode(this)">COPY</button>
+                <pre><code class="language-html">&lt;!-- Tombol ini hanya muncul di layar Tablet ke atas --&gt;
+&lt;button class="hidden md:block bg-blue-600 text-white p-2"&gt;
+  Menu Desktop
+&lt;/button&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Sistem responsif Tailwind sangat efisien karena kita tidak perlu lagi pindah ke file CSS untuk menulis <code>@media (min-width: ...)</code>. Cukup gunakan prefix dan desainmu akan langsung menyesuaikan perangkat pengguna.</p>
+
+            <div class="mt-10 pt-6 border-t border-slate-300">
+                <p class="text-sm font-bold text-slate-500 italic uppercase">Selanjutnya:</p>
+                <p class="text-lg font-bold text-blue-600">Interaktivitas: Hover, Focus & State Variants &raquo;</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        hljs.highlightAll();
+
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = 'COPIED!';
+                btn.style.background = '#10b981';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = '#3b82f6';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

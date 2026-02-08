@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variabel JavaScript - var, let, const</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        .analogy { background: #f0fdf4; border: 2px dashed #22c55e; padding: 1.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Variable (var, let, const)</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Apa Itu Variabel?</h2>
+            <p><strong>Variabel</strong> adalah sebuah wadah atau tempat penyimpanan data di memori komputer. Bayangkan variabel sebagai sebuah "kotak" yang memiliki nama, dan di dalam kotak tersebut Anda bisa menyimpan informasi untuk digunakan berkali-kali.</p>
+
+            <h2 class="section-title">💡 Analogi</h2>
+            <div class="analogy">
+                <p class="mb-0 italic">Bayangkan sebuah <strong>Botol Minum</strong>. Label pada botol (misal: "Minuman") adalah <strong>Nama Variabel</strong>, dan air di dalamnya adalah <strong>Nilai/Data</strong>. Anda bisa mengganti air putih dengan jus (Re-assign), atau Anda bisa menggunakan botol yang tidak bisa dibuka tutupnya (Const).</p>
+            </div>
+
+            
+
+            <h2 class="section-title">Cara Mendeklarasikan Variabel</h2>
+            <p>JavaScript menyediakan tiga cara untuk membuat variabel. Dulu hanya ada <span class="inline-code">var</span>, namun sejak standar ES6 (2015), muncul <span class="inline-code">let</span> dan <span class="inline-code">const</span> yang jauh lebih aman.</p>
+
+            <h3 class="font-bold text-xl mb-2 text-blue-700">1. var</h3>
+            <p>Ini adalah cara lama. <span class="inline-code">var</span> memiliki perilaku yang unik (dan sering membingungkan) yang disebut <em>hoisting</em>.</p>
+            <ul>
+                <li><strong>Function-scoped:</strong> Hanya terkurung di dalam fungsi.</li>
+                <li><strong>Bisa di-redeclare:</strong> Anda bisa membuat variabel dengan nama yang sama berkali-kali tanpa error.</li>
+            </ul>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">var nama = "Budi";
+var nama = "Siti"; // Tidak error, Budi terhapus
+console.log(nama); // Output: Siti</code></pre>
+            </div>
+
+            <h3 class="font-bold text-xl mb-2 text-blue-700">2. let</h3>
+            <p>Solusi modern untuk variabel yang nilainya akan berubah (seperti skor game atau counter).</p>
+            <ul>
+                <li><strong>Block-scoped:</strong> Terkurung di dalam kurung kurawal <span class="inline-code">{ }</span>.</li>
+                <li><strong>Tidak bisa di-redeclare:</strong> Mencegah bug karena nama variabel yang sama.</li>
+            </ul>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">let skor = 10;
+skor = 20; // Boleh (Re-assign)
+
+// let skor = 30; // ERROR! Tidak boleh dideklarasikan ulang</code></pre>
+            </div>
+
+            <h3 class="font-bold text-xl mb-2 text-blue-700">3. const</h3>
+            <p>Digunakan untuk nilai yang tetap dan tidak akan pernah diubah (seperti Nama Brand, API Key, atau rumus matematika).</p>
+            <ul>
+                <li><strong>Block-scoped:</strong> Sama seperti <span class="inline-code">let</span>.</li>
+                <li><strong>Immutable:</strong> Nilainya tidak bisa diganti (Re-assign).</li>
+                <li><strong>Wajib diisi:</strong> Harus langsung diberi nilai saat dibuat.</li>
+            </ul>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">const API_KEY = "12345ABC";
+// API_KEY = "67890DEF"; // ERROR!</code></pre>
+            </div>
+
+            <h2 class="section-title">Kapan Harus Pakai yang Mana?</h2>
+            <p>Aturan emas developer modern:</p>
+            <ul>
+                <li>Gunakan <strong>const</strong> secara default untuk semua variabel.</li>
+                <li>Jika variabel tersebut memang perlu diubah nilainya nanti, ganti menjadi <strong>let</strong>.</li>
+                <li><strong>Lupakan var</strong>, kecuali Anda sedang memperbaiki website dari tahun 2010.</li>
+            </ul>
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Memilih antara <span class="inline-code">let</span> dan <span class="inline-code">const</span> adalah cara termudah untuk membuat kode Anda lebih stabil dan mudah dibaca oleh orang lain. Dengan menggunakan <span class="inline-code">const</span>, Anda memberi tahu developer lain bahwa "Nilai ini penting dan tidak boleh berubah".</p>
+            <p>Di artikel berikutnya, kita akan membahas <strong>Operator JavaScript</strong>: Mesin yang akan mengolah variabel-variabel ini menjadi logika yang canggih!</p>
+        </div>
+    </div>
+</body>
+</html>

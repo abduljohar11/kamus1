@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP Session - Panduan Lengkap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .code-wrap { position: relative; }
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+        }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.1rem; }
+        .badge { background: #2563eb; color: white; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold; }
+        .tip-box { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 1rem; margin: 1rem 0; border-radius: 0.5rem; color: #166534; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">PHP Session</h1>
+        
+        <div class="card">
+            <p><strong>Session</strong> adalah cara PHP "mengenali" siapa kamu saat berpindah dari satu halaman ke halaman lain. Tanpa Session, website akan "lupa" siapa kamu setiap kali kamu mengklik link baru.</p>
+
+            <div class="tip-box">
+                <strong>Analogi Gelang Akses:</strong><br>
+                Bayangkan kamu masuk ke taman bermain. Di gerbang, kamu diberi <b>gelang ID</b>. Selama gelang itu ada di tanganmu, kamu bisa masuk ke wahana apa saja tanpa harus beli tiket lagi. Begitu gelang dilepas (Logout) atau taman tutup (Browser ditutup), aksesmu hilang.
+            </div>
+
+            
+
+            <h2 class="section-title">1. Memulai Session</h2>
+            <p>Agar PHP bisa membaca gelang ID tadi, kamu wajib menulis <span class="badge">session_start()</span> di <strong>baris paling atas</strong> kode kamu, bahkan sebelum tag HTML apapun.</p>
+            
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  session_start(); // Wajib ada di baris pertama
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">2. Menyimpan & Mengakses Data</h2>
+            <p>Data disimpan dalam array superglobal <span class="badge">$_SESSION</span>. Sekali disimpan, data ini bisa dipanggil di file PHP mana pun selama session masih aktif.</p>
+
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  session_start();
+  
+  // Menyimpan data (Misal saat login berhasil)
+  $_SESSION['username'] = "Pak Guru Ismail";
+  $_SESSION['role'] = "admin";
+
+  // Mengakses data di halaman lain
+  echo "Selamat datang kembali, " . $_SESSION['username'];
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">3. Menghapus Session (Logout)</h2>
+            <p>Ada dua cara untuk menghapus data session:</p>
+            <ul class="list-disc ml-6 space-y-2 mb-4">
+                <li><span class="badge">unset()</span>: Menghapus satu data spesifik.</li>
+                <li><span class="badge">session_destroy()</span>: Menghapus seluruh data session (Cocok untuk tombol Logout).</li>
+            </ul>
+
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  session_start();
+  
+  // Hapus satu data
+  unset($_SESSION['temp_data']);
+
+  // Logout total
+  session_destroy();
+  header("Location: login.php"); // Alihkan ke halaman login
+?&gt;</code></pre>
+            </div>
+
+            <h2 class="section-title">💡 Implementasi: Cek Login Guru</h2>
+            <p>Gunakan logika ini untuk melindungi halaman "Buku Guru" kamu agar tidak bisa dibuka oleh orang yang belum login:</p>
+            
+            <div class="code-wrap relative my-6">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+  session_start();
+
+  // Jika tidak ada session 'username', tendang balik ke login
+  if (!isset($_SESSION['username'])) {
+      header("Location: login.php");
+      exit();
+  }
+
+  // Jika lolos, tampilkan konten rahasia
+  echo "Halaman Rahasia Nilai Siswa";
+?&gt;</code></pre>
+            </div>
+
+            
+
+            <h2 class="section-title">Kesimpulan</h2>
+            <p>Session adalah kunci utama untuk membuat website yang memiliki sistem keamanan. Ingat: simpan data penting (seperti ID User) di <strong>Session</strong> (sisi Server), jangan di tempat yang bisa diubah oleh pengguna.</p>
+            
+            
+    </div>
+</body>
+</html>

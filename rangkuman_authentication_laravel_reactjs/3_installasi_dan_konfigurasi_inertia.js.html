@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inertia.js Client-Side Configuration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Installasi dan Konfigurasi Inertia.js (Client-Side)</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Langkah 1 - Installasi Node.js</h2>
+            <p>Pertama, teman-teman harus memiliki <strong>Node.js</strong> yang sudah terinstall di dalam komputer, jika belum maka bisa lakukan proses installasi <strong>Node.js</strong> terlebih dahulu dari situs resminya : <a href="https://nodejs.org/en/" class="text-blue-600 hover:underline">https://nodejs.org/en/</a></p>
+            <p>Untuk memastikan <strong>Node.js</strong> sudah terinstall, silahkan jalankan perintah berikut ini di dalam terminal/CMD.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">node -v
+npm -v</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 2 - Installasi Inertia.js "client-side"</h2>
+            <p>Setelah <strong>Node.js</strong> berhasil terinstall, maka sekarang kita akan lanjutkan melakukan installasi <em>library</em>-<em>library</em> yang dibutuhkan, termasuk <strong>Inertia</strong>, <strong>React</strong>, dan <strong>Vite</strong>.</p>
+            <p>Silahkan teman-teman masuk ke dalam <em>folder</em> <em>project</em>-nya, kemudian jalankan perintah berikut ini di dalam terminal/CMD.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">npm install @inertiajs/react @radix-ui/react-slot lucide-react clsx tailwind-merge</code></pre>
+            </div>
+
+            <p>Dan karena kita menggunakan <strong>React</strong>, kita juga perlu menambahkan plugin React untuk Vite:</p>
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">npm install @vitejs/plugin-react --save-dev</code></pre>
+            </div>
+
+            <p>Setelah proses installasi di atas selesai, silahkan buka <em>file</em> <span class="inline-code">package.json</span>, pada bagian <span class="inline-code">dependencies</span> pastikan sudah ada library berikut:</p>
+            
+            <div class="relative">
+                <pre><code class="language-json">"dependencies": {
+    "@inertiajs/react": "^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 3 - Konfigurasi App.jsx</h2>
+            <p>Sekarang silahkan rename <em>file</em> <span class="inline-code">resources/js/app.js</span> menjadi <span class="inline-code">resources/js/app.jsx</span>, kemudian masukkan kode berikut ini di dalamnya.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import './bootstrap';
+import '../css/app.css';
+
+import { createRoot } from 'react-dom/client';
+import { createInertiaApp } from '@inertiajs/react';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+
+createInertiaApp({
+    title: (title) => `${title} - ${appName}`,
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob('./Pages/**/*.jsx')),
+    setup({ el, App, props }) {
+        const root = createRoot(el);
+        root.render(&lt;App {...props} /&gt;);
+    },
+    progress: {
+        color: '#4B5563',
+    },
+});</code></pre>
+            </div>
+
+            <p>Setelah berhasil melakukan inisialisasi, jangan lupa buat <em>folder</em> baru dengan nama <span class="inline-code">Pages</span> di dalam <em>folder</em> <span class="inline-code">resources/js</span> untuk menyimpan komponen React kita nanti.</p>
+
+            <h2 class="section-title">Langkah 4 - Konfigurasi Vite</h2>
+            <p>Sekarang, silahkan buka <em>file</em> <span class="inline-code">vite.config.js</span>, kemudian ubah kode-nya menjadi seperti berikut ini untuk mendukung React dan Inertia.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-javascript">import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import react from '@vitejs/plugin-react';
+
+export default defineConfig({
+    plugins: [
+        laravel({
+            input: 'resources/js/app.jsx',
+            refresh: true,
+        }),
+        react(),
+    ],
+});</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 5 - Compile Assets</h2>
+            <p>Terakhir, kita perlu menjalankan Vite agar aset kita di-compile secara real-time saat kita melakukan pengembangan.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">npm run dev</code></pre>
+            </div>
+
+            <p>Jika berhasil, terminal akan menampilkan informasi bahwa Vite sedang berjalan. Kamu bisa membuka alamat localhost yang disediakan di browser.</p>
+
+            <p><strong>INFORMASI PENTING</strong> : saat proses <em>development</em>, jangan pernah mematikan proses <em>Vite</em> di atas. Karena <em>Vite</em> akan otomatis melakukan <em>compiling</em> ketika terdapat perubahan pada kode React kamu.</p>
+
+            
+
+            <p>Sampai disini kita telah berhasil menghubungkan Laravel (Backend) dengan React (Frontend) menggunakan <strong>Inertia.js</strong>. Pada artikel selanjutnya kita akan belajar bagaimana cara membuat proses <strong>Register</strong> dan <strong>Login</strong>.</p>
+        </div>
+    </div>
+</body>
+</html>

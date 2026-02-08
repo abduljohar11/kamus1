@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Dasar - Filter WHERE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        pre { background: #1a1b26 !important; padding: 1.5rem !important; border-radius: 1rem !important; border: 1px solid #334155; overflow-x: auto; }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        .copy-btn { position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30; }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        .analogy-box { background: #fff7ed; border-left: 4px solid #ea580c; padding: 1rem; margin: 1.5rem 0; border-radius: 0.5rem; color: #9a3412; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">WHERE - AND - OR - NOT</h1>
+        
+        <div class="card">
+            <p>Klausa <strong>WHERE</strong> digunakan untuk menyaring data agar yang muncul hanya yang memenuhi syarat tertentu.</p>
+
+            <div class="analogy-box">
+                <strong>Analogi Filter Belanja Online:</strong><br>
+                Bayangkan kamu sedang mencari sepatu di marketplace.
+                <ul>
+                    <li><strong>WHERE:</strong> Filter untuk kategori "Sepatu".</li>
+                    <li><strong>AND:</strong> Harus Sepatu lari DAN berwarna Hitam.</li>
+                    <li><strong>OR:</strong> Sepatu lari ATAU Sepatu casual.</li>
+                    <li><strong>NOT:</strong> Tampilkan semua KECUALI yang bermerek X.</li>
+                </ul>
+            </div>
+
+            <h2 class="section-title">Penerapan Nyata</h2>
+            <p>Gunakan operator logika untuk pencarian yang lebih kompleks.</p>
+
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-sql">-- 1. Cari siswa yang umurnya tepat 17 tahun
+SELECT * FROM siswa WHERE umur = 17;
+
+-- 2. Cari siswa kelas 'XII IPA 1' YANG umurnya di atas 17
+SELECT * FROM siswa WHERE kelas = 'XII IPA 1' AND umur > 17;
+
+-- 3. Cari siswa yang berada di kelas IPA 1 ATAU IPA 2
+SELECT * FROM siswa WHERE kelas = 'IPA 1' OR kelas = 'IPA 2';
+
+-- 4. Cari semua siswa KECUALI yang kelasnya 'X'
+SELECT * FROM siswa WHERE NOT kelas = 'X';</code></pre>
+            </div>
+
+            <h2 class="section-title">Tips: Gunakan Tanda Kurung</h2>
+            <p>Jika kamu menggabungkan banyak AND dan OR, gunakan tanda kurung <code>()</code> untuk memastikan urutan filternya benar dan tidak membingungkan database.</p>
+        </div>
+    </div>
+</body>
+</html>

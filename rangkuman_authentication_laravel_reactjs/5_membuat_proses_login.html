@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membuat Proses Login - Laravel & Inertia.js</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+        body { background-color: #cbd5e1; font-family: 'Inter', sans-serif; color: #1e293b; padding: 2rem; }
+        .card { background: #e2e8f0; padding: 3rem; border-radius: 2rem; border: 1px solid #94a3b8; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+        
+        pre { 
+            background: #1a1b26 !important; 
+            padding: 1.5rem !important; 
+            border-radius: 1rem !important; 
+            border: 1px solid #334155; 
+            overflow-x: auto; 
+            white-space: pre !important; 
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        code { font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; color: #e0e0e0; }
+        
+        .copy-btn {
+            position: absolute; right: 10px; top: 10px; background: #3b82f6; color: white; 
+            font-size: 10px; font-weight: bold; padding: 4px 8px; border-radius: 4px; z-index: 30;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .copy-btn:hover { background: #2563eb; }
+
+        .section-title { font-size: 1.8rem; font-weight: 900; margin-top: 3rem; margin-bottom: 1rem; border-left: 8px solid #2563eb; padding-left: 1rem; text-transform: uppercase; }
+        p { margin-bottom: 1.5rem; line-height: 1.8; }
+        ul { list-style: disc; margin-left: 1.5rem; margin-bottom: 1.5rem; }
+        .inline-code { background: #94a3b8; color: #1e293b; padding: 0.2rem 0.4rem; border-radius: 0.3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; }
+        strong { color: #0f172a; }
+        table { width: 100%; margin-bottom: 1.5rem; border-collapse: collapse; background: #f1f5f9; border-radius: 0.5rem; overflow: hidden; }
+        th { background: #334155; color: white; padding: 0.75rem; text-align: left; }
+        td { padding: 0.75rem; border-bottom: 1px solid #cbd5e1; }
+    </style>
+    <script>
+        function copyCode(btn) {
+            const code = btn.parentElement.querySelector('code').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerText = 'COPIED!'; btn.style.background = '#10b981';
+                setTimeout(() => { btn.innerText = 'COPY'; btn.style.background = '#3b82f6'; }, 2000);
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="max-w-4xl mx-auto">
+        <a href="index.html" class="mb-4 inline-block font-bold text-blue-800 uppercase text-xs hover:underline">&larr; Kembali ke Daftar Isi</a>
+        <h1 class="text-4xl md:text-5xl font-black mb-8 uppercase tracking-tighter text-slate-900 leading-none">Membuat Proses Login</h1>
+        
+        <div class="card">
+            <h2 class="section-title">Langkah 1 - Membuat Controller Login</h2>
+            <p>Silahkan teman-teman jalankan perintah berikut ini di dalam terminal/CMD dan pastikan sudah berada di dalam <em>project</em> <strong>Laravel</strong>-nya.</p>
+            
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-bash">php artisan make:controller Auth/LoginController</code></pre>
+            </div>
+
+            <p>Jika perintah di atas berhasil dijalankan, maka kita akan mendapatkan 1 <em>file</em> <em>controller</em> baru yang berada di dalam <em>folder</em> <span class="inline-code">app/Http/Controllers/Auth/LoginController.php</span>.</p>
+            <p>Silahkan buka <em>file</em> tersebut dan ubah kode-nya menjadi seperti berikut ini.</p>
+
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">&lt;?php
+
+namespace App\Http\Controllers\Auth;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
+class LoginController extends Controller
+{    
+    public function index()
+    {
+        return inertia('Auth/Login');
+    }
+    
+    public function store(Request $request)
+    {
+        $request->validate([
+            'email'     => 'required|email',
+            'password'  => 'required'
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect('/dashboard');
+        }
+
+        return back()->withErrors([
+            'email' => 'The provided credentials do not match our records.',
+        ]);
+    }
+
+    public function destroy()
+    {
+        Auth::logout();
+        return redirect('/login');
+    }
+}</code></pre>
+            </div>
+
+            <p>Dari penambahan kode di atas, kita membuat 3 <em>method</em> utama:</p>
+            <ul>
+                <li><strong>Function Index:</strong> Digunakan untuk menampilkan halaman form login menggunakan Inertia.</li>
+                <li><strong>Function Store:</strong> Digunakan untuk proses validasi dan autentikasi user.</li>
+                <li><strong>Function Destroy:</strong> Digunakan untuk menghapus session user (logout).</li>
+            </ul>
+
+            <h3 class="font-bold mb-2">Penjelasan Validasi:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>KEY</th>
+                        <th>VALIDATION</th>
+                        <th>DESCRIPTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code class="inline-code">email</code></td>
+                        <td><code class="inline-code">required|email</code></td>
+                        <td>Field wajib diisi dan harus format email.</td>
+                    </tr>
+                    <tr>
+                        <td><code class="inline-code">password</code></td>
+                        <td><code class="inline-code">required</code></td>
+                        <td>Field wajib diisi.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2 class="section-title">Langkah 2 - Membuat Route Login dan Logout</h2>
+            <p>Silahkan buka <em>file</em> <span class="inline-code">routes/web.php</span>, kemudian ubah kode-nya menjadi seperti berikut ini.</p>
+            
+            <div class="code-wrap relative my-8">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-php">use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+
+// Route Register
+Route::get('/register', [RegisterController::class, 'index']);
+Route::post('/register', [RegisterController::class, 'store']);
+
+// Route Login
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'store']);
+Route::post('/logout', [LoginController::class, 'destroy'])->middleware('auth');</code></pre>
+            </div>
+
+            <p>Untuk memastikan <em>route</em> di atas berhasil dibuat, jalankan perintah <span class="inline-code">php artisan route:list</span> di terminal.</p>
+
+            <h2 class="section-title">Langkah 3 - Membuat Halaman Login</h2>
+            <p>Silahkan buat <em>file</em> baru dengan nama <span class="inline-code">Login.jsx</span> di dalam <em>folder</em> <span class="inline-code">resources/js/Pages/Auth</span>, kemudian masukkan kode berikut ini:</p>
+
+            <div class="relative">
+                <button onclick="copyCode(this)" class="copy-btn">COPY</button>
+                <pre><code class="language-jsx">import React, { useState } from 'react';
+import { Head, router } from '@inertiajs/react';
+
+export default function Login({ errors }) {
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const storeLogin = (e) => {
+        e.preventDefault();
+        router.post('/login', {
+            email: email,
+            password: password,
+        });
+    }
+
+    return (
+        &lt;&gt;
+            &lt;Head title="Login - My App" /&gt;
+            &lt;div className="flex items-center justify-center min-h-screen"&gt;
+                &lt;div className="w-full max-w-md p-8 bg-white rounded-xl shadow-lg border border-slate-300"&gt;
+                    &lt;h2 className="text-2xl font-bold text-center mb-6 uppercase"&gt;Login User&lt;/h2&gt;
+                    &lt;form onSubmit={storeLogin}&gt;
+                        &lt;div className="mb-4"&gt;
+                            &lt;label className="block text-sm font-medium mb-1"&gt;Email&lt;/label&gt;
+                            &lt;input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full border rounded-lg px-3 py-2" placeholder="Email Address" /&gt;
+                            {errors.email && &lt;div className="text-red-500 text-xs mt-1"&gt;{errors.email}&lt;/div&gt;}
+                        &lt;/div&gt;
+                        &lt;div className="mb-6"&gt;
+                            &lt;label className="block text-sm font-medium mb-1"&gt;Password&lt;/label&gt;
+                            &lt;input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full border rounded-lg px-3 py-2" placeholder="Password" /&gt;
+                            {errors.password && &lt;div className="text-red-500 text-xs mt-1"&gt;{errors.password}&lt;/div&gt;}
+                        &lt;/div&gt;
+                        &lt;button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg font-bold hover:bg-blue-700 transition"&gt;LOGIN&lt;/button&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/&gt;
+    );
+}</code></pre>
+            </div>
+
+            <h2 class="section-title">Langkah 4 - Uji Coba Proses Login</h2>
+            <p><strong>PENTING:</strong> Pastikan perintah <span class="inline-code">npm run dev</span> dan <span class="inline-code">php artisan serve</span> tetap berjalan.</p>
+            
+            
+
+            <p>Buka <a href="http://localhost:8000/login" class="text-blue-600 font-bold hover:underline">http://localhost:8000/login</a> di browser. Jika kamu memasukkan data yang benar, kamu akan diarahkan ke <span class="inline-code">/dashboard</span>.</p>
+            
+            <p>Jika muncul <strong>Error 404</strong> setelah login, itu bertanda kamu berhasil! Error tersebut muncul hanya karena kita belum membuat route dan halaman dashboard. Kita akan membuatnya di materi selanjutnya.</p>
+
+            <p>Sampai disini kita telah berhasil membangun sistem autentikasi login menggunakan Laravel dan Inertia.js.</p>
+        </div>
+    </div>
+</body>
+</html>
