@@ -1,146 +1,796 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Migrations</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Migrasi Database Laravel</title>
     <style>
-        body { font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.8; color: #334155; background: #f8fafc; margin: 0; padding: 40px 20px; }
-        .container { max-width: 850px; margin: 0 auto; }
-        .btn-back { display: inline-block; margin-bottom: 20px; color: #3b82f6; text-decoration: none; font-weight: bold; font-size: 0.9rem; }
-        .materi-card { background: #fff; padding: 45px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        h1 { font-size: 2.5rem; color: #0f172a; margin-top: 0; border-bottom: 4px solid #3b82f6; padding-bottom: 10px; }
-        h3 { margin-top: 35px; color: #1e293b; font-size: 1.5rem; border-left: 5px solid #3b82f6; padding-left: 15px; }
-        pre { background: #1e1e2e; color: #f8f8f2; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 25px 0; }
-        code { font-family: 'Consolas', monospace; background: #fee2e2; color: #991b1b; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
-        pre code { background: none; color: inherit; padding: 0; }
-        img { max-width: 100%; border-radius: 12px; margin: 30px 0; display: block; border: 1px solid #e2e8f0; }
-        blockquote { border-left: 5px solid #3b82f6; background: #eff6ff; padding: 15px 25px; border-radius: 0 10px 10px 0; font-style: italic; margin: 25px 0; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <a href="index.html" class="btn-back">← Kembali ke Daftar Isi</a>
-        <article class="materi-card">
-            <main class="flex-1 min-w-0 lg:ml-80 mr-0 xl:mr-64 transition-all duration-300 pt-10 md:pt-0">
-<div class="max-w-full mx-auto px-4 sm:px-6 md:px-8 py-5">
-<h1 class="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-3">Migrations</h1>
-<div class="prose lg:prose-lg prose-a:text-blue-500 dark:prose-a:text-blue-400 dark:prose-invert w-full max-w-full">
-<div x-data="" x-init="let t=document.querySelector('.table-of-contents'),d=document.querySelector('.toc'),m=document.querySelector('.toc-mobile'),b=document.querySelector('.btn-toc');if(t&amp;&amp;t.querySelectorAll('li').length&gt;0){d.appendChild(t.cloneNode(true));m.appendChild(t.cloneNode(true))}else b?.classList.add('hidden');$nextTick(()=&gt;{document.querySelectorAll(`.prose a[href^='http']`).forEach(a=&gt;{a.href.includes(location.hostname)||(a.target='_blank',a.rel='noopener noreferrer')})})">
-</div>
-<ul class="table-of-contents">
-<li><a href="#content-cara-membuat-migration">Cara Membuat Migration</a></li>
-<li><a href="#content-menjalankan-migration">Menjalankan Migration</a></li>
-<li><a href="#content-menjalankan-migration-rollback">Menjalankan Migration Rollback</a></li>
-</ul>
-<p><em><strong>Migration</strong></em> merupakan <em>version</em> <em>control</em> untuk <em>database</em>, sehingga dengan menggunakan <em>migration</em> kita tidak perlu menggunakan aplikasi tambahan seperti <strong>PhpMyadmin</strong>. Baik itu membuat <em>table</em>, menambah <em>field</em>, mengubah <em>field</em>, menghapus <em>field</em> dan lain sebagainya.</p>
-<h3><a aria-hidden="true" class="heading-permalink" href="#content-cara-membuat-migration" id="content-cara-membuat-migration" title="Permalink"></a>Cara Membuat Migration</h3>
-<p>Di dalam <strong>Laravel</strong> untuk membuat <em>migration</em> kita bisa menggunakan perintah <code>make:migration</code>, berikut ini contohnya.</p>
-<pre><code>php artisan make:migration create_posts_table
-</code></pre>
-<p>Jika perintah di atas dijalankan, maka akan membuat sebuah <em>file</em> <em>migration</em> baru di dalam <em>folder</em> <code>database/migrations</code>. Dan untuk nama <em>file</em> migrasi akan random sesuai tanggal pembuatannya.</p>
-<p>Kurang lebih seperti ini hasilnya.</p>
-<pre><code>&lt;?php
+      :root {
+        --laravel-red: #ff2d20;
+        --slate-900: #0f172a;
+        --slate-800: #1e293b;
+        --slate-100: #f1f5f9;
+        --emerald-600: #059669;
+      }
+      body {
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          sans-serif;
+        line-height: 1.8;
+        color: #334155;
+        background: #f8fafc;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      .materi-card {
+        background: white;
+        padding: 60px;
+        border-radius: 24px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e2e8f0;
+      }
 
-use Illuminate\Database\Migrations\Migration;
+      h1 {
+        font-size: 3rem;
+        color: var(--slate-900);
+        letter-spacing: -0.025em;
+        margin-bottom: 0.5rem;
+      }
+      h2 {
+        font-size: 2rem;
+        color: var(--slate-900);
+        margin-top: 50px;
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 10px;
+      }
+      h3 {
+        font-size: 1.5rem;
+        color: var(--laravel-red);
+        margin-top: 35px;
+      }
+
+      .analogi-box {
+        background: #f0fdf4;
+        border-left: 6px solid var(--emerald-600);
+        padding: 25px;
+        border-radius: 8px;
+        margin: 30px 0;
+      }
+      .deep-dive {
+        background: #eff6ff;
+        border-left: 6px solid #2563eb;
+        padding: 25px;
+        border-radius: 8px;
+        margin: 30px 0;
+      }
+
+      pre {
+        background: #1e1e2e;
+        color: #f8f8f2;
+        padding: 24px;
+        border-radius: 14px;
+        overflow-x: auto;
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 25px 0;
+        border: 1px solid #334155;
+      }
+      code {
+        font-family: "Fira Code", monospace;
+      }
+      .inline-code {
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 500;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 30px 0;
+        font-size: 14px;
+      }
+      table th {
+        background: var(--slate-900);
+        color: white;
+        padding: 15px;
+        text-align: left;
+      }
+      table td {
+        padding: 12px;
+        border: 1px solid #e2e8f0;
+        vertical-align: top;
+      }
+      table tr:nth-child(even) {
+        background: #fdfdfd;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 9999px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .badge-new {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .btn-back {
+        display: inline-block;
+        margin-bottom: 30px;
+        text-decoration: none;
+        color: var(--laravel-red);
+        font-weight: 600;
+      }
+      .daftar_isi {
+        background: #f8fafc; /* Warna background lebih soft */
+        border: 1px solid #e2e8f0;
+        padding: 25px;
+        border-radius: 12px;
+        margin-bottom: 40px;
+        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05); /* Efek kedalaman */
+      }
+
+      .daftar_isi h3 {
+        margin-top: 0;
+        margin-bottom: 15px;
+        font-size: 1.2rem;
+        color: #0f172a;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* Menambahkan icon kecil di depan judul Daftar Isi menggunakan CSS */
+      .daftar_isi h3::before {
+        content: "☰";
+        color: #ff2d20; /* Warna Laravel */
+        font-size: 1rem;
+      }
+
+      .daftar_isi ul {
+        padding-left: 0;
+        margin: 0;
+        list-style: none;
+      }
+
+      .daftar_isi li {
+        margin-bottom: 10px;
+        position: relative;
+        padding-left: 20px;
+        transition: all 0.2s ease;
+      }
+
+      /* Membuat bullet point custom yang keren */
+      .daftar_isi li::before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: #94a3b8;
+        transition: color 0.2s;
+      }
+
+      .daftar_isi li a {
+        text-decoration: none;
+        color: #475569;
+        font-weight: 500;
+        transition: all 0.2s;
+      }
+
+      /* Efek Hover: Teks bergeser sedikit ke kanan dan berubah warna */
+      .daftar_isi li:hover {
+        transform: translateX(5px);
+      }
+
+      .daftar_isi li:hover a {
+        color: #ff2d20;
+      }
+
+      .daftar_isi li:hover::before {
+        color: #ff2d20;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="materi-card">
+        <a href="index.html" class="btn-back"> Kembali </a>
+        <div class="daftar_isi">
+          <strong>Daftar Isi:</strong>
+          <ul>
+            <li><a href="#pendahuluan">I. Konsep Dasar & Filosofi</a></li>
+            <li><a href="#membuat">II. Anatomi Perintah Artisan</a></li>
+            <li>
+              <a href="#struktur">III. Struktur Class & Anonymous Migrations</a>
+            </li>
+            <li>
+              <a href="#metode-kolom"
+                >IV. Referensi Lengkap Tipe Kolom (Blueprint)</a
+              >
+            </li>
+            <li><a href="#relasi">V. Menghubungkan Tabel (Foreign Keys)</a></li>
+            <li><a href="#indeks">VI. Optimasi & Indexing</a></li>
+            <li>
+              <a href="#modifikasi">VII. Mengubah Kolom yang Sudah Ada</a>
+            </li>
+            <li>
+              <a href="#rename-columns">VIII. Mengubah & Menghapus Kolom</a>
+            </li>
+            <li>
+              <a href="#relasi-mendalam"
+                >IX. Relasi Antar Tabel (Foreign Keys)</a
+              >
+            </li>
+            <li>
+              <a href="#indexing-strategy">X. Strategi Indexing & Uniqueness</a>
+            </li>
+            <li>
+              <a href="#schema-management">XI. Manajemen Skema Skala Besar</a>
+            </li>
+          </ul>
+        </div>
+        <h1>Database Migrations</h1>
+        <p>
+          Panduan teknis mendalam mengenai pengelolaan skema database dengan
+          pendekatan <em>Code-first</em>.
+        </p>
+
+        <div class="analogi-box">
+          <strong>Analogi Dunia Nyata: "Mesin Waktu Kontrol Versi"</strong
+          ><br />
+          Bayangkan Anda sedang membangun sebuah gedung pencakar langit. Tanpa
+          cetak biru (blueprint), setiap tukang akan membangun sesuai imajinasi
+          mereka sendiri. <strong>Migration</strong> adalah cetak biru digital
+          tersebut. Jika di masa depan Anda ingin menambah balkon (kolom baru),
+          Anda tidak menghancurkan gedung tersebut, melainkan membuat "revisi
+          cetak biru" nomor 2. Jika revisi tersebut salah, Anda bisa menggunakan
+          "Mesin Waktu" (Rollback) untuk kembali ke desain gedung nomor 1 tanpa
+          kehilangan seluruh bangunan.
+        </div>
+
+        <h2 id="pendahuluan">I. Konsep Dasar & Filosofi</h2>
+        <p>
+          Migration di Laravel berfungsi seperti Git untuk database Anda.
+          Alih-alih berbagi file SQL secara manual (yang rentan konflik), Anda
+          menulis kode PHP yang mendefinisikan perubahan database.
+        </p>
+
+        <div class="deep-dive">
+          <strong>Deep Dive: Kenapa Harus Migration?</strong><br />
+          1. <strong>Team Collaboration:</strong> Teman setim cukup menjalankan
+          <code>php artisan migrate</code> untuk mendapatkan struktur database
+          yang sama dengan Anda.<br />
+          2. <strong>Consistency:</strong> Menjamin tipe data di server lokal,
+          staging, dan produksi identik.<br />
+          3. <strong>Safety:</strong> Setiap perubahan tercatat dalam tabel
+          <code>migrations</code>, sehingga Anda tahu kapan dan siapa yang
+          melakukan perubahan.
+        </div>
+
+        <h2 id="membuat">II. Anatomi Perintah Artisan</h2>
+        <p>
+          Laravel menyediakan perintah yang sangat cerdas untuk mendeteksi
+          maksud Anda berdasarkan nama file.
+        </p>
+        <pre><code>// Membuat tabel baru (Gunakan kata 'create')
+php artisan make:migration create_products_table
+
+// Mengubah tabel yang sudah ada (Gunakan kata 'to' atau 'add')
+php artisan make:migration add_discount_to_products_table --table=products</code></pre>
+        <h2 id="artisan-advanced">Perintah Artisan Lanjutan</h2>
+        <p>
+          Selain perintah dasar, Laravel menyediakan fungsi untuk memantau
+          status migrasi Anda:
+        </p>
+
+        <div class="deep-dive">
+          <strong>Status & Isolasi:</strong>
+          <ul>
+            <li>
+              <code>php artisan migrate:status</code> : Melihat daftar file
+              migrasi mana saja yang sudah atau belum dijalankan.
+            </li>
+            <li>
+              <code>php artisan migrate:isolated</code> : Menjalankan migrasi
+              secara eksklusif agar tidak terjadi konflik jika dijalankan oleh
+              dua proses bersamaan.
+            </li>
+          </ul>
+        </div>
+
+        <pre><code>// Menghapus semua tabel dan menjalankan ulang seluruh migrasi
+php artisan migrate:fresh
+
+// Menghapus semua tabel, migrasi ulang, dan memasukkan data awal (Seeder)
+php artisan migrate:fresh --seed
+
+// Memaksa migrasi berjalan di server produksi tanpa konfirmasi
+php artisan migrate --force</code></pre>
+
+        <h2 id="struktur">III. Struktur Class & Anonymous Migrations</h2>
+        <p>
+          Laravel 12 menggunakan <em>Anonymous Classes</em> untuk menghindari
+          konflik nama class jika dua pengembang membuat migrasi dengan nama
+          yang mirip.
+        </p>
+        <pre><code>use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
-     * Run the migrations.
-     *
-     * @return void
+     * Run the migrations: Digunakan untuk membuat/mengubah skema.
      */
-    public function up()
-    {
-        Schema::create('posts', function (Blueprint $table) {
-            $table-&gt;id();
-            $table-&gt;timestamps();
+    public function up(): void {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id(); // Primary key BIGINT UNSIGNED
+            $table->foreignId('user_id')->constrained(); // Relasi otomatis
+            $table->decimal('total', 15, 2); // Presisi uang (15 digit, 2 desimal)
+            $table->enum('status', ['pending', 'paid', 'shipped'])->default('pending');
+            $table->timestamps();
         });
     }
 
     /**
-     * Reverse the migrations.
-     *
-     * @return void
+     * Reverse the migrations: Digunakan untuk membatalkan apa yang dilakukan di method up().
      */
-    public function down()
-    {
-        Schema::dropIfExists('posts');
+    public function down(): void {
+        Schema::dropIfExists('orders');
     }
-};
-</code></pre>
-<p>Jika kita lihat pada hasil <em>file</em> <em>migration</em> yang dibuat, kita mendapatkan 2 <em>method</em> bawaan, yaitu <code>function up</code> dan <code>function down</code>.</p>
-<p><code>function up</code> digunakan untuk menambahkan <em>field</em>-<em>field</em> yang akan dibuat di dalam <em>table</em>, sedangkan <em>method</em> <code>function down</code> akan menghapus <em>table</em>.</p>
-<h3><a aria-hidden="true" class="heading-permalink" href="#content-menjalankan-migration" id="content-menjalankan-migration" title="Permalink"></a>Menjalankan Migration</h3>
-<p>Untuk menjalankan <em>migration</em>, kita juga akan menggunakan perintah artisan, yaitu :</p>
-<pre><code>php artisan migrate
-</code></pre>
-<p>Ketika menjalankan perintah di atas, maka <em>file</em>-<em>file</em> <em>migration</em> yang kita punya akan menjalankan <em>method</em> <code>function up</code>, sehingga <em>table</em>-<em>table</em> beserta <em>field</em>-nya akan di<em>generate</em> ke dalam <em>database</em>.</p>
-<h3><a aria-hidden="true" class="heading-permalink" href="#content-menjalankan-migration-rollback" id="content-menjalankan-migration-rollback" title="Permalink"></a>Menjalankan Migration Rollback</h3>
-<p><em><strong>Rollback</strong></em> akan digunakan untuk mengembalikan ke versi dimana kita belum menjalankan migrasi sebelumnya (satu tingkat), berikut ini perintah-nya.</p>
-<pre><code>php artisan migrate:rollback
-</code></pre>
-<p>Kita juga bisa melakukan <em>rollback</em> ke dalam beberapa tingkat sebelumnya, misalnya saja kita telah menjalankan perintah <em>migrate</em> berulang kali. Maka teman-teman bisa seperti berikut ini.</p>
-<pre><code>php artisan migrate:rollback --step=5
-</code></pre>
-<p>Perintah di atas akan melakukan <em>rollback</em> sebanyak 5 tingkat sebelum perintah migrasi terakhir.</p>
-</div>
-<!-- Div pembatas dengan content -->
-<div class="border-t border-neutral-200 dark:border-neutral-700 mt-8 pt-6">
-<div class="flex justify-end">
-<a :aria-busy="loading ? 'true' : 'false'" :class="loading ? 'opacity-60 pointer-events-none' : ''" class="inline-flex items-center gap-2 px-6 py-3 bg-red-700 hover:bg-red-800 dark:bg-neutral-600 dark:hover:bg-neutral-700 text-white text-sm font-medium rounded-full transition-colors duration-200" data-id="1567" href="https://santrikoding.com/account/my-courses/laravel-untuk-pemula/1568?version=1.1.0" x-data="lessonComplete(28, '1.1.0', 'https://santrikoding.com/account/my-courses/laravel-untuk-pemula/lesson/completed')" x-on:click.prevent="complete($event)">
- <span x-text="loading ? 'Processing…' : 'Complete &amp; Continue'"></span>
- </a>
-</div>
-</div>
-</div>
-</main><aside :class="tocVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'" class="hidden xl:block fixed right-0 top-14 bottom-0 w-64 overflow-y-auto border-l border-neutral-200 dark:border-neutral-700/80 bg-white/95 dark:bg-neutral-900 backdrop-blur-sm transition-all duration-300 z-30" x-cloak="">
-<!-- Header dengan glass effect -->
-<div class="sticky top-0 z-10 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-b border-neutral-200/50 dark:border-neutral-700/50 px-4 py-4">
-<div class="flex items-center justify-between">
-<div class="flex items-center gap-2">
-<div class="p-1.5 bg-primary/10 rounded-lg">
+};</code></pre>
 
-</div>
-<div>
-<h3 class="text-sm font-semibold text-neutral-900 dark:text-neutral-100">On This Page</h3>
-</div>
-</div>
+        <h2 id="metode-kolom">IV. Referensi Lengkap Tipe Kolom (Blueprint)</h2>
+        <p>
+          Berikut adalah tabel referensi metode kolom yang sering digunakan di
+          Laravel 12.
+        </p>
 
-</div>
-</div>
-<!-- Progress Indicator yang benar-benar visible -->
-<div class="px-4 py-3 border-b border-neutral-200/50 dark:border-neutral-700/50" x-data="{
-            scrollProgress: 0,
-            updateProgress() {
-                const scrollTop = window.scrollY;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                this.scrollProgress = docHeight &gt; 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
-            }
-         }" x-init="updateProgress(); $watch('scrollProgress', () =&gt; {}); window.addEventListener('scroll', () =&gt; updateProgress())">
-<div class="flex items-center justify-between text-xs mb-2">
-<span class="text-neutral-600 dark:text-neutral-400">Reading Progress</span>
-<span class="text-primary font-medium" x-text="Math.round(scrollProgress) + '%'"></span>
-</div>
-<!-- Progress Bar dengan warna yang kontras -->
-<div class="w-full bg-neutral-300 dark:bg-neutral-600 rounded-full h-2 shadow-inner">
-<div :style="'width: ' + scrollProgress + '%'" class="bg-gradient-to-r from-emerald-300 to-emerald-600 h-2 rounded-full transition-all duration-300 shadow-sm"></div>
-</div>
-</div>
-<!-- Table of Contents Content -->
+        <table>
+          <thead>
+            <tr>
+              <th>Metode Kolom</th>
+              <th>Penjelasan Teknis</th>
+              <th>Contoh Penggunaan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>$table->id()</code></td>
+              <td>
+                Alias untuk <code>bigIncrements</code>. Digunakan sebagai
+                Primary Key.
+              </td>
+              <td><code>$table->id();</code></td>
+            </tr>
+            <tr>
+              <td><code>$table->string()</code></td>
+              <td>Kolom VARCHAR. Panjang default 255 karakter.</td>
+              <td><code>$table->string('username', 100);</code></td>
+            </tr>
+            <tr>
+              <td><code>$table->text()</code></td>
+              <td>
+                Kolom TEXT untuk data string yang sangat panjang (artikel/bio).
+              </td>
+              <td><code>$table->text('content');</code></td>
+            </tr>
+            <tr>
+              <td><code>$table->integer()</code></td>
+              <td>Kolom INTEGER standar.</td>
+              <td><code>$table->integer('level');</code></td>
+            </tr>
+            <tr>
+              <td><code>$table->boolean()</code></td>
+              <td>Kolom BOOLEAN (TINYINT 1).</td>
+              <td><code>$table->boolean('is_active')->default(true);</code></td>
+            </tr>
+            <tr>
+              <td><code>$table->decimal()</code></td>
+              <td>
+                Kolom DECIMAL presisi tinggi (sangat disarankan untuk uang).
+              </td>
+              <td><code>$table->decimal('price', 12, 2);</code></td>
+            </tr>
+            <tr>
+              <td><code>$table->dateTime()</code></td>
+              <td>Kolom DATETIME untuk mencatat waktu spesifik.</td>
+              <td><code>$table->dateTime('expired_at');</code></td>
+            </tr>
+            <tr>
+              <td><code>$table->json()</code></td>
+              <td>Kolom JSON (didukung oleh database modern).</td>
+              <td><code>$table->json('meta_data');</code></td>
+            </tr>
+            <tr>
+              <td><code>$table->uuid()</code></td>
+              <td>Kolom UUID (Universally Unique Identifier).</td>
+              <td><code>$table->uuid('order_number');</code></td>
+            </tr>
+            <tr>
+              <td><code>$table->ulid()</code></td>
+              <td>Kolom ULID (Lexicographically sortable UUID).</td>
+              <td><code>$table->ulid('id');</code></td>
+            </tr>
+            <tr>
+              <td><code>$table->softDeletes()</code></td>
+              <td>
+                Menambahkan kolom <code>deleted_at</code> untuk fitur hapus
+                sementara.
+              </td>
+              <td><code>$table->softDeletes();</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <h3>Daftar Lengkap Column Modifiers</h3>
+        <p>
+          Modifiers memungkinkan Anda memberikan aturan spesifik pada kolom yang
+          sedang dibuat:
+        </p>
 
-<!-- Footer dengan quick actions -->
-<div class="sticky bottom-0 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm border-t border-neutral-200/50 dark:border-neutral-700/50 p-3">
-<div class="flex items-center justify-between text-xs">
+        <table>
+          <thead>
+            <tr>
+              <th>Modifier</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>->after('column')</code></td>
+              <td>Menempatkan kolom setelah kolom tertentu (Khusus MySQL).</td>
+            </tr>
+            <tr>
+              <td><code>->autoIncrement()</code></td>
+              <td>
+                Mengatur kolom integer menjadi auto-increment (Primary Key).
+              </td>
+            </tr>
+            <tr>
+              <td><code>->comment('my comment')</code></td>
+              <td>Menambahkan komentar penjelasan pada kolom di database.</td>
+            </tr>
+            <tr>
+              <td><code>->default($value)</code></td>
+              <td>Memberikan nilai awal (default) jika data tidak diisi.</td>
+            </tr>
+            <tr>
+              <td><code>->from($integer)</code></td>
+              <td>Menentukan nilai awal start untuk auto-increment.</td>
+            </tr>
+            <tr>
+              <td><code>->isGeometry()</code></td>
+              <td>Menentukan kolom sebagai tipe data spasial/geometris.</td>
+            </tr>
+            <tr>
+              <td><code>->nullable($value = true)</code></td>
+              <td>Mengizinkan nilai NULL dimasukkan ke dalam kolom.</td>
+            </tr>
+            <tr>
+              <td><code>->unsigned()</code></td>
+              <td>
+                Mengatur kolom angka agar hanya menerima nilai positif (0 ke
+                atas).
+              </td>
+            </tr>
+            <tr>
+              <td><code>->useCurrent()</code></td>
+              <td>
+                Mengatur kolom TIMESTAMP agar otomatis terisi waktu saat ini.
+              </td>
+            </tr>
+            <tr>
+              <td><code>->always()</code></td>
+              <td>
+                Memastikan kolom tersebut selalu diisi oleh database (Identity
+                Columns).
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
+        <h2 id="relasi">V. Menghubungkan Tabel (Foreign Keys)</h2>
+        <div class="analogi-box">
+          <strong>Analogi: "Gembok dan Kunci"</strong><br />
+          Jika tabel <code>Users</code> adalah pemilik gembok, maka tabel
+          <code>Posts</code> memegang kunci cadangannya. Tanpa kunci yang valid
+          (ID User yang ada), gembok tidak bisa dibuat.
+          <code>onDelete('cascade')</code> berarti jika gembok dihancurkan,
+          kuncinya juga otomatis dibuang.
+        </div>
 
-</div>
-</div>
-</aside>
-        </article>
+        <pre><code>// Cara modern dan sangat ringkas
+$table->foreignId('user_id')
+      ->constrained() // Otomatis mencari tabel 'users'
+      ->onUpdate('cascade')
+      ->onDelete('cascade');
+
+// Jika nama tabel tidak standar
+$table->foreignId('author_id')
+      ->constrained('users') // Menunjuk manual ke tabel users
+      ->nullOnDelete(); // Jika user dihapus, kolom ini jadi NULL</code></pre>
+
+        <h2 id="indeks">VI. Optimasi & Indexing</h2>
+        <p>
+          Indeks digunakan untuk mempercepat proses <code>SELECT</code> namun
+          memperlambat proses <code>INSERT/UPDATE</code>.
+        </p>
+        <ul>
+          <li>
+            <code>$table->primary('id');</code> - Mendefinisikan kunci utama.
+          </li>
+          <li>
+            <code>$table->unique('email');</code> - Mencegah adanya data
+            duplikat.
+          </li>
+          <li>
+            <code>$table->index('slug');</code> - Mempercepat pencarian
+            berdasarkan kolom slug.
+          </li>
+          <li>
+            <code>$table->fullText('bio');</code> - Untuk pencarian teks tingkat
+            lanjut (Full-text search).
+          </li>
+        </ul>
+
+        <h2 id="modifikasi">VII. Mengubah Kolom yang Sudah Ada</h2>
+        <div
+          class="warning-box"
+          style="
+            background: #fff7ed;
+            padding: 20px;
+            border: 1px solid #fed7aa;
+            border-radius: 8px;
+          "
+        >
+          <strong>Hukum Utama:</strong> Jangan pernah mengubah file migrasi yang
+          sudah dijalankan di server produksi. Selalu buat file migrasi baru
+          untuk melakukan perubahan.
+        </div>
+        <p>Gunakan method <code>change()</code> untuk memodifikasi kolom:</p>
+        <pre><code>Schema::table('users', function (Blueprint $table) {
+    // Mengubah panjang kolom name dari 255 menjadi 500
+    $table->string('name', 500)->change();
+});</code></pre>
+
+        <h2 id="rename-columns">VIII. Mengubah & Menghapus Kolom</h2>
+        <p>
+          Jika Anda perlu mengubah nama kolom atau menghapusnya, gunakan metode
+          berikut di dalam migrasi baru:
+        </p>
+
+        <div class="analogi-box">
+          <strong>Analogi:</strong> Mengubah nama kolom seperti mengganti label
+          pada laci lemari. Isinya tetap sama, hanya namanya yang berubah agar
+          lebih mudah dikenali.
+        </div>
+
+        <pre><code>Schema::table('users', function (Blueprint $table) {
+    // 1. Mengubah Nama Kolom
+    $table->renameColumn('from', 'to');
+
+    // 2. Menghapus Kolom
+    $table->dropColumn('votes');
+
+    // 3. Menghapus Banyak Kolom Sekaligus
+    $table->dropColumn(['residence_address', 'office_address']);
+});</code></pre>
+
+        <blockquote>
+          <strong>Catatan:</strong> Untuk mengubah tipe kolom (misal dari String
+          ke Text), pastikan Anda telah menginstal paket pendukung jika
+          menggunakan versi database lama, namun di Laravel 12 hal ini sudah
+          sangat dioptimasi secara native.
+        </blockquote>
+
+        <h2 id="relasi-mendalam">IX. Relasi Antar Tabel (Foreign Keys)</h2>
+        <p>
+          Relasi memastikan bahwa data di satu tabel memiliki referensi yang
+          valid di tabel lain. Ini mencegah adanya "data yatim" (data yang
+          kehilangan induknya).
+        </p>
+
+        <div class="analogi-box">
+          <strong>Analogi:</strong> Bayangkan tabel <code>Siswa</code> dan tabel
+          <code>Kelas</code>. Foreign key adalah nomor ID kelas yang ditempelkan
+          pada data siswa. Tanpa nomor ID kelas yang terdaftar di tabel Kelas,
+          siswa tersebut tidak bisa dimasukkan ke sistem.
+        </div>
+
+        <pre><code>Schema::table('posts', function (Blueprint $table) {
+    // 1. Cara Singkat (Konvensi: nama_tabel_singular_id)
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+    // 2. Cara Manual (Jika nama kolom atau tabel berbeda)
+    $table->foreignId('author_id')
+          ->constrained(table: 'users', indexName: 'posts_author_id')
+          ->onUpdate('cascade')
+          ->onDelete('restrict');
+});</code></pre>
+
+        <h4>Kapan Menggunakan Cascade vs Restrict?</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Aksi (On Delete)</th>
+              <th>Keterangan</th>
+              <th>Contoh Kasus</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>cascade</code></td>
+              <td>
+                Jika data induk dihapus, data anak otomatis ikut terhapus.
+              </td>
+              <td>Hapus Akun -> Hapus semua postingannya.</td>
+            </tr>
+            <tr>
+              <td><code>restrict</code></td>
+              <td>
+                Mencegah penghapusan data induk jika masih ada anak yang
+                terhubung.
+              </td>
+              <td>Jangan hapus Kelas jika masih ada siswa di dalamnya.</td>
+            </tr>
+            <tr>
+              <td><code>nullOnDelete()</code></td>
+              <td>
+                Jika induk dihapus, kolom foreign key di anak diubah menjadi
+                NULL.
+              </td>
+              <td>
+                Hapus Guru -> Kolom wali_kelas di tabel Siswa jadi kosong.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h2 id="indexing-strategy">X. Strategi Indexing & Uniqueness</h2>
+        <p>
+          Index bukan tentang struktur data, melainkan tentang
+          <strong>performa</strong>. Tanpa index, database melakukan
+          <em>Full Table Scan</em> (mencari satu per satu dari atas ke bawah).
+        </p>
+
+        <div class="deep-dive">
+          <strong>Kapan Harus Menggunakan Index?</strong>
+          <ul>
+            <li>
+              Kolom yang sering muncul di dalam klausa <code>WHERE</code>.
+            </li>
+            <li>
+              Kolom yang sering digunakan untuk mengurutkan data
+              (<code>orderBy</code>).
+            </li>
+            <li>
+              Kolom yang digunakan untuk menghubungkan tabel
+              (<code>Join</code>).
+            </li>
+          </ul>
+        </div>
+
+        <h4>Memilih Tipe Index yang Tepat</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Metode</th>
+              <th>Kapan Memilihnya?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>$table->index('slug')</code></td>
+              <td>
+                Gunakan pada kolom pencarian yang datanya boleh kembar (Contoh:
+                kategori, status).
+              </td>
+            </tr>
+            <tr>
+              <td><code>$table->unique('email')</code></td>
+              <td>
+                Wajib digunakan untuk data yang tidak boleh sama (Contoh:
+                Username, Nomor WhatsApp, Serial Number).
+              </td>
+            </tr>
+            <tr>
+              <td><code>$table->primary('id')</code></td>
+              <td>Identitas utama tabel. Otomatis menjadi index tercepat.</td>
+            </tr>
+            <tr>
+              <td><code>$table->fullText('content')</code></td>
+              <td>
+                Khusus untuk pencarian kata di dalam teks yang sangat panjang
+                (artikel).
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <pre><code>Schema::table('transactions', function (Blueprint $table) {
+    // Menambahkan index pada kolom yang sering dicari
+    $table->string('reference_number')->unique(); 
+    $table->string('status')->index(); 
+    
+    // Composite Index (Index gabungan dua kolom)
+    $table->index(['user_id', 'created_at']); 
+});</code></pre>
+
+        <div
+          class="warning-box"
+          style="
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+            padding: 20px;
+            border-radius: 12px;
+            color: #9f1239;
+          "
+        >
+          <strong>Peringatan:</strong> Jangan memberikan index pada setiap
+          kolom! Setiap index akan menambah ukuran file database dan sedikit
+          memperlambat proses <code>INSERT</code> karena database harus
+          memperbarui "daftar isi" setiap ada data baru.
+        </div>
+
+        <h2 id="schema-management">XI. Manajemen Skema Skala Besar</h2>
+        <p>
+          Seiring berkembangnya aplikasi, folder
+          <code>database/migrations</code> mungkin akan berisi ratusan file.
+          Laravel menyediakan solusi untuk membersihkannya.
+        </p>
+
+        <div class="analogi-box">
+          <strong>Analogi "Snapshot":</strong> Bayangkan Anda punya ratusan
+          lembar revisi cetak biru. Daripada membawa ratusan lembar kertas, Anda
+          memotret hasil akhirnya (Snapshot) menjadi satu lembar besar, lalu
+          membuang kertas-kertas revisi yang lama agar tas Anda ringan.
+        </div>
+
+        <h4>1. Schema Squashing (Dumping)</h4>
+        <p>
+          Perintah ini akan memadatkan semua migrasi Anda ke dalam satu file SQL
+          tunggal:
+        </p>
+        <pre><code>php artisan schema:dump
+
+// Dump skema saat ini dan hapus semua file migrasi lama
+php artisan schema:dump --prune</code></pre>
+        <p>
+          Setelah dijalankan, Laravel akan membuat file di
+          <code>database/schema/{database}-schema.sql</code>. Saat Anda
+          menjalankan <code>migrate</code> di komputer baru, Laravel akan
+          mengeksekusi file SQL ini dulu, baru kemudian menjalankan migrasi baru
+          yang tersisa.
+        </p>
+
+        <h4>2. Squashing Migrations</h4>
+        <p>
+          Fitur baru di Laravel 12 yang memungkinkan Anda menggabungkan
+          file-file migrasi menjadi lebih ringkas tanpa merusak riwayat batch di
+          database.
+        </p>
+      </div>
+
+      <div
+        style="
+          text-align: center;
+          margin-top: 40px;
+          color: #64748b;
+          font-size: 0.8rem;
+        "
+      >
+        Dokumentasi ini dibuat untuk referensi pengembang Laravel 12.x &bull;
+        2026
+      </div>
     </div>
-</body>
+  </body>
 </html>
