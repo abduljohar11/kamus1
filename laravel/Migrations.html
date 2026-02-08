@@ -9,9 +9,12 @@
         --laravel-red: #ff2d20;
         --slate-900: #0f172a;
         --slate-800: #1e293b;
+        --slate-700: #334155;
         --slate-100: #f1f5f9;
         --emerald-600: #059669;
+        --blue-600: #2563eb;
       }
+
       body {
         font-family:
           "Inter",
@@ -19,15 +22,18 @@
           -apple-system,
           sans-serif;
         line-height: 1.8;
-        color: #334155;
+        color: var(--slate-700);
         background: #f8fafc;
         margin: 0;
-        padding: 20px;
+        padding: 40px 20px;
       }
+
       .container {
         max-width: 1000px;
         margin: 0 auto;
       }
+
+      /* --- CARD STYLE --- */
       .materi-card {
         background: white;
         padding: 60px;
@@ -36,12 +42,14 @@
         border: 1px solid #e2e8f0;
       }
 
+      /* --- TYPOGRAPHY --- */
       h1 {
         font-size: 3rem;
         color: var(--slate-900);
         letter-spacing: -0.025em;
         margin-bottom: 0.5rem;
       }
+
       h2 {
         font-size: 2rem;
         color: var(--slate-900);
@@ -49,27 +57,42 @@
         border-bottom: 2px solid #e2e8f0;
         padding-bottom: 10px;
       }
+
       h3 {
         font-size: 1.5rem;
         color: var(--laravel-red);
         margin-top: 35px;
       }
 
+      /* --- BOXES --- */
       .analogi-box {
         background: #f0fdf4;
         border-left: 6px solid var(--emerald-600);
         padding: 25px;
         border-radius: 8px;
         margin: 30px 0;
+        color: #166534;
       }
+
       .deep-dive {
         background: #eff6ff;
-        border-left: 6px solid #2563eb;
+        border-left: 6px solid var(--blue-600);
         padding: 25px;
         border-radius: 8px;
         margin: 30px 0;
+        color: #1e40af;
       }
 
+      .warning-box {
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        padding: 20px;
+        border-radius: 12px;
+        margin: 25px 0;
+        color: #9a3412;
+      }
+
+      /* --- CODE BLOCKS --- */
       pre {
         background: #1e1e2e;
         color: #f8f8f2;
@@ -81,9 +104,11 @@
         margin: 25px 0;
         border: 1px solid #334155;
       }
+
       code {
         font-family: "Fira Code", monospace;
       }
+
       .inline-code {
         background: #fee2e2;
         color: #991b1b;
@@ -92,70 +117,85 @@
         font-weight: 500;
       }
 
+      /* --- TABLES --- */
       table {
         width: 100%;
         border-collapse: collapse;
         margin: 30px 0;
         font-size: 14px;
       }
+
       table th {
         background: var(--slate-900);
         color: white;
         padding: 15px;
         text-align: left;
       }
+
       table td {
         padding: 12px;
         border: 1px solid #e2e8f0;
         vertical-align: top;
       }
+
       table tr:nth-child(even) {
         background: #fdfdfd;
       }
 
+      /* --- NAV & BADGES --- */
+      .btn-back {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 25px;
+        color: var(--slate-700);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: color 0.2s;
+      }
+
+      .btn-back:hover {
+        color: var(--laravel-red);
+      }
+
       .badge {
         display: inline-block;
-        padding: 4px 12px;
+        padding: 6px 14px;
         border-radius: 9999px;
         font-size: 12px;
-        font-weight: 600;
+        font-weight: 700;
         text-transform: uppercase;
-        margin-bottom: 10px;
       }
+
       .badge-new {
         background: #dcfce7;
         color: #166534;
+        border: 1px solid #bbf7d0;
       }
-      .btn-back {
-        display: inline-block;
-        margin-bottom: 30px;
-        text-decoration: none;
-        color: var(--laravel-red);
-        font-weight: 600;
-      }
+
+      /* --- TABLE OF CONTENTS --- */
       .daftar_isi {
-        background: #f8fafc; /* Warna background lebih soft */
+        background: #f8fafc;
         border: 1px solid #e2e8f0;
         padding: 25px;
         border-radius: 12px;
         margin-bottom: 40px;
-        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05); /* Efek kedalaman */
+        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
       }
 
       .daftar_isi h3 {
         margin-top: 0;
         margin-bottom: 15px;
         font-size: 1.2rem;
-        color: #0f172a;
+        color: var(--slate-900);
         display: flex;
         align-items: center;
         gap: 10px;
       }
 
-      /* Menambahkan icon kecil di depan judul Daftar Isi menggunakan CSS */
       .daftar_isi h3::before {
         content: "☰";
-        color: #ff2d20; /* Warna Laravel */
+        color: var(--laravel-red);
         font-size: 1rem;
       }
 
@@ -172,33 +212,56 @@
         transition: all 0.2s ease;
       }
 
-      /* Membuat bullet point custom yang keren */
       .daftar_isi li::before {
         content: "→";
         position: absolute;
         left: 0;
         color: #94a3b8;
-        transition: color 0.2s;
       }
 
       .daftar_isi li a {
         text-decoration: none;
         color: #475569;
         font-weight: 500;
-        transition: all 0.2s;
       }
 
-      /* Efek Hover: Teks bergeser sedikit ke kanan dan berubah warna */
       .daftar_isi li:hover {
         transform: translateX(5px);
       }
 
-      .daftar_isi li:hover a {
-        color: #ff2d20;
+      .daftar_isi li:hover a,
+      .daftar_isi li:hover::before {
+        color: var(--laravel-red);
       }
 
-      .daftar_isi li:hover::before {
-        color: #ff2d20;
+      /* --- RESPONSIVE (MOBILE) --- */
+      @media (max-width: 768px) {
+        body {
+          padding: 20px 10px;
+        }
+
+        .materi-card {
+          padding: 30px 15px;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        h2 {
+          font-size: 1.5rem;
+        }
+
+        pre {
+          padding: 15px;
+          font-size: 13px;
+        }
+
+        table {
+          display: block;
+          overflow-x: auto;
+          white-space: nowrap;
+        }
       }
     </style>
   </head>
