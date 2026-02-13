@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Laravel Controllers - Kamus Coding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      .code-container {
+        position: relative;
+        background-color: #1e293b;
+        color: #e2e8f0;
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        font-family: "Fira Code", monospace;
+        margin: 1rem 0;
+        font-size: 0.85rem;
+        border-left: 4px solid #3b82f6; /* Controller Blue */
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.3rem 0.7rem;
+        border-radius: 0.4rem;
+        font-size: 0.7rem;
+        color: white;
+        cursor: pointer;
+      }
+      .analogy-box {
+        border-left: 4px solid #f59e0b;
+        background-color: #fffbeb;
+        padding: 1.25rem;
+        border-radius: 0 0.75rem 0.75rem 0;
+        margin: 1.5rem 0;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-800 pb-20">
+    <nav class="bg-white border-b sticky top-0 z-50 py-4 px-6">
+      <div class="max-w-4xl mx-auto flex justify-between items-center">
+        <a
+          href="index.html"
+          class="text-blue-600 font-bold flex items-center gap-2">
+          <i class="fas fa-arrow-left"></i> Dashboard
+        </a>
+        <span class="text-gray-400 text-sm font-bold">Materi: Controller</span>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      <header class="mb-12">
+        <h1 class="text-4xl font-black text-slate-900 mb-2">The Controller</h1>
+        <p class="text-slate-500 italic">
+          "The Brain that manages logic and data flow."
+        </p>
+      </header>
+
+      <div class="analogy-box">
+        <h3 class="font-bold text-amber-800 mb-2">
+          <i class="fas fa-utensils"></i> Analogi: Pelayan Restoran
+        </h3>
+        <p class="text-amber-900 text-sm">
+          Bayangkan Anda di Restoran.
+          <br />• <strong>Pelayan (Controller)</strong> menerima pesanan dari
+          Anda (Route). <br />• Dia pergi ke
+          <strong>Dapur (Model)</strong> untuk mengambil makanan (Data). <br />•
+          Lalu dia menyajikannya dengan cantik di
+          <strong>Piring (View)</strong> ke meja Anda. <br /><br />
+          Pelayan tidak memasak makanan, dia hanya **mengatur** pesanan sampai
+          ke meja Anda dengan benar.
+        </p>
+      </div>
+
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          1. Resource Controller (CRUD Standard)
+        </h2>
+        <p class="mb-4 text-sm">
+          Laravel menyediakan perintah untuk membuat Controller yang sudah
+          berisi fungsi standar CRUD (Create, Read, Update, Delete).
+        </p>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code># Membuat Controller lengkap dengan template CRUD
+php artisan make:controller SiswaController --resource</code></pre>
+        </div>
+
+        <p class="mt-6 mb-2 text-sm font-bold">
+          7 Method Wajib dalam Resource Controller:
+        </p>
+
+        <div class="overflow-x-auto border rounded-xl bg-white text-sm">
+          <table class="w-full text-left">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="p-3">Method</th>
+                <th class="p-3">Kegunaan</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y">
+              <tr>
+                <td class="p-3 font-mono text-blue-600">index()</td>
+                <td class="p-3">Menampilkan semua data (Daftar Siswa).</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-blue-600">create()</td>
+                <td class="p-3">Menampilkan form input data baru.</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-blue-600">store()</td>
+                <td class="p-3">Menyimpan data baru ke database.</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-blue-600">show($id)</td>
+                <td class="p-3">Menampilkan detail satu data.</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-blue-600">edit($id)</td>
+                <td class="p-3">Menampilkan form edit data.</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-blue-600">update()</td>
+                <td class="p-3">Menyimpan perubahan data yang di-edit.</td>
+              </tr>
+              <tr>
+                <td class="p-3 font-mono text-blue-600">destroy()</td>
+                <td class="p-3">Menghapus data dari database.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="mb-16">
+        <h2
+          class="text-3xl font-black text-slate-800 mb-8 border-b-2 border-blue-500 pb-2 inline-block">
+          7 Method Wajib Resource Controller
+        </h2>
+
+        <div
+          class="concept-card bg-white border border-gray-200 rounded-xl p-6 mb-8 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span
+              class="bg-blue-100 text-blue-600 font-bold px-3 py-1 rounded text-sm"
+              >GET</span
+            >
+            <h3 class="text-xl font-bold text-slate-800">
+              1. public function index()
+            </h3>
+          </div>
+
+          <div class="analogy-box !border-blue-500 !bg-blue-50 mb-4">
+            <h4 class="font-bold text-blue-800 mb-1">
+              <i class="fas fa-book-open"></i> Analogi: Buku Menu
+            </h4>
+            <p class="text-blue-900 text-sm">
+              Saat pelanggan duduk, pelayan memberikan
+              <strong>Daftar Menu</strong> agar pelanggan bisa melihat semua
+              makanan yang tersedia. <br /><strong>Tujuan:</strong> Menampilkan
+              daftar semua data (Tabel).
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function index()
+{
+    // Mengambil semua data siswa dari database
+    $siswas = Siswa::all();
+    
+    // Mengirim data ke view 'siswa.index'
+    return view('siswa.index', compact('siswas'));
+}</code></pre>
+          </div>
+        </div>
+
+        <div
+          class="concept-card bg-white border border-gray-200 rounded-xl p-6 mb-8 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span
+              class="bg-blue-100 text-blue-600 font-bold px-3 py-1 rounded text-sm"
+              >GET</span
+            >
+            <h3 class="text-xl font-bold text-slate-800">
+              2. public function create()
+            </h3>
+          </div>
+
+          <div class="analogy-box !border-green-500 !bg-green-50 mb-4">
+            <h4 class="font-bold text-green-800 mb-1">
+              <i class="fas fa-file-alt"></i> Analogi: Kertas Order Kosong
+            </h4>
+            <p class="text-green-900 text-sm">
+              Pelanggan meminta kertas pesanan kosong untuk ditulis. Belum ada
+              makanan yang dimasak, baru sekadar
+              <strong>Formulir Kosong</strong>. <br /><strong>Tujuan:</strong>
+              Menampilkan Halaman Form Input Data.
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function create()
+{
+    // Hanya menampilkan halaman form kosong
+    return view('siswa.create');
+}</code></pre>
+          </div>
+        </div>
+
+        <div
+          class="concept-card bg-white border border-gray-200 rounded-xl p-6 mb-8 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span
+              class="bg-orange-100 text-orange-600 font-bold px-3 py-1 rounded text-sm"
+              >POST</span
+            >
+            <h3 class="text-xl font-bold text-slate-800">
+              3. public function store(Request $request)
+            </h3>
+          </div>
+
+          <div class="analogy-box !border-orange-500 !bg-orange-50 mb-4">
+            <h4 class="font-bold text-orange-800 mb-1">
+              <i class="fas fa-paper-plane"></i> Analogi: Menyerahkan Orderan
+            </h4>
+            <p class="text-orange-900 text-sm">
+              Pelanggan menyerahkan kertas yang sudah ditulis ke Dapur. Koki
+              mengecek (Validasi) lalu mulai memasak (Simpan ke Database).
+              <br /><strong>Tujuan:</strong> Memproses dan Menyimpan data dari
+              Form Create.
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function store(Request $request)
+{
+    // 1. Validasi Input
+    $validated = $request->validate([
+        'nama' => 'required',
+        'nisn' => 'required|numeric',
+    ]);
+
+    // 2. Simpan ke Database
+    Siswa::create($validated);
+
+    // 3. Kembali ke halaman index
+    return redirect()->route('siswa.index');
+}</code></pre>
+          </div>
+        </div>
+
+        <div
+          class="concept-card bg-white border border-gray-200 rounded-xl p-6 mb-8 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span
+              class="bg-blue-100 text-blue-600 font-bold px-3 py-1 rounded text-sm"
+              >GET</span
+            >
+            <h3 class="text-xl font-bold text-slate-800">
+              4. public function show(Siswa $siswa)
+            </h3>
+          </div>
+
+          <div class="analogy-box !border-purple-500 !bg-purple-50 mb-4">
+            <h4 class="font-bold text-purple-800 mb-1">
+              <i class="fas fa-search"></i> Analogi: Bedah Resep
+            </h4>
+            <p class="text-purple-900 text-sm">
+              Pelanggan ingin tahu detail satu makanan spesifik: "Nasi Goreng
+              ini pakai kecap apa? Pedas tidak?". Hanya fokus pada
+              <strong>Satu Item</strong>. <br /><strong>Tujuan:</strong>
+              Menampilkan detail lengkap satu data.
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function show(Siswa $siswa)
+{
+    // $siswa otomatis dicari oleh Laravel (Model Binding)
+    return view('siswa.show', compact('siswa'));
+}</code></pre>
+          </div>
+        </div>
+
+        <div
+          class="concept-card bg-white border border-gray-200 rounded-xl p-6 mb-8 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span
+              class="bg-blue-100 text-blue-600 font-bold px-3 py-1 rounded text-sm"
+              >GET</span
+            >
+            <h3 class="text-xl font-bold text-slate-800">
+              5. public function edit(Siswa $siswa)
+            </h3>
+          </div>
+
+          <div class="analogy-box !border-yellow-500 !bg-yellow-50 mb-4">
+            <h4 class="font-bold text-yellow-800 mb-1">
+              <i class="fas fa-edit"></i> Analogi: Mengambil Orderan Lama
+            </h4>
+            <p class="text-yellow-900 text-sm">
+              Pelanggan berkata: "Saya mau ubah pesanan tadi". Pelayan mengambil
+              kertas orderan lama yang
+              <strong>sudah ada tulisannya</strong> untuk dicoret/diganti.
+              <br /><strong>Tujuan:</strong> Menampilkan Form yang sudah terisi
+              data lama.
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function edit(Siswa $siswa)
+{
+    // Mengirim data lama ke view agar form tidak kosong
+    return view('siswa.edit', compact('siswa'));
+}</code></pre>
+          </div>
+        </div>
+
+        <div
+          class="concept-card bg-white border border-gray-200 rounded-xl p-6 mb-8 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span
+              class="bg-yellow-100 text-yellow-700 font-bold px-3 py-1 rounded text-sm"
+              >PUT / PATCH</span
+            >
+            <h3 class="text-xl font-bold text-slate-800">
+              6. public function update(Request $request, Siswa $siswa)
+            </h3>
+          </div>
+
+          <div class="analogy-box !border-yellow-600 !bg-yellow-100 mb-4">
+            <h4 class="font-bold text-yellow-900 mb-1">
+              <i class="fas fa-sync-alt"></i> Analogi: Koki Memasak Ulang
+            </h4>
+            <p class="text-yellow-900 text-sm">
+              Koki menerima kertas revisi, lalu mengubah masakan sesuai
+              permintaan baru (misal: tambah garam). Data di database (Panci)
+              berubah.
+              <br /><strong>Tujuan:</strong> Memproses perubahan data dari Form
+              Edit.
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function update(Request $request, Siswa $siswa)
+{
+    $validated = $request->validate([
+        'nama' => 'required',
+        // Validasi lain...
+    ]);
+
+    // Update data di database
+    $siswa->update($validated);
+
+    return redirect()->route('siswa.index');
+}</code></pre>
+          </div>
+        </div>
+
+        <div
+          class="concept-card bg-white border border-gray-200 rounded-xl p-6 mb-8 shadow-sm">
+          <div class="flex items-center gap-3 mb-4">
+            <span
+              class="bg-red-100 text-red-600 font-bold px-3 py-1 rounded text-sm"
+              >DELETE</span
+            >
+            <h3 class="text-xl font-bold text-slate-800">
+              7. public function destroy(Siswa $siswa)
+            </h3>
+          </div>
+
+          <div class="analogy-box !border-red-500 !bg-red-50 mb-4">
+            <h4 class="font-bold text-red-800 mb-1">
+              <i class="fas fa-trash-alt"></i> Analogi: Membatalkan Pesanan
+            </h4>
+            <p class="text-red-900 text-sm">
+              Pelanggan membatalkan pesanan. Pelayan merobek kertas orderan dan
+              membuangnya ke tempat sampah. Data hilang.
+              <br /><strong>Tujuan:</strong> Menghapus data dari database.
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function destroy(Siswa $siswa)
+{
+    $siswa->delete();
+    return redirect()->route('siswa.index');
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="bg-slate-800 text-slate-300 p-6 rounded-xl mt-8">
+          <h3 class="font-bold text-white mb-4 border-b border-slate-600 pb-2">
+            Cheat Sheet Route (web.php)
+          </h3>
+          <p class="text-sm mb-4">
+            Anda tidak perlu menulis 7 route satu per satu. Cukup gunakan satu
+            baris ini:
+          </p>
+          <div class="code-container !bg-black !m-0 !p-3">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>Route::resource('siswa', SiswaController::class);</code></pre>
+          </div>
+          <p class="text-xs text-slate-500 mt-2 italic">
+            *Otomatis membuat semua route untuk index, create, store, show,
+            edit, update, dan destroy.
+          </p>
+        </div>
+      </section>
+
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          2. Validasi Input
+        </h2>
+        <p class="mb-4 text-sm">
+          Controller wajib memeriksa apakah data dari user aman dan sesuai
+          kriteria sebelum disimpan.
+        </p>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>public function store(Request $request)
+{
+    $validated = $request->validate([
+        'nama'  => 'required|string|max:255',
+        'nisn'  => 'required|numeric|unique:siswa,nisn',
+        'email' => 'required|email',
+    ]);
+
+    Siswa::create($validated);
+
+    return redirect()->route('siswa.index')->with('success', 'Data Berhasil Disimpan!');
+}</code></pre>
+        </div>
+      </section>
+
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          Validasi Input (Security Check)
+        </h2>
+        <p class="mb-4 text-sm text-gray-600">
+          Jangan pernah mempercayai input dari pengguna. Selalu periksa apakah
+          data yang dikirim sesuai dengan aturan aplikasi sebelum disimpan ke
+          database.
+        </p>
+
+        <div class="analogy-box !border-red-500 !bg-red-50 mb-6">
+          <h3 class="font-bold text-red-800 mb-2">
+            <i class="fas fa-user-shield"></i> Analogi: Pemeriksaan Bandara
+            (Security Check)
+          </h3>
+          <p class="text-red-900 text-sm">
+            Controller bertindak seperti
+            <strong>Petugas Keamanan Bandara</strong>.
+            <br />
+            Data input adalah <strong>Koper Penumpang</strong>. Sebelum koper
+            masuk ke pesawat (Database), petugas harus memindainya. <br /><br />
+            Jika ada barang terlarang (misal: format email salah, atau kolom
+            wajib kosong), penumpang
+            <strong>diusir kembali ke pintu masuk (Redirect Back)</strong> dan
+            disuruh membereskan kopernya dulu.
+          </p>
+        </div>
+
+        <div
+          class="concept-card bg-white border border-gray-200 rounded-xl p-6 mb-8 shadow-sm">
+          <h3 class="text-lg font-bold text-slate-800 mb-2">
+            A. Cara Validasi di Controller
+          </h3>
+          <p class="text-sm text-gray-500 mb-4">
+            Gunakan method <code>$request->validate()</code>. Jika gagal,
+            Laravel otomatis melempar user kembali ke form sebelumnya beserta
+            pesan errornya.
+          </p>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function store(Request $request)
+{
+    // Aturan main (Rules)
+    $validatedData = $request->validate([
+        'nama_lengkap' => 'required|string|max:255',
+        'email'        => 'required|email:dns|unique:users',
+        'umur'         => 'required|numeric|min:18',
+        'password'     => 'required|min:8|confirmed',
+    ]);
+
+    // Jika lolos, kode di bawah ini baru akan dijalankan
+    User::create($validatedData);
+
+    return redirect('/dashboard');
+}</code></pre>
+          </div>
+        </div>
+
+        <div
+          class="concept-card bg-white border border-gray-200 rounded-xl p-6 mb-8 shadow-sm">
+          <h3 class="text-lg font-bold text-slate-800 mb-4">
+            B. Cheat Sheet Aturan Populer
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-gray-100 text-gray-700">
+                <tr>
+                  <th class="px-4 py-2">Rule</th>
+                  <th class="px-4 py-2">Fungsi</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y">
+                <tr>
+                  <td class="px-4 py-2 font-mono text-blue-600">required</td>
+                  <td class="px-4 py-2">
+                    Kolom wajib diisi, tidak boleh kosong.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2 font-mono text-blue-600">numeric</td>
+                  <td class="px-4 py-2">Isinya wajib angka.</td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2 font-mono text-blue-600">email:dns</td>
+                  <td class="px-4 py-2">
+                    Wajib format email yang valid & domainnya aktif.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2 font-mono text-blue-600">
+                    unique:tabel,kolom
+                  </td>
+                  <td class="px-4 py-2">
+                    Data tidak boleh sama dengan yang sudah ada di DB (misal:
+                    Email/NIP).
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2 font-mono text-blue-600">
+                    min:X / max:X
+                  </td>
+                  <td class="px-4 py-2">
+                    Minimal/Maksimal jumlah karakter (string) atau nilai
+                    (angka).
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2 font-mono text-blue-600">confirmed</td>
+                  <td class="px-4 py-2">
+                    Wajib sama dengan input
+                    <code>{nama_field}_confirmation</code>. Biasa untuk
+                    password.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-4 py-2 font-mono text-blue-600">nullable</td>
+                  <td class="px-4 py-2">Boleh dikosongkan (opsional).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div
+          class="concept-card bg-white border border-gray-200 rounded-xl p-6 mb-8 shadow-sm">
+          <h3 class="text-lg font-bold text-slate-800 mb-2">
+            C. Mengubah Pesan Error (Bahasa Indonesia)
+          </h3>
+          <p class="text-sm text-gray-500 mb-4">
+            Secara default error berbahasa Inggris. Anda bisa mengubahnya dengan
+            menambahkan array kedua.
+          </p>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>$credentials = $request->validate([
+    'email' => 'required|email',
+], [
+    // Format: 'nama_field.rule' => 'Pesan Error'
+    'email.required' => 'Mohon isi alamat email Anda!',
+    'email.email'    => 'Format email tidak valid (contoh: budi@gmail.com)',
+]);</code></pre>
+          </div>
+        </div>
+
+        <div
+          class="bg-slate-800 text-slate-300 p-6 rounded-xl mt-8 border border-slate-700">
+          <h3 class="font-bold text-white mb-2">
+            <i class="fab fa-html5 mr-2"></i> Cara Menampilkan Error di View
+            (Blade)
+          </h3>
+          <p class="text-sm mb-4 opacity-80">
+            Validasi di Controller tidak akan terlihat user jika Anda tidak
+            menampilkannya di file HTML/Blade.
+          </p>
+
+          <div
+            class="code-container !bg-black !m-0 !p-3 !border-l-4 !border-pink-500">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>&lt;!-- Contoh Input di Blade --&gt;
+&lt;input type="text" name="nama" class="@error('nama') border-red-500 @enderror"&gt;
+
+&lt;!-- Menampilkan Pesan Error di bawah input --&gt;
+@error('nama')
+    &lt;div class="text-red-500 text-sm mt-1"&gt;
+        {{ $message }}
+    &lt;/div&gt;
+@enderror</code></pre>
+          </div>
+        </div>
+      </section>
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          3. Route Model Binding (Auto-Fetch)
+        </h2>
+        <p class="mb-4 text-sm text-gray-600">
+          Fitur di mana Laravel otomatis mencarikan data dari database
+          berdasarkan ID yang ada di URL, lalu menyuntikkannya langsung ke
+          Controller.
+        </p>
+
+        <div class="analogy-box !border-indigo-500 !bg-indigo-50 mb-6">
+          <h3 class="font-bold text-indigo-800 mb-2">
+            <i class="fas fa-magic"></i> Analogi: Asisten Pribadi
+          </h3>
+          <p class="text-indigo-900 text-sm">
+            <strong>Cara Manual:</strong> Bos berkata "Tolong ambilkan dokumen
+            nomor 5". Asisten pergi ke lemari, mencari nomor 5, lalu balik lagi
+            melapor "Ada" atau "Tidak Ada". <br /><br />
+            <strong>Model Binding:</strong> Bos berkata "Saya mau bicara dengan
+            [Siswa]". Asisten <strong>otomatis</strong> tahu dia harus mencari
+            ID siswa tersebut di lemari. Jika ketemu, dia langsung bawa orangnya
+            ke hadapan Bos. Jika tidak ketemu, asisten langsung pasang tulisan
+            <strong>"404 Not Found"</strong> di pintu tanpa disuruh.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <div class="code-container !bg-red-900/10 !border-red-500 !m-0">
+            <p
+              class="text-xs font-bold text-black-600 mb-2 flex items-center gap-2">
+              <i class="fas fa-times"></i> CARA LAMA (Manual)
+            </p>
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function show($id) {
+    // Kita harus cari sendiri
+    // Dan harus buat error 404 sendiri jika kosong
+    $siswa = Siswa::find($id);
+    
+    if (!$siswa) {
+        abort(404);
+    }
+    
+    return view('show', compact('siswa'));
+}</code></pre>
+          </div>
+
+          <div class="code-container !bg-green-900/10 !border-green-500 !m-0">
+            <p
+              class="text-xs font-bold text-green-600 mb-2 flex items-center gap-2">
+              <i class="fas fa-check"></i> CARA BARU (Binding)
+            </p>
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>// Nama variabel ($siswa) HARUS SAMA 
+// dengan parameter di route: Route::get('/siswa/{siswa}')
+public function show(Siswa $siswa) {
+    // Laravel otomatis menjalankan findOrFail($id)
+    // Jika tidak ketemu, otomatis 404.
+    return view('show', compact('siswa'));
+}</code></pre>
+          </div>
+        </div>
+
+        <div
+          class="concept-card bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-lg font-bold text-slate-800">
+              Bagaimana jika URL-nya pakai Username/Slug?
+            </h3>
+            <span
+              class="bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded"
+              >Advanced</span
+            >
+          </div>
+          <p class="text-sm text-gray-500 mb-4">
+            Secara default Laravel mencari berdasarkan <code>id</code>. Jika
+            Anda ingin URL cantik seperti <code>/siswa/budi-santoso</code>, Anda
+            perlu memberi tahu Laravel kolom mana yang harus dicari.
+          </p>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>// Di dalam Model Siswa.php
+public function getRouteKeyName()
+{
+    // Beri tahu Laravel jangan cari 'id', tapi cari kolom 'slug'
+    return 'slug';
+}</code></pre>
+          </div>
+
+          <p class="text-xs text-slate-500 mt-2">
+            <i class="fas fa-info-circle"></i> Sekarang saat user akses
+            <code>/siswa/budi-santoso</code>, Laravel akan otomatis menjalankan:
+            <br />
+            <code>Siswa::where('slug', 'budi-santoso')->firstOrFail();</code>
+          </p>
+        </div>
+      </section>
+
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          4. Tips Kamus: "Skinny Controller"
+        </h2>
+        <div class="bg-blue-600 text-white p-6 rounded-2xl shadow-lg">
+          <h3 class="font-bold mb-2 italic">Keep it Skinny!</h3>
+          <p class="text-sm opacity-90 leading-relaxed">
+            Jangan menaruh logika bisnis yang terlalu rumit (seperti perhitungan
+            matematika berat atau kirim email massal) langsung di dalam
+            Controller.
+            <br /><br />
+            Gunakan <strong>Service Classes</strong> atau
+            <strong>Action Classes</strong> agar Controller Anda tetap "Skinny"
+            (langsing/tipis) dan hanya berisi perintah-perintah utama saja.
+          </p>
+        </div>
+      </section>
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          5. Handling File Upload
+        </h2>
+        <div class="analogy-box !border-pink-500 !bg-pink-50 mb-6">
+          <h3 class="font-bold text-pink-800 mb-2">
+            <i class="fas fa-upload"></i> Analogi: Menitipkan Barang
+          </h3>
+          <p class="text-pink-900 text-sm">
+            User mengirimkan <strong>File (Koper)</strong>. Controller tidak
+            menyimpan koper itu di atas mejanya, tapi menitipkannya ke
+            <strong>Gudang (Storage)</strong>, lalu hanya mencatat
+            <strong>Nomor Resi (Nama File)</strong> di buku laporan (Database).
+          </p>
+        </div>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>public function store(Request $request) {
+    if ($request->hasFile('foto')) {
+        // Simpan file ke folder 'public/uploads'
+        $path = $request->file('foto')->store('uploads', 'public');
+        
+        // Simpan path-nya ke database
+        Siswa::create([
+            'nama' => $request->nama,
+            'foto' => $path
+        ]);
+    }
+}</code></pre>
+        </div>
+      </section>
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          6. API Response (JSON)
+        </h2>
+        <p class="mb-4 text-sm text-gray-600">
+          Digunakan ketika Controller berinteraksi dengan Frontend modern
+          (React/Inertia) atau Mobile App (Flutter).
+        </p>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>public function index() {
+    $data = Siswa::all();
+    
+    // Mengembalikan data dalam format JSON bukan HTML
+    return response()->json([
+        'success' => true,
+        'message' => 'Daftar Siswa Berhasil Diambil',
+        'data'    => $data
+    ], 200);
+}</code></pre>
+        </div>
+      </section>
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          7. Session Flash Messages
+        </h2>
+        <p class="mb-4 text-sm text-gray-600">
+          Memberikan feedback visual ke user setelah aksi selesai (misal: "Data
+          berhasil dihapus").
+        </p>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>public function destroy(Siswa $siswa) {
+    $siswa->delete();
+
+    // Mengirim pesan kilat (Flash Message)
+    return redirect()->route('siswa.index')
+        ->with('success', 'Data siswa berhasil dihapus secara permanen!');
+}</code></pre>
+        </div>
+        <p class="text-xs text-slate-500 mt-2 italic">
+          *Pesan 'success' ini yang nantinya ditangkap oleh SweetAlert di sisi
+          View/React.
+        </p>
+      </section>
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          4.5 Authorization (Izin Akses)
+        </h2>
+        <div class="analogy-box !border-red-600 !bg-red-50 mb-6">
+          <h3 class="font-bold text-red-800 mb-2">
+            <i class="fas fa-key"></i> Analogi: VIP Pass
+          </h3>
+          <p class="text-red-900 text-sm">
+            Validasi mengecek <strong>apa yang Anda bawa (isi koper)</strong>,
+            sedangkan Authorization mengecek
+            <strong>siapa Anda (kartu VIP)</strong>. Meskipun data yang dikirim
+            benar, jika Anda bukan Admin, Controller akan menolak perintah
+            hapus.
+          </p>
+        </div>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>public function destroy(Siswa $siswa)
+{
+    // Cek apakah user yang login punya izin menghapus
+    // Jika tidak punya, Laravel otomatis melempar error 403 (Forbidden)
+    $this->authorize('delete', $siswa);
+
+    $this->siswaService->hapusSiswa($siswa);
+
+    return redirect()->route('siswa.index');
+}</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      function copyCode(button) {
+        const pre = button.nextElementSibling;
+        navigator.clipboard.writeText(pre.innerText).then(() => {
+          const originalText = button.innerText;
+          button.innerText = "Tersalin!";
+          button.style.color = "#4ade80";
+          setTimeout(() => {
+            button.innerText = originalText;
+            button.style.color = "white";
+          }, 2000);
+        });
+      }
+    </script>
+  </body>
+</html>

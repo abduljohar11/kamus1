@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Controller Code Snippets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      :root {
+        --bg-dark: #0f172a;
+        --code-bg: #1e293b;
+        --accent: #ef4444; /* Laravel Red */
+      }
+      body {
+        background-color: #f8fafc;
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Code Block Styling */
+      .code-block {
+        position: relative;
+        background-color: var(--code-bg);
+        color: #e2e8f0;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        font-family: "Fira Code", monospace;
+        font-size: 0.85rem;
+        line-height: 1.6;
+        overflow-x: auto;
+        border-left: 4px solid var(--accent);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Copy Button */
+      .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #94a3b8;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+
+      /* Tab System */
+      .tab-btn {
+        padding: 12px 20px;
+        font-weight: 700;
+        color: #64748b;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s;
+      }
+      .tab-active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+        background-color: #f1f5f9;
+      }
+    </style>
+  </head>
+  <body class="pb-20">
+    <header
+      class="bg-white border-b border-gray-200 pt-8 pb-4 px-6 sticky top-0 z-50">
+      <div class="max-w-5xl mx-auto">
+        <a
+          href="index.html"
+          class="text-blue-600 font-bold text-sm flex items-center gap-2 mb-2 hover:underline">
+          <i class="fas fa-arrow-left"></i> Kembali ke Menu Kode
+        </a>
+        <h1 class="text-3xl font-black text-slate-800">
+          <i class="fas fa-terminal text-red-500 mr-2"></i> Controller Logic
+        </h1>
+        <p class="text-slate-500 text-sm mt-1">
+          Kumpulan snippet CRUD, Service Injection, Validation, dan API
+          Response.
+        </p>
+
+        <div class="flex mt-6 space-x-2">
+          <button
+            onclick="switchTab('snippet')"
+            id="btn-snippet"
+            class="tab-btn tab-active flex items-center gap-2">
+            <i class="fas fa-cut"></i> Snippet Per Fungsi
+          </button>
+          <button
+            onclick="switchTab('full')"
+            id="btn-full"
+            class="tab-btn flex items-center gap-2">
+            <i class="fas fa-file-code"></i> Full Blueprint (Service Pattern)
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-8">
+      <div id="tab-snippet" class="space-y-8">
+        <section>
+          <h3
+            class="text-lg font-bold text-slate-700 mb-3 flex items-center gap-2">
+            <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs"
+              >SETUP</span
+            >
+            1. Memanggil Service (Dependency Injection)
+          </h3>
+          <p class="text-sm text-gray-500 mb-2">
+            Pasang ini di paling atas class Controller.
+          </p>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>protected $siswaService;
+
+// Inject Service via Constructor
+public function __construct(SiswaService $siswaService)
+{
+    $this->siswaService = $siswaService;
+}</code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3
+            class="text-lg font-bold text-slate-700 mb-3 flex items-center gap-2">
+            <span class="bg-green-100 text-green-600 px-2 py-1 rounded text-xs"
+              >READ</span
+            >
+            2. Index (Search + Pagination + Eager Loading)
+          </h3>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function index(Request $request)
+{
+    $siswas = Siswa::with('kelas') // Eager Load
+        ->when($request->search, function ($query, $search) {
+            $query->where('nama', 'like', "%{$search}%")
+                  ->orWhere('nisn', 'like', "%{$search}%");
+        })
+        ->latest()
+        ->paginate(10)
+        ->withQueryString(); // Agar search tidak hilang saat pindah hal.
+
+    return view('siswa.index', compact('siswas'));
+}</code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3
+            class="text-lg font-bold text-slate-700 mb-3 flex items-center gap-2">
+            <span
+              class="bg-yellow-100 text-yellow-600 px-2 py-1 rounded text-xs"
+              >CREATE</span
+            >
+            3. Validasi & Panggil Service
+          </h3>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function store(Request $request)
+{
+    // 1. Validasi Input
+    $valid = $request->validate([
+        'nama'     => 'required|string|max:255',
+        'nisn'     => 'required|numeric|unique:siswas,nisn',
+        'kelas_id' => 'required|exists:kelas,id',
+        'foto'     => 'nullable|image|max:2048'
+    ]);
+
+    // 2. Lempar ke Service untuk disimpan
+    $this->siswaService->handleStore($valid);
+
+    // 3. Feedback ke User
+    return redirect()->route('siswa.index')
+        ->with('success', 'Data siswa berhasil ditambahkan!');
+}</code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3
+            class="text-lg font-bold text-slate-700 mb-3 flex items-center gap-2">
+            <span
+              class="bg-purple-100 text-purple-600 px-2 py-1 rounded text-xs"
+              >API</span
+            >
+            4. Response JSON (Untuk Flutter/React)
+          </h3>
+          <div class="code-block border-l-purple-500">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function index()
+{
+    $data = Siswa::all();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'List Data Siswa',
+        'data'    => $data
+    ], 200);
+}</code></pre>
+          </div>
+        </section>
+      </div>
+
+      <div id="tab-full" class="hidden">
+        <div
+          class="bg-blue-50 border border-blue-200 text-blue-800 p-4 rounded-lg mb-6 text-sm">
+          <i class="fas fa-info-circle mr-2"></i> Template ini sudah mencakup:
+          <strong>Service Injection</strong>, <strong>Validasi Lengkap</strong>,
+          <strong>Authorization</strong>, dan <strong>Flash Messages</strong>.
+        </div>
+
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">
+            Salin Full Code
+          </button>
+          <pre><code>&lt;?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Siswa;
+use App\Services\SiswaService;
+use Illuminate\Http\Request;
+
+class SiswaController extends Controller
+{
+    // 1. Definisikan Service
+    protected $siswaService;
+
+    // 2. Inject Service via Constructor
+    public function __construct(SiswaService $siswaService)
+    {
+        $this->siswaService = $siswaService;
+    }
+
+    /**
+     * Menampilkan daftar data (Read)
+     */
+    public function index(Request $request)
+    {
+        // Logika pencarian tetap di controller (best practice)
+        $siswas = Siswa::with('kelas')
+            ->when($request->search, fn($q, $s) => $q->where('nama', 'like', "%$s%"))
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('siswa.index', compact('siswas'));
+    }
+
+    /**
+     * Menampilkan form tambah (Create)
+     */
+    public function create()
+    {
+        return view('siswa.create');
+    }
+
+    /**
+     * Menyimpan data baru (Store)
+     */
+    public function store(Request $request)
+    {
+        // Validasi
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'nisn' => 'required|numeric|unique:siswas,nisn',
+            'foto' => 'nullable|image|max:2048',
+        ]);
+
+        // Panggil Service untuk logika penyimpanan (termasuk upload file)
+        $this->siswaService->simpanData($validated);
+
+        return redirect()->route('siswa.index')
+            ->with('success', 'Data berhasil disimpan!');
+    }
+
+    /**
+     * Menampilkan form edit (Edit)
+     * Menggunakan Model Binding (Siswa $siswa)
+     */
+    public function edit(Siswa $siswa)
+    {
+        return view('siswa.edit', compact('siswa'));
+    }
+
+    /**
+     * Mengupdate data (Update)
+     */
+    public function update(Request $request, Siswa $siswa)
+    {
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'nisn' => 'required|numeric|unique:siswas,nisn,'.$siswa->id, // Ignore ID sendiri
+            'foto' => 'nullable|image|max:2048',
+        ]);
+
+        // Panggil Service Update
+        $this->siswaService->updateData($siswa, $validated);
+
+        return redirect()->route('siswa.index')
+            ->with('info', 'Data berhasil diperbarui!');
+    }
+
+    /**
+     * Menghapus data (Destroy)
+     */
+    public function destroy(Siswa $siswa)
+    {
+        // Cek Authorization (Opsional)
+        // $this->authorize('delete', $siswa);
+
+        // Panggil Service Hapus (termasuk hapus file foto)
+        $this->siswaService->hapusData($siswa);
+
+        return back()->with('success', 'Data telah dihapus!');
+    }
+}</code></pre>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      function switchTab(tabName) {
+        const tabSnippet = document.getElementById("tab-snippet");
+        const tabFull = document.getElementById("tab-full");
+        const btnSnippet = document.getElementById("btn-snippet");
+        const btnFull = document.getElementById("btn-full");
+
+        if (tabName === "snippet") {
+          tabSnippet.classList.remove("hidden");
+          tabFull.classList.add("hidden");
+          btnSnippet.classList.add("tab-active");
+          btnSnippet.classList.remove("text-slate-400");
+          btnFull.classList.remove("tab-active");
+        } else {
+          tabSnippet.classList.add("hidden");
+          tabFull.classList.remove("hidden");
+          btnSnippet.classList.remove("tab-active");
+          btnFull.classList.add("tab-active");
+        }
+      }
+
+      function copyCode(btn) {
+        const code = btn.nextElementSibling.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+          const originalText = btn.innerText;
+          btn.innerText = "Tersalin!";
+          btn.style.color = "#4ade80";
+          setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.color = "#94a3b8";
+          }, 2000);
+        });
+      }
+    </script>
+  </body>
+</html>

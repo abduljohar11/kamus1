@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Migration Code Snippets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      :root {
+        --bg-dark: #0f172a;
+        --code-bg: #1e293b;
+        --accent: #10b981; /* Emerald Green for Database */
+      }
+      body {
+        background-color: #f8fafc;
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Code Block Styling */
+      .code-block {
+        position: relative;
+        background-color: var(--code-bg);
+        color: #e2e8f0;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        font-family: "Fira Code", monospace;
+        font-size: 0.85rem;
+        line-height: 1.6;
+        overflow-x: auto;
+        border-left: 4px solid var(--accent);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Copy Button */
+      .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        color: #94a3b8;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+
+      /* Tab System */
+      .tab-btn {
+        padding: 12px 20px;
+        font-weight: 700;
+        color: #64748b;
+        border-bottom: 3px solid transparent;
+        transition: all 0.3s;
+      }
+      .tab-active {
+        color: var(--accent);
+        border-bottom-color: var(--accent);
+        background-color: #ecfdf5;
+      }
+    </style>
+  </head>
+  <body class="pb-20">
+    <header
+      class="bg-white border-b border-gray-200 pt-8 pb-4 px-6 sticky top-0 z-50">
+      <div class="max-w-5xl mx-auto">
+        <a
+          href="index.html"
+          class="text-blue-600 font-bold text-sm flex items-center gap-2 mb-2 hover:underline">
+          <i class="fas fa-arrow-left"></i> Kembali ke Menu Kode
+        </a>
+        <h1 class="text-3xl font-black text-slate-800">
+          <i class="fas fa-database text-emerald-500 mr-2"></i> Migration Schema
+        </h1>
+        <p class="text-slate-500 text-sm mt-1">
+          Kumpulan snippet tipe data, foreign key relation, dan indexing.
+        </p>
+
+        <div class="flex mt-6 space-x-2">
+          <button
+            onclick="switchTab('snippet')"
+            id="btn-snippet"
+            class="tab-btn tab-active flex items-center gap-2">
+            <i class="fas fa-cubes"></i> Tipe Data & Relasi
+          </button>
+          <button
+            onclick="switchTab('full')"
+            id="btn-full"
+            class="tab-btn flex items-center gap-2">
+            <i class="fas fa-project-diagram"></i> Full Table Blueprint
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-6 py-8">
+      <div id="tab-snippet" class="space-y-8">
+        <section>
+          <h3
+            class="text-lg font-bold text-slate-700 mb-3 flex items-center gap-2">
+            <span class="bg-blue-100 text-blue-600 px-2 py-1 rounded text-xs"
+              >BASIC</span
+            >
+            1. Tipe Data Paling Sering Dipakai
+          </h3>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>$table->id(); // Big Integer Auto Increment (Primary)
+$table->string('nama', 100); // Varchar(100)
+$table->text('alamat'); // Text panjang
+$table->integer('umur'); // Angka bulat
+$table->decimal('harga', 10, 2); // Uang (Total 10 digit, 2 desimal)
+$table->boolean('is_active')->default(true); // True/False
+$table->date('tanggal_lahir'); // YYYY-MM-DD
+$table->timestamp('published_at')->nullable(); // Waktu lengkap
+$table->timestamps(); // created_at & updated_at</code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3
+            class="text-lg font-bold text-slate-700 mb-3 flex items-center gap-2">
+            <span
+              class="bg-purple-100 text-purple-600 px-2 py-1 rounded text-xs"
+              >RELASI</span
+            >
+            2. Foreign Key (Penghubung Tabel)
+          </h3>
+          <p class="text-sm text-gray-500 mb-2">
+            Gunakan format <code>constrained()</code> agar lebih ringkas.
+          </p>
+
+          <div class="code-block border-l-purple-500">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>// OPSI 1: Cara Modern (Laravel 7+)
+// Otomatis mencari tabel 'users' dan kolom 'id'
+$table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+// OPSI 2: Jika nama kolom tidak standar
+// Misal: 'wali_kelas_id' mengarah ke tabel 'gurus'
+$table->foreignId('wali_kelas_id')
+      ->constrained('gurus')
+      ->onDelete('set null'); // Jika guru dihapus, kolom jadi NULL</code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3
+            class="text-lg font-bold text-slate-700 mb-3 flex items-center gap-2">
+            <span
+              class="bg-yellow-100 text-yellow-600 px-2 py-1 rounded text-xs"
+              >OPTIMASI</span
+            >
+            3. Modifiers & Indexing
+          </h3>
+          <div class="code-block border-l-yellow-500">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>$table->string('email')->unique(); // Tidak boleh ada email kembar
+$table->string('slug')->index(); // Mempercepat pencarian
+$table->string('foto')->nullable(); // Boleh dikosongkan
+$table->integer('poin')->default(0); // Nilai awal 0
+$table->softDeletes(); // Menambahkan kolom 'deleted_at' (Trash)</code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3
+            class="text-lg font-bold text-slate-700 mb-3 flex items-center gap-2">
+            <span
+              class="bg-orange-100 text-orange-600 px-2 py-1 rounded text-xs"
+              >UPDATE</span
+            >
+            4. Menambah Kolom Baru (Migration Revisi)
+          </h3>
+          <p class="text-sm text-gray-500 mb-2">
+            Gunakan <code>Schema::table</code> bukan <code>create</code>.
+          </p>
+          <div class="code-block border-l-orange-500">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function up()
+{
+    Schema::table('siswas', function (Blueprint $table) {
+        // Menambah kolom baru setelah kolom 'nama'
+        $table->string('no_hp')->after('nama')->nullable();
+    });
+}</code></pre>
+          </div>
+        </section>
+      </div>
+
+      <div id="tab-full" class="hidden space-y-8">
+        <section>
+          <h3 class="text-lg font-bold text-slate-700 mb-3">
+            Blueprint 1: Tabel Data Utama (Master)
+          </h3>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function up()
+{
+    Schema::create('produks', function (Blueprint $table) {
+        $table->id();
+        $table->string('kode_barang')->unique(); // Index Unik
+        $table->string('nama_barang');
+        $table->string('slug')->index(); // Untuk SEO Friendly URL
+        $table->text('deskripsi')->nullable();
+        
+        $table->decimal('harga_beli', 12, 2);
+        $table->decimal('harga_jual', 12, 2);
+        $table->integer('stok')->default(0);
+        
+        // Relasi ke Kategori
+        $table->foreignId('kategori_id')
+              ->constrained()
+              ->onDelete('cascade'); // Hapus produk jika kategori dihapus
+
+        $table->boolean('is_active')->default(true);
+        $table->timestamps();
+        $table->softDeletes(); // Fitur Sampah
+    });
+}</code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h3 class="text-lg font-bold text-slate-700 mb-3">
+            Blueprint 2: Tabel Transaksi / Pivot
+          </h3>
+          <p class="text-sm text-gray-500 mb-2">
+            Contoh tabel detail transaksi (penjualan) yang menghubungkan Nota
+            dan Produk.
+          </p>
+          <div class="code-block">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function up()
+{
+    Schema::create('detail_transaksis', function (Blueprint $table) {
+        $table->id();
+        
+        // Relasi ke tabel Transaksi Utama
+        $table->foreignId('transaksi_id')->constrained()->onDelete('cascade');
+        
+        // Relasi ke tabel Produk
+        $table->foreignId('produk_id')->constrained();
+        
+        // Data Snapshot (Disimpan agar harga tidak berubah saat master berubah)
+        $table->integer('qty');
+        $table->decimal('harga_saat_ini', 12, 2);
+        $table->decimal('subtotal', 12, 2);
+
+        $table->timestamps();
+    });
+}</code></pre>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      function switchTab(tabName) {
+        const tabSnippet = document.getElementById("tab-snippet");
+        const tabFull = document.getElementById("tab-full");
+        const btnSnippet = document.getElementById("btn-snippet");
+        const btnFull = document.getElementById("btn-full");
+
+        if (tabName === "snippet") {
+          tabSnippet.classList.remove("hidden");
+          tabFull.classList.add("hidden");
+          btnSnippet.classList.add("tab-active");
+          btnSnippet.classList.remove("text-slate-400");
+          btnFull.classList.remove("tab-active");
+        } else {
+          tabSnippet.classList.add("hidden");
+          tabFull.classList.remove("hidden");
+          btnSnippet.classList.remove("tab-active");
+          btnFull.classList.add("tab-active");
+        }
+      }
+
+      function copyCode(btn) {
+        const code = btn.nextElementSibling.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+          const originalText = btn.innerText;
+          btn.innerText = "Tersalin!";
+          btn.style.color = "#4ade80";
+          setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.color = "#94a3b8";
+          }, 2000);
+        });
+      }
+    </script>
+  </body>
+</html>
