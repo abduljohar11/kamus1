@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Migrations Laravel 12 - Kamus Coding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      .code-container {
+        position: relative;
+        background-color: #1e293b;
+        color: #e2e8f0;
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        font-family: "Fira Code", monospace;
+        margin: 1rem 0;
+        font-size: 0.9rem;
+        border-left: 4px solid #ef4444; /* Laravel Red */
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.2rem 0.6rem;
+        border-radius: 0.4rem;
+        font-size: 0.7rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .analogy-box {
+        border-left: 4px solid #10b981;
+        background-color: #ecfdf5;
+        padding: 1.5rem;
+        border-radius: 0 0.75rem 0.75rem 0;
+        margin: 2rem 0;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-800 leading-relaxed">
+    <nav class="bg-white border-b sticky top-0 z-50 py-4 px-6">
+      <div class="max-w-4xl mx-auto flex justify-between items-center">
+        <a
+          href="index.html"
+          class="text-blue-600 font-bold flex items-center gap-2">
+          <i class="fas fa-arrow-left"></i> Dashboard
+        </a>
+        <span class="text-gray-400 text-sm"
+          >Dokumentasi: Database Migrations</span
+        >
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      <header class="mb-12">
+        <h1 class="text-4xl font-black text-slate-900 mb-4">
+          Database Migrations
+        </h1>
+        <p class="text-lg text-slate-600 italic">
+          "Version Control untuk Database Anda."
+        </p>
+      </header>
+
+      <div class="analogy-box">
+        <h3 class="font-bold text-emerald-800 mb-2">
+          <i class="fas fa-lightbulb"></i> Analogi Dunia Nyata
+        </h3>
+        <p class="text-emerald-900 text-sm">
+          Bayangkan Anda dan tim sedang membangun sebuah
+          <strong>Gedung (Database)</strong>. Tanpa Migrations, setiap orang
+          harus mencatat manual perubahan struktur ruangan di kertas
+          masing-masing (SQL Export). <br /><br />
+          <strong>Migrations</strong> adalah
+          <strong>Cetak Biru (Blueprint)</strong> digital yang dibagikan ke
+          semua pekerja. Jika Anda menambah ruangan di lantai 2, Anda cukup
+          kirim file cetak biru baru, dan semua orang bisa menjalankan perintah
+          agar gedung mereka otomatis mengikuti perubahan tersebut secara
+          konsisten.
+        </p>
+      </div>
+
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          1. Membuat Migration
+        </h2>
+        <p class="mb-4">
+          Gunakan perintah Artisan untuk membuat file cetak biru tabel baru.
+          File ini akan tersimpan di folder <code>database/migrations</code>.
+        </p>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code># Membuat tabel baru (plural)
+php artisan make:migration create_flights_table
+
+# Membuat tabel dengan spesifik flag
+php artisan make:migration add_votes_to_users_table --table=users</code></pre>
+        </div>
+      </section>
+
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          2. Struktur File Migration
+        </h2>
+        <p class="mb-4">
+          Setiap file migration memiliki dua metode utama:
+          <code>up()</code> untuk membuat/merubah tabel, dan
+          <code>down()</code> untuk membatalkan (rollback).
+        </p>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>public function up(): void
+{
+    Schema::create('flights', function (Blueprint $table) {
+        $table->id(); // Primary Key auto-increment
+        $table->string('name'); // VARCHAR
+        $table->text('description')->nullable(); // TEXT yang boleh kosong
+        $table->timestamps(); // created_at & updated_at
+    });
+}
+
+public function down(): void
+{
+    Schema::dropIfExists('flights');
+}</code></pre>
+        </div>
+      </section>
+
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          3. Perintah Eksekusi
+        </h2>
+        <p class="mb-4">
+          Setelah menulis kode di file migration, jalankan perintah berikut agar
+          tabel benar-benar dibuat di database.
+        </p>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code># Jalankan semua migration yang belum dieksekusi
+php artisan migrate
+
+# Cek status migration mana yang sudah atau belum
+php artisan migrate:status</code></pre>
+        </div>
+      </section>
+
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          4. Membatalkan Perubahan (Rollback)
+        </h2>
+        <p class="mb-4">
+          Jika terjadi kesalahan, Anda bisa menarik mundur perubahan tersebut.
+        </p>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code># Mundur 1 langkah (batch terakhir)
+php artisan migrate:rollback
+
+# Mundur beberapa langkah spesifik
+php artisan migrate:rollback --step=5
+
+# Menghapus SEMUA tabel dan menjalankan ulang dari awal
+php artisan migrate:fresh</code></pre>
+        </div>
+
+        <div
+          class="bg-red-50 border-l-4 border-red-500 p-4 mt-6 text-sm text-red-800">
+          <strong>Catatan Penting:</strong> Perintah
+          <code>migrate:fresh</code> akan menghapus seluruh data Anda. Gunakan
+          dengan sangat hati-hati di lingkungan production!
+        </div>
+      </section>
+
+      <section class="mb-16">
+        <h2
+          class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+          5. Cheat Sheet Kolom
+        </h2>
+        <div class="overflow-x-auto shadow-sm border rounded-xl bg-white">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-gray-100 text-gray-700 uppercase">
+              <tr>
+                <th class="px-6 py-3">Perintah</th>
+                <th class="px-6 py-3">Tipe Data SQL</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y">
+              <tr>
+                <td class="px-6 py-4 font-mono text-blue-600">
+                  $table->string('name')
+                </td>
+                <td class="px-6 py-4">VARCHAR (255)</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 font-mono text-blue-600">
+                  $table->integer('price')
+                </td>
+                <td class="px-6 py-4">INTEGER</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 font-mono text-blue-600">
+                  $table->boolean('is_active')
+                </td>
+                <td class="px-6 py-4">BOOLEAN / TINYINT(1)</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 font-mono text-blue-600">
+                  $table->foreignId('user_id')
+                </td>
+                <td class="px-6 py-4">BIGINT (Foreign Key)</td>
+              </tr>
+              <tr>
+                <td class="px-6 py-4 font-mono text-blue-600">
+                  $table->json('options')
+                </td>
+                <td class="px-6 py-4">JSON Column</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <section class="mb-16">
+          <h2
+            class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+            6. Menghubungkan Antar Tabel (Foreign Key)
+          </h2>
+          <p class="mb-4">
+            Untuk menghubungkan satu tabel ke tabel lain (misal: tabel
+            <code>posts</code> yang dimiliki oleh <code>users</code>), kita
+            menggunakan <strong>Foreign ID</strong>.
+          </p>
+
+          <div class="analogy-box !border-blue-500 !bg-blue-50 mb-6">
+            <h3 class="font-bold text-blue-800 mb-2">
+              <i class="fas fa-link"></i> Analogi Relasi
+            </h3>
+            <p class="text-blue-900 text-sm">
+              Bayangkan <strong>Tabel User</strong> adalah sebuah
+              <strong>Keluarga</strong> dan <strong>Tabel Post</strong> adalah
+              <strong>Anak-anaknya</strong>. Agar kita tahu siapa orang tua dari
+              si anak, si anak harus membawa
+              <strong>Kartu Nama (Foreign Key)</strong> milik ayahnya di
+              dompetnya. Tanpa kartu itu, si anak kehilangan jejak asalnya.
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function up(): void
+{
+    Schema::create('posts', function (Blueprint $table) {
+        $table->id();
+        
+        // Menghubungkan ke tabel users
+        // constrained() otomatis mencari tabel 'users' berdasarkan nama kolom 'user_id'
+        // onDelete('cascade') artinya jika user dihapus, semua post miliknya ikut terhapus
+        $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        
+        $table->string('title');
+        $table->text('content');
+        $table->timestamps();
+    });
+}</code></pre>
+          </div>
+
+          <h3 class="text-lg font-semibold mt-6 mb-2">Pilihan On Delete:</h3>
+          <ul class="list-disc list-inside text-sm text-gray-600 space-y-2">
+            <li>
+              <code class="text-red-600 font-bold">cascade</code>: Jika data
+              induk dihapus, data anak ikut lenyap.
+            </li>
+            <li>
+              <code class="text-orange-600 font-bold">restrict</code>: Data
+              induk tidak boleh dihapus selama masih punya anak.
+            </li>
+            <li>
+              <code class="text-blue-600 font-bold">nullOnDelete()</code>: Jika
+              data induk dihapus, kolom ID di tabel anak berubah jadi NULL.
+            </li>
+          </ul>
+        </section>
+        <section class="mb-16">
+          <h2
+            class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+            7. Column Modifiers & Enum
+          </h2>
+          <p class="mb-4">
+            Modifiers digunakan untuk memberikan karakteristik tambahan pada
+            kolom, sedangkan Enum digunakan untuk membatasi input data.
+          </p>
+
+          <div class="analogy-box !border-orange-500 !bg-orange-50 mb-6">
+            <h3 class="font-bold text-orange-800 mb-2">
+              <i class="fas fa-filter"></i> Analogi Sederhana
+            </h3>
+            <p class="text-orange-900 text-sm">
+              <strong>Nullable</strong> adalah seperti kolom "Catatan Tambahan"
+              di formulir kertas; Anda boleh mengisinya, boleh juga
+              mengosongkannya. <br /><br />
+              <strong>Enum</strong> adalah seperti
+              <strong>Pilihan Ganda</strong>. Jika pilihannya adalah "Laki-laki"
+              atau "Perempuan", Anda tidak bisa menuliskan "Robot". Database
+              akan menolak jawaban di luar pilihan tersebut.
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function up(): void
+{
+    Schema::create('users', function (Blueprint $table) {
+        $table->id();
+        
+        // NULLABLE: Kolom ini boleh tidak diisi (kosong/null)
+        $table->string('address')->nullable();
+        
+        // DEFAULT: Jika tidak diisi, otomatis bernilai 'active'
+        $table->string('status')->default('active');
+        
+        // ENUM: Membatasi pilihan data yang masuk
+        $table->enum('role', ['admin', 'editor', 'user']);
+        
+        // UNIQUE: Data di kolom ini tidak boleh ada yang sama (misal: email)
+        $table->string('email')->unique();
+        
+        // AFTER: Menentukan posisi kolom (hanya untuk MySQL)
+        $table->string('phone')->after('email')->nullable();
+
+        $table->timestamps();
+    });
+}</code></pre>
+          </div>
+
+          <h3 class="text-lg font-semibold mt-6 mb-2">
+            Daftar Modifiers Populer:
+          </h3>
+          <div class="overflow-x-auto shadow-sm border rounded-xl bg-white">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-gray-100 text-gray-700 uppercase">
+                <tr>
+                  <th class="px-6 py-3">Modifier</th>
+                  <th class="px-6 py-3">Kegunaan</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y">
+                <tr>
+                  <td class="px-6 py-4 font-mono text-blue-600">
+                    ->nullable()
+                  </td>
+                  <td class="px-6 py-4">
+                    Memungkinkan kolom berisi nilai
+                    <code class="bg-gray-100 px-1">NULL</code>.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 font-mono text-blue-600">
+                    ->default($value)
+                  </td>
+                  <td class="px-6 py-4">
+                    Mengisi nilai otomatis jika user tidak menginput data.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 font-mono text-blue-600">->unique()</td>
+                  <td class="px-6 py-4">
+                    Mencegah adanya data duplikat (seperti Username/NIK).
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 font-mono text-blue-600">
+                    ->comment('...')
+                  </td>
+                  <td class="px-6 py-4">
+                    Menambahkan catatan penjelasan pada kolom di database.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 font-mono text-blue-600">
+                    ->constrained()
+                  </td>
+                  <td class="px-6 py-4">
+                    Digunakan pada foreignId untuk mengunci relasi tabel.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="mb-16">
+          <h2
+            class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+            8. Menambah Kolom ke Tabel yang Sudah Ada
+          </h2>
+          <p class="mb-4">
+            Jangan menghapus tabel jika hanya ingin menambah kolom! Buatlah
+            migration baru.
+          </p>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code># Perintah di Terminal
+php artisan make:migration add_phone_to_users_table --table=users</code></pre>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>// Di dalam file migration baru tersebut
+public function up(): void {
+    Schema::table('users', function (Blueprint $table) {
+        $table->string('phone')->after('email')->nullable(); // Menambah kolom
+    });
+}
+
+public function down(): void {
+    Schema::table('users', function (Blueprint $table) {
+        $table->dropColumn('phone'); // Menghapus kolom jika rollback
+    });
+}</code></pre>
+          </div>
+        </section>
+        <section class="mb-16">
+          <h2
+            class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+            9. Database Seeding (Pendekatan Modular)
+          </h2>
+          <p class="mb-4">
+            Seeding modular membagi tugas pengisian data ke dalam file-file
+            terpisah agar kode tetap rapi dan mudah dikelola.
+          </p>
+
+          <div class="analogy-box !border-purple-500 !bg-purple-50 mb-6">
+            <h3 class="font-bold text-purple-800 mb-2">
+              <i class="fas fa-sitemap"></i> Analogi Komandan & Pasukan
+            </h3>
+            <p class="text-purple-900 text-sm">
+              Bayangkan <strong>DatabaseSeeder</strong> adalah seorang
+              <strong>Jenderal (Komandan Utama)</strong>. Dia tidak turun tangan
+              langsung mengisi data. <br /><br />
+              Tugas Jenderal hanya memanggil para
+              <strong>Kapten (UserSeeder, SiswaSeeder, dll)</strong>. Sang
+              Jenderal berkata: "Kapten User, isi data pengguna! Kapten Siswa,
+              isi data murid!". Dengan cara ini, jika ada kesalahan data murid,
+              kita tahu harus mencari Kapten Siswa, bukan menggeledah seluruh
+              markas.
+            </p>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-700 mb-3">
+            A. Membuat Sub-Seeder (Kapten)
+          </h3>
+          <p class="text-sm text-gray-600 mb-3">
+            Langkah pertama, buat file seeder khusus untuk satu tabel tertentu.
+          </p>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>php artisan make:seeder UserSeeder</code></pre>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-700 mt-8 mb-3">
+            B. Contoh Isi UserSeeder.php
+          </h3>
+          <p class="text-sm text-gray-600 mb-3">
+            Di sini kita menuliskan data spesifik yang ingin dimasukkan ke tabel
+            <code>users</code>.
+          </p>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>// database/seeders/UserSeeder.php
+namespace Database\Seeders;
+
+use App\Models\User;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+
+class UserSeeder extends Seeder
+{
+    public function run(): void
+    {
+        // Menambah data Admin
+        User::create([
+            'name' => 'Admin Utama',
+            'email' => 'admin@mail.com',
+            'password' => Hash::make('password123'),
+        ]);
+
+        // Menambah data Guru
+        User::create([
+            'name' => 'Budi Guru',
+            'email' => 'budi@mail.com',
+            'password' => Hash::make('password123'),
+        ]);
+    }
+}</code></pre>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-700 mt-8 mb-3">
+            C. Memanggil di DatabaseSeeder (Jenderal)
+          </h3>
+          <p class="text-sm text-gray-600 mb-3">
+            Daftarkan semua Sub-Seeder di dalam file utama
+            <code>DatabaseSeeder.php</code>.
+          </p>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>// database/seeders/DatabaseSeeder.php
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    public function run(): void
+    {
+        // Memanggil seeder lain untuk dijalankan secara berurutan
+        $this->call([
+            UserSeeder::class,
+            // SiswaSeeder::class, (Jika ada seeder lain)
+        ]);
+    }
+}</code></pre>
+          </div>
+
+          <h3 class="text-lg font-bold text-slate-700 mt-8 mb-3">
+            D. Cara Menjalankan
+          </h3>
+          <div
+            class="bg-blue-50 p-4 rounded-lg border border-blue-100 text-sm text-blue-800">
+            <i class="fas fa-terminal mr-2"></i> <strong>Perintah:</strong>
+            <code>php artisan db:seed</code>
+            <p class="mt-2">
+              Perintah ini akan mengeksekusi <strong>DatabaseSeeder</strong>,
+              yang kemudian otomatis memanggil <strong>UserSeeder</strong> dan
+              kawan-kawannya.
+            </p>
+          </div>
+        </section>
+        <section class="mb-16">
+          <h3 class="text-lg font-bold text-slate-700 mb-3">
+            E. Perintah Artisan Khusus Seeder
+          </h3>
+          <p class="text-sm text-gray-600 mb-4">
+            Kadang kita tidak ingin menjalankan semua seeder, hanya satu file
+            saja atau ingin meriset data sekaligus seeding. Berikut adalah
+            perintahnya:
+          </p>
+
+          <div class="analogy-box !border-blue-500 !bg-blue-50 mb-6">
+            <h3 class="font-bold text-blue-800 mb-2">
+              <i class="fas fa-bolt"></i> Analogi Operasi Spesifik
+            </h3>
+            <p class="text-blue-900 text-sm">
+              Jika <code>db:seed</code> adalah
+              <strong>"Menyalakan semua lampu di gedung"</strong>, maka perintah
+              <code>--class</code> adalah
+              <strong>"Menyalakan lampu di satu ruangan saja"</strong>. Sangat
+              berguna jika Anda baru saja menambah data di satu tabel dan tidak
+              ingin menduplikat data di tabel lainnya.
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <div
+              class="p-4 bg-white border border-gray-200 rounded-xl shadow-sm">
+              <div class="flex items-center justify-between mb-2">
+                <span
+                  class="text-xs font-bold text-blue-600 uppercase tracking-wider"
+                  >Hanya Menjalankan Satu Seeder</span
+                >
+                <button
+                  class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded"
+                  onclick="copyCode(this)">
+                  Salin
+                </button>
+              </div>
+              <div
+                class="bg-slate-900 text-slate-300 p-3 rounded-lg font-mono text-sm">
+                <pre><code>php artisan db:seed --class=UserSeeder</code></pre>
+              </div>
+              <p class="text-xs text-gray-500 mt-2 italic">
+                *Gunakan ini jika Anda baru saja membuat seeder baru dan ingin
+                mengetesnya saja.
+              </p>
+            </div>
+
+            <div
+              class="p-4 bg-white border border-gray-200 rounded-xl shadow-sm">
+              <div class="flex items-center justify-between mb-2">
+                <span
+                  class="text-xs font-bold text-orange-600 uppercase tracking-wider"
+                  >Segarkan Database & Seed Ulang</span
+                >
+                <button
+                  class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded"
+                  onclick="copyCode(this)">
+                  Salin
+                </button>
+              </div>
+              <div
+                class="bg-slate-900 text-slate-300 p-3 rounded-lg font-mono text-sm">
+                <pre><code>php artisan migrate:fresh --seed</code></pre>
+              </div>
+              <p class="text-xs text-gray-500 mt-2 italic">
+                *Hapus semua tabel, buat ulang strukturnya, lalu jalankan
+                DatabaseSeeder Utama.
+              </p>
+            </div>
+
+            <div
+              class="p-4 bg-white border border-gray-200 rounded-xl shadow-sm">
+              <div class="flex items-center justify-between mb-2">
+                <span
+                  class="text-xs font-bold text-red-600 uppercase tracking-wider"
+                  >Hanya Mengisi Tabel Kosong (Manual)</span
+                >
+                <button
+                  class="text-xs bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded"
+                  onclick="copyCode(this)">
+                  Salin
+                </button>
+              </div>
+              <div
+                class="bg-slate-900 text-slate-300 p-3 rounded-lg font-mono text-sm">
+                <pre><code>php artisan db:seed</code></pre>
+              </div>
+              <p class="text-xs text-gray-500 mt-2 italic">
+                *Menjalankan class 'DatabaseSeeder' (semua yang ada di dalam
+                array $this->call).
+              </p>
+            </div>
+          </div>
+        </section>
+        <section class="mb-16">
+          <h2
+            class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
+            F. Variasi Perintah Pengisian Data
+          </h2>
+          <p class="mb-4">
+            Selain <code>create()</code>, ada beberapa teknik lain yang bisa
+            digunakan di dalam metode <code>run()</code>:
+          </p>
+
+          <div class="mb-8">
+            <h3 class="text-lg font-bold text-slate-700 mb-2">
+              1. Menggunakan Query Builder (DB Facade)
+            </h3>
+            <p class="text-sm text-gray-600 mb-3">
+              Lebih cepat karena tidak melewati sistem Model Laravel (Eloquent).
+              Cocok untuk data yang sangat besar.
+            </p>
+            <div class="code-container">
+              <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+              <pre><code>use Illuminate\Support\Facades\DB;
+
+DB::table('users')->insert([
+    'name' => 'User Biasa',
+    'email' => 'user@mail.com',
+    'password' => bcrypt('123'),
+]);</code></pre>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="text-lg font-bold text-slate-700 mb-2">
+              2. Menggunakan Perulangan (Manual Multi-Data)
+            </h3>
+            <p class="text-sm text-gray-600 mb-3">
+              Jika Anda ingin membuat 10 data dengan pola tertentu tanpa
+              Factory.
+            </p>
+            <div class="code-container">
+              <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+              <pre><code>for ($i = 1; $i <= 10; $i++) {
+    User::create([
+        'name' => "User Ke-$i",
+        'email' => "user$i@mail.com",
+        'password' => bcrypt('password'),
+    ]);
+}</code></pre>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="text-lg font-bold text-slate-700 mb-2">
+              3. Menggunakan updateOrCreate
+            </h3>
+            <p class="text-sm text-gray-600 mb-3">
+              Sangat ampuh agar saat seeder dijalankan berulang kali, data tidak
+              menjadi dobel (duplikat).
+            </p>
+
+            <div class="analogy-box !border-blue-500 !bg-blue-50 mb-4">
+              <h3 class="font-bold text-blue-800 mb-2">
+                <i class="fas fa-sync"></i> Analogi UpdateOrCreate
+              </h3>
+              <p class="text-blue-900 text-sm">
+                Bayangkan Anda <strong>Mengecat Tembok</strong>. Jika warna
+                tembok sudah biru, Anda tidak menambah tembok baru, tapi cukup
+                mengecat ulang (update). Jika tembok belum ada, barulah Anda
+                membangunnya (create).
+              </p>
+            </div>
+
+            <div class="code-container">
+              <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+              <pre><code>// Cari user yang emailnya admin@mail.com
+// Jika ketemu -> Update namanya
+// Jika tidak ketemu -> Buat baru
+User::updateOrCreate(
+    ['email' => 'admin@mail.com'], // Kunci pencarian
+    ['name' => 'Admin Super', 'password' => bcrypt('123')] // Data yang diisi
+);</code></pre>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="text-lg font-bold text-slate-700 mb-2">
+              4. Menggunakan Factory (Massive Data)
+            </h3>
+            <p class="text-sm text-gray-600 mb-3">
+              Cara paling modern untuk membuat ribuan data dummy secara instan.
+            </p>
+            <div class="code-container">
+              <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+              <pre><code>// Membuat 100 user sekaligus dengan data acak
+User::factory(100)->create();</code></pre>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="bg-white border-t py-10 text-center text-gray-400 text-sm">
+      <p>&copy; 2026 Kamus Coding - Dokumentasi Migrations Laravel 12</p>
+    </footer>
+
+    <script>
+      function copyCode(button) {
+        const code = button.nextElementSibling.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+          const originalText = button.innerText;
+          button.innerText = "Tersalin!";
+          button.classList.add("bg-green-600", "text-white");
+          setTimeout(() => {
+            button.innerText = originalText;
+            button.classList.remove("bg-green-600", "text-white");
+          }, 2000);
+        });
+      }
+    </script>
+  </body>
+</html>

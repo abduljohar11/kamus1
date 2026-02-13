@@ -7,8 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
       .card-hover {
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -21,7 +20,7 @@
       }
     </style>
   </head>
-  <body class="bg-gray-50 min-h-screen">
+  <body class="bg-gray-50 min-h-screen font-sans">
     <header class="bg-slate-900 text-white py-12 px-6 shadow-xl mb-10">
       <div class="max-w-6xl mx-auto text-center">
         <h1 class="text-4xl font-extrabold mb-2 tracking-tight">
@@ -36,23 +35,44 @@
     <main class="max-w-6xl mx-auto px-6 pb-20">
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         <a
-          href="laravel/index.html"
-          class="card-hover bg-white rounded-2xl p-6 border-2 border-blue-50 flex flex-col justify-between ring-4 ring-blue-50/50"
-        >
+          href="laravel_reack/index.html"
+          class="card-hover bg-white rounded-2xl p-6 border-2 border-blue-100 flex flex-col justify-between ring-4 ring-blue-50/50">
           <div>
             <div
-              class="w-14 h-14 bg-blue-500 text-white rounded-xl flex items-center justify-center text-2xl mb-4 shadow-lg shadow-blue-200"
-            >
+              class="w-14 h-14 bg-blue-600 text-white rounded-xl flex items-center justify-center text-2xl mb-4 shadow-lg shadow-blue-200">
+              <i class="fas fa-layer-group"></i>
+            </div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-xl font-bold text-gray-800">
+                Daftar Materi Laravel & ReactJS
+              </h2>
+              <span
+                class="bg-blue-100 text-blue-600 text-[10px] px-2 py-0.5 rounded-full uppercase font-bold"
+                >New</span
+              >
+            </div>
+            <p class="text-gray-500 text-sm mt-2">
+              Kumpulan lengkap materi kolaborasi Laravel & ReactJS dari dasar
+              hingga mahir.
+            </p>
+          </div>
+          <div class="mt-6 flex items-center text-blue-600 font-bold">
+            Lihat Semua Materi <i class="fas fa-arrow-right ml-2 text-xs"></i>
+          </div>
+        </a>
+
+        <a
+          href="laravel/index.html"
+          class="card-hover bg-white rounded-2xl p-6 border-2 border-blue-50 flex flex-col justify-between ring-4 ring-blue-50/50">
+          <div>
+            <div
+              class="w-14 h-14 bg-blue-500 text-white rounded-xl flex items-center justify-center text-2xl mb-4 shadow-lg shadow-blue-200">
               <i class="fas fa-book-open"></i>
             </div>
             <div class="flex items-center gap-2">
               <h2 class="text-xl font-bold text-gray-800">
                 Daftar Materi Laravel
               </h2>
-              <span
-                class="bg-blue-100 text-blue-600 text-[10px] px-2 py-0.5 rounded-full uppercase font-bold"
-                >New</span
-              >
             </div>
             <p class="text-gray-500 text-sm mt-2">
               Kumpulan lengkap materi Laravel dari dasar hingga mahir (Routing,
@@ -66,12 +86,10 @@
 
         <a
           href="rangkuman_authentication_laravel_reactjs/index.html"
-          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between"
-        >
+          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between">
           <div>
             <div
-              class="w-14 h-14 bg-blue-600 text-white rounded-xl flex items-center justify-center text-2xl mb-4"
-            >
+              class="w-14 h-14 bg-indigo-500 text-white rounded-xl flex items-center justify-center text-2xl mb-4">
               <i class="fas fa-shield-alt"></i>
             </div>
             <h2 class="text-xl font-bold text-gray-800">
@@ -81,19 +99,17 @@
               Implementasi sistem login, JWT, dan proteksi API.
             </p>
           </div>
-          <div class="mt-6 flex items-center text-blue-600 font-medium">
+          <div class="mt-6 flex items-center text-indigo-600 font-medium">
             Buka Materi <i class="fas fa-arrow-right ml-2 text-xs"></i>
           </div>
         </a>
 
         <a
           href="rangkuman_crud_laravel12/index.html"
-          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between"
-        >
+          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between">
           <div>
             <div
-              class="w-14 h-14 bg-orange-500 text-white rounded-xl flex items-center justify-center text-2xl mb-4"
-            >
+              class="w-14 h-14 bg-orange-500 text-white rounded-xl flex items-center justify-center text-2xl mb-4">
               <i class="fas fa-database"></i>
             </div>
             <h2 class="text-xl font-bold text-gray-800">CRUD Laravel 12</h2>
@@ -108,12 +124,10 @@
 
         <a
           href="rangkuman_javascript/index.html"
-          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between"
-        >
+          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between">
           <div>
             <div
-              class="w-14 h-14 bg-yellow-400 text-white rounded-xl flex items-center justify-center text-2xl mb-4"
-            >
+              class="w-14 h-14 bg-yellow-400 text-white rounded-xl flex items-center justify-center text-2xl mb-4">
               <i class="fab fa-js"></i>
             </div>
             <h2 class="text-xl font-bold text-gray-800">JavaScript</h2>
@@ -128,12 +142,10 @@
 
         <a
           href="rangkuman_laravel_12/index.html"
-          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between"
-        >
+          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between">
           <div>
             <div
-              class="w-14 h-14 bg-red-600 text-white rounded-xl flex items-center justify-center text-2xl mb-4"
-            >
+              class="w-14 h-14 bg-red-600 text-white rounded-xl flex items-center justify-center text-2xl mb-4">
               <i class="fab fa-laravel"></i>
             </div>
             <h2 class="text-xl font-bold text-gray-800">Laravel 12 Core</h2>
@@ -148,12 +160,10 @@
 
         <a
           href="rangkuman_php/index.html"
-          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between"
-        >
+          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between">
           <div>
             <div
-              class="w-14 h-14 bg-indigo-600 text-white rounded-xl flex items-center justify-center text-2xl mb-4"
-            >
+              class="w-14 h-14 bg-indigo-600 text-white rounded-xl flex items-center justify-center text-2xl mb-4">
               <i class="fab fa-php"></i>
             </div>
             <h2 class="text-xl font-bold text-gray-800">PHP Programming</h2>
@@ -168,12 +178,10 @@
 
         <a
           href="rangkuman_react/index.html"
-          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between"
-        >
+          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between">
           <div>
             <div
-              class="w-14 h-14 bg-cyan-500 text-white rounded-xl flex items-center justify-center text-2xl mb-4"
-            >
+              class="w-14 h-14 bg-cyan-500 text-white rounded-xl flex items-center justify-center text-2xl mb-4">
               <i class="fab fa-react"></i>
             </div>
             <h2 class="text-xl font-bold text-gray-800">ReactJS</h2>
@@ -188,12 +196,10 @@
 
         <a
           href="rangkuman_SQL_Dasar/index.html"
-          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between"
-        >
+          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between">
           <div>
             <div
-              class="w-14 h-14 bg-emerald-600 text-white rounded-xl flex items-center justify-center text-2xl mb-4"
-            >
+              class="w-14 h-14 bg-emerald-600 text-white rounded-xl flex items-center justify-center text-2xl mb-4">
               <i class="fas fa-table"></i>
             </div>
             <h2 class="text-xl font-bold text-gray-800">SQL Dasar</h2>
@@ -208,12 +214,10 @@
 
         <a
           href="rangkuman_Tailwind_CSS/index.html"
-          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between"
-        >
+          class="card-hover bg-white rounded-2xl p-6 border border-gray-100 flex flex-col justify-between">
           <div>
             <div
-              class="w-14 h-14 bg-sky-400 text-white rounded-xl flex items-center justify-center text-2xl mb-4"
-            >
+              class="w-14 h-14 bg-sky-400 text-white rounded-xl flex items-center justify-center text-2xl mb-4">
               <i class="fas fa-code"></i>
             </div>
             <h2 class="text-xl font-bold text-gray-800">Tailwind CSS</h2>
@@ -229,8 +233,7 @@
     </main>
 
     <footer
-      class="bg-white border-t border-gray-200 py-8 text-center text-gray-400 text-sm"
-    >
+      class="bg-white border-t border-gray-200 py-8 text-center text-gray-400 text-sm">
       <p>
         &copy; 2026 Kamus Coding - Dibuat dengan
         <i class="fas fa-heart text-red-500"></i>

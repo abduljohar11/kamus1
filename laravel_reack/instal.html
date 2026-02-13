@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>install laravel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      .code-block {
+        position: relative;
+        background-color: #1e293b;
+        color: #e2e8f0;
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+        font-family: "Courier New", Courier, monospace;
+        margin-bottom: 1.5rem;
+        overflow-x: auto;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.5rem;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-50">
+      <div class="max-w-4xl mx-auto flex justify-between items-center">
+        <a
+          href="index.html"
+          class="text-blue-600 font-bold flex items-center gap-2">
+          <i class="fas fa-arrow-left"></i> Kembali ke Dashboard
+        </a>
+        <span class="text-gray-400 font-medium text-sm"
+          >Materi: Laravel & React Setup</span
+        >
+      </div>
+    </nav>
+
+    <header class="py-10 px-6 max-w-4xl mx-auto">
+      <h1 class="text-3xl font-extrabold text-slate-900 mb-4">
+        <i class="fas fa-tools text-blue-500 mr-2"></i> Inisialisasi Projek &
+        Setup Database
+      </h1>
+      <p class="text-gray-600 leading-relaxed">
+        Langkah-langkah awal membangun projek
+        <strong>Buku Guru</strong> menggunakan Laravel 12, Breeze
+        (Inertia-React), dan konfigurasi environment.
+      </p>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 pb-20">
+      <section class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span
+            class="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm"
+            >1</span
+          >
+          Create Project & Install Breeze
+        </h2>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code># Membuat projek baru
+composer create-project laravel/laravel buku-guru
+
+# Masuk ke direktori
+cd buku-guru
+
+# Install Laravel Breeze untuk sistem Auth
+composer require laravel/breeze --dev</code></pre>
+        </div>
+      </section>
+
+      <section class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span
+            class="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm"
+            >2</span
+          >
+          Install Scaffold Inertia-React
+        </h2>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code># Install Breeze dengan stack React
+php artisan breeze:install react
+
+# Install dependencies frontend
+npm install</code></pre>
+        </div>
+      </section>
+
+      <section class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span
+            class="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm"
+            >3</span
+          >
+          Install UI Packages
+        </h2>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code># Install SweetAlert2 untuk notifikasi popup
+npm install sweetalert2
+
+# Install Lucide React untuk icon
+npm install lucide-react</code></pre>
+        </div>
+      </section>
+
+      <section class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span
+            class="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm"
+            >4</span
+          >
+          Setting Database (.env)
+        </h2>
+        <p class="text-gray-600 mb-3 text-sm">
+          Buka file <strong>.env</strong> dan sesuaikan konfigurasinya:
+        </p>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=buku_guru
+DB_USERNAME=root
+DB_PASSWORD=</code></pre>
+        </div>
+      </section>
+
+      <section class="mb-10">
+        <h2
+          class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span
+            class="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-sm"
+            >5</span
+          >
+          Migrasi & Running
+        </h2>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code># Jalankan migrasi database
+php artisan migrate
+
+# Jalankan server frontend (Vite)
+npm run dev
+
+# Jalankan server backend (Laravel)
+php artisan serve</code></pre>
+        </div>
+      </section>
+
+      <section class="bg-red-50 border-l-4 border-red-500 p-6 rounded-r-xl">
+        <h2 class="text-xl font-bold text-red-700 mb-4 flex items-center gap-2">
+          <i class="fas fa-exclamation-triangle"></i> Database Reset (Hapus All)
+        </h2>
+        <p class="text-red-600 mb-3 text-sm">
+          Gunakan ini jika ingin mengosongkan database dan menjalankan seeder
+          ulang:
+        </p>
+        <div class="code-block !bg-slate-800">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>php artisan migrate:fresh --seed</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <footer
+      class="bg-white border-t border-gray-200 py-8 text-center text-gray-400 text-sm">
+      <p>&copy; 2026 Kamus Coding - Setup Project</p>
+    </footer>
+
+    <script>
+      function copyCode(button) {
+        const pre = button.nextElementSibling;
+        const code = pre.querySelector("code").innerText;
+
+        navigator.clipboard.writeText(code).then(() => {
+          const originalText = button.innerText;
+          button.innerText = "Tersalin!";
+          button.classList.add("bg-green-600");
+
+          setTimeout(() => {
+            button.innerText = originalText;
+            button.classList.remove("bg-green-600");
+          }, 2000);
+        });
+      }
+    </script>
+  </body>
+</html>

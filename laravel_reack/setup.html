@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Setup Environment - Kamus Coding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      .code-container {
+        position: relative;
+        background-color: #1e293b;
+        color: #e2e8f0;
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        font-family: "Fira Code", monospace;
+        margin: 1rem 0;
+        font-size: 0.9rem;
+        border-left: 4px solid #3b82f6;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.2rem 0.6rem;
+        border-radius: 0.4rem;
+        font-size: 0.7rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      .tab-btn.active {
+        border-bottom: 3px solid #3b82f6;
+        color: #3b82f6;
+      }
+      .download-card {
+        transition: transform 0.2s;
+      }
+      .download-card:hover {
+        transform: scale(1.02);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-800">
+    <nav class="bg-white border-b sticky top-0 z-50 py-4 px-6">
+      <div class="max-w-4xl mx-auto flex justify-between items-center">
+        <a
+          href="index.html"
+          class="text-blue-600 font-bold flex items-center gap-2">
+          <i class="fas fa-arrow-left"></i> Dashboard
+        </a>
+        <span class="text-gray-400 text-sm"
+          >Materi: Initial Setup (Updated)</span
+        >
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      <header class="mb-10 text-center">
+        <h1 class="text-4xl font-black text-slate-900 mb-4">
+          Setup Development Environment
+        </h1>
+        <p class="text-slate-500">
+          Konfigurasi khusus Linux Mint & Manual Windows Setup
+        </p>
+      </header>
+
+      <div class="flex border-b border-gray-200 mb-8 overflow-x-auto">
+        <button
+          onclick="openTab('linux')"
+          class="tab-btn active px-8 py-3 font-bold transition whitespace-nowrap">
+          <i class="fab fa-linux mr-2"></i> Linux Mint (Nala/Terminal)
+        </button>
+        <button
+          onclick="openTab('windows')"
+          class="tab-btn px-8 py-3 font-bold transition whitespace-nowrap">
+          <i class="fab fa-windows mr-2"></i> Windows (Manual Setup)
+        </button>
+      </div>
+
+      <div id="linux" class="tab-content active space-y-10">
+        <div
+          class="bg-emerald-50 border-l-4 border-emerald-500 p-4 rounded-r-lg text-sm text-emerald-800">
+          <i class="fas fa-check-circle mr-2"></i>
+          <strong>Linux Mint:</strong> Menggunakan <code>nala</code> untuk
+          tampilan instalasi yang lebih rapi dan cepat.
+        </div>
+
+        <section>
+          <h2 class="text-xl font-bold mb-4">1. Install PHP via Nala</h2>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>sudo apt install nala -y
+sudo nala update
+sudo nala install php php-cli php-fpm php-mysql php-zip php-gd php-mbstring php-curl php-xml php-bcmath php-intl -y</code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold mb-4">2. Install Composer (Global)</h2>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+composer --version</code></pre>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-bold mb-4">
+            3. Install Node.js (LTS Version)
+          </h2>
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo nala install nodejs -y</code></pre>
+          </div>
+        </section>
+      </div>
+
+      <div id="windows" class="tab-content space-y-8">
+        <p class="text-gray-600 mb-6 italic">
+          Jika tidak ingin menggunakan XAMPP, berikut adalah cara download dan
+          install secara terpisah:
+        </p>
+
+        <div
+          class="download-card bg-white border border-gray-200 p-6 rounded-2xl shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-4">
+              <div
+                class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center text-xl">
+                <i class="fab fa-php"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-lg">PHP for Windows</h3>
+                <p class="text-xs text-gray-400">Pilih versi "Thread Safe"</p>
+              </div>
+            </div>
+            <a
+              href="https://windows.php.net/download/"
+              target="_blank"
+              class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold"
+              >Download</a
+            >
+          </div>
+          <p class="text-sm text-gray-600">
+            Ekstrak folder ke <code>C:\php</code> dan tambahkan path tersebut ke
+            Environment Variables agar bisa dipanggil di CMD.
+          </p>
+        </div>
+
+        <div
+          class="download-card bg-white border border-gray-200 p-6 rounded-2xl shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-4">
+              <div
+                class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-xl">
+                <i class="fas fa-box-open"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-lg">Composer Installer</h3>
+                <p class="text-xs text-gray-400">Format .exe (Mudah)</p>
+              </div>
+            </div>
+            <a
+              href="https://getcomposer.org/Composer-Setup.exe"
+              class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold"
+              >Download</a
+            >
+          </div>
+          <p class="text-sm text-gray-600">
+            Cukup jalankan <code>Composer-Setup.exe</code>. Installer ini akan
+            otomatis mendeteksi lokasi <code>php.exe</code> Anda.
+          </p>
+        </div>
+
+        <div
+          class="download-card bg-white border border-gray-200 p-6 rounded-2xl shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-4">
+              <div
+                class="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center text-xl">
+                <i class="fab fa-node-js"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-lg">Node.js (LTS)</h3>
+                <p class="text-xs text-gray-400">
+                  Pilih Recommended for Most Users
+                </p>
+              </div>
+            </div>
+            <a
+              href="https://nodejs.org/en/download/"
+              target="_blank"
+              class="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-bold"
+              >Download</a
+            >
+          </div>
+          <p class="text-sm text-gray-600">
+            Gunakan installer <code>.msi</code>. Ini sudah termasuk NPM (Node
+            Package Manager).
+          </p>
+        </div>
+
+        <div class="bg-slate-800 text-slate-300 p-6 rounded-2xl mt-8">
+          <h3 class="text-white font-bold mb-2 underline decoration-blue-500">
+            Cara Verifikasi di CMD/PowerShell:
+          </h3>
+          <div class="code-container !bg-slate-900 !border-none">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>php -v
+composer -v
+node -v
+npm -v</code></pre>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="py-10 text-center text-gray-400 text-sm border-t mt-20">
+      <p>&copy; 2026 Kamus Coding - Linux Mint & Windows Setup</p>
+    </footer>
+
+    <script>
+      function openTab(os) {
+        document
+          .querySelectorAll(".tab-content")
+          .forEach((c) => c.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document.getElementById(os).classList.add("active");
+        event.currentTarget.classList.add("active");
+      }
+
+      function copyCode(button) {
+        const code = button.nextElementSibling.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+          const originalText = button.innerText;
+          button.innerText = "Tersalin!";
+          button.classList.add("bg-green-600");
+          setTimeout(() => {
+            button.innerText = originalText;
+            button.classList.remove("bg-green-600");
+          }, 2000);
+        });
+      }
+    </script>
+  </body>
+</html>
