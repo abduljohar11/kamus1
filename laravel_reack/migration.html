@@ -2,13 +2,22 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Migrations Laravel 12 - Kamus Coding</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <style>
+      /* Container utama untuk teks narasi agar tidak menempel ke pinggir layar HP */
+      main {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        word-wrap: break-word; /* Memastikan teks panjang tidak merusak layout */
+      }
+
       .code-container {
         position: relative;
         background-color: #1e293b;
@@ -17,29 +26,78 @@
         border-radius: 0.75rem;
         font-family: "Fira Code", monospace;
         margin: 1rem 0;
-        font-size: 0.9rem;
+        font-size: 0.85rem; /* Sedikit lebih kecil agar lebih muat di layar HP */
         border-left: 4px solid #ef4444; /* Laravel Red */
+
+        /* Perbaikan untuk Responsive Android */
+        overflow-x: auto; /* Memunculkan scrollbar horizontal jika kode kepanjangan */
+        white-space: pre; /* Menjaga format kode tetap satu baris (scroll ke samping) */
+        -webkit-overflow-scrolling: touch; /* Scroll halus di layar sentuh */
       }
+
+      /* Tambahan agar scrollbar di Android tidak menutupi kode */
+      .code-container::-webkit-scrollbar {
+        height: 4px;
+      }
+      .code-container::-webkit-scrollbar-thumb {
+        background: #475569;
+        border-radius: 10px;
+      }
+
       .copy-btn {
         position: absolute;
         top: 0.5rem;
         right: 0.5rem;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 0.2rem 0.6rem;
+        background: rgba(
+          255,
+          255,
+          255,
+          0.2
+        ); /* Sedikit lebih tebal agar terlihat di HP */
+        padding: 0.4rem 0.8rem; /* Target sentuh lebih lebar untuk jari */
         border-radius: 0.4rem;
         font-size: 0.7rem;
         cursor: pointer;
         transition: 0.2s;
+        z-index: 10; /* Memastikan tombol tidak tertutup konten */
       }
+
       .copy-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.3);
       }
+
       .analogy-box {
         border-left: 4px solid #10b981;
         background-color: #ecfdf5;
-        padding: 1.5rem;
+        padding: 1.25rem; /* Sedikit dikurangi agar tidak memakan tempat di HP */
         border-radius: 0 0.75rem 0.75rem 0;
-        margin: 2rem 0;
+        margin: 1.5rem 0;
+        font-size: 0.95rem; /* Ukuran teks analogi yang nyaman dibaca */
+      }
+
+      /* Responsivitas Tabel agar bisa di-swipe di Android */
+      .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 1.5rem;
+      }
+
+      /* Media Query untuk Layar Mobile (Android/iPhone) */
+      @media (max-width: 640px) {
+        .code-container {
+          font-size: 0.75rem; /* Font lebih kecil di HP */
+          padding: 1rem;
+        }
+
+        .analogy-box {
+          padding: 1rem;
+          font-size: 0.85rem;
+        }
+
+        h1 {
+          font-size: 1.75rem !important; /* Judul tidak terlalu raksasa di HP */
+        }
       }
     </style>
   </head>
