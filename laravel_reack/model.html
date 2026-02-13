@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Eloquent Relationships - Kamus Coding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      /* Base Layout */
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8fafc;
+        color: #334155;
+      }
+
+      /* Navbar Sticky */
+      nav {
+        backdrop-filter: blur(10px);
+        background-color: rgba(255, 255, 255, 0.8);
+      }
+
+      /* Code Block Styling (User Preference) */
+      .code-container {
+        position: relative;
+        background-color: #1e293b; /* Slate 800 */
+        color: #e2e8f0;
+        padding: 1.25rem;
+        border-radius: 0.75rem;
+        font-family: "Fira Code", monospace;
+        margin: 1.25rem 0;
+        font-size: 0.85rem;
+        border-left: 4px solid #ef4444; /* Laravel Red */
+
+        /* Mobile Responsiveness */
+        overflow-x: auto;
+        white-space: pre;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Scrollbar Halus untuk Code Block */
+      .code-container::-webkit-scrollbar {
+        height: 6px;
+      }
+      .code-container::-webkit-scrollbar-track {
+        background: #334155;
+        border-radius: 4px;
+      }
+      .code-container::-webkit-scrollbar-thumb {
+        background: #64748b;
+        border-radius: 4px;
+      }
+
+      /* Copy Button */
+      .copy-btn {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        background: rgba(255, 255, 255, 0.1);
+        color: #94a3b8;
+        padding: 0.3rem 0.8rem;
+        border-radius: 0.5rem;
+        font-size: 0.7rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .copy-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: #fff;
+      }
+
+      /* Analogy Box */
+      .analogy-box {
+        border-left: 4px solid #10b981;
+        background-color: #ecfdf5;
+        padding: 1.25rem;
+        border-radius: 0 0.75rem 0.75rem 0;
+        margin: 1.5rem 0;
+        font-size: 0.95rem;
+      }
+
+      /* Concept Card */
+      .concept-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Responsive Typography */
+      @media (max-width: 640px) {
+        h1 {
+          font-size: 1.75rem !important;
+        }
+        h2 {
+          font-size: 1.25rem !important;
+        }
+        .code-container {
+          font-size: 0.75rem;
+          padding: 1rem;
+        }
+        main {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="sticky top-0 z-50 border-b border-gray-200 py-4 px-4 sm:px-8 shadow-sm">
+      <div class="max-w-5xl mx-auto flex justify-between items-center">
+        <a
+          href="index.html"
+          class="text-red-600 font-bold flex items-center gap-2 hover:opacity-80 transition">
+          <i class="fas fa-arrow-left"></i>
+          <span class="hidden sm:inline">Dashboard</span>
+        </a>
+        <span class="text-slate-800 font-bold text-lg tracking-tight"
+          >Eloquent <span class="text-red-600">Relationships</span></span
+        >
+      </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto py-10 px-4 sm:px-6">
+      <header class="mb-12 text-center sm:text-left">
+        <h1 class="text-4xl font-extrabold text-slate-900 mb-4 tracking-tight">
+          Menghubungkan Data
+        </h1>
+        <p class="text-lg text-slate-600 max-w-2xl">
+          Panduan lengkap memahami bagaimana tabel saling berinteraksi di
+          Laravel, mulai dari One-to-One hingga Polymorphic.
+        </p>
+      </header>
+
+      <section id="one-to-one" class="concept-card">
+        <div class="flex items-center gap-3 mb-4">
+          <div
+            class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
+            1
+          </div>
+          <h2 class="text-2xl font-bold text-slate-800">
+            One to One (Satu ke Satu)
+          </h2>
+        </div>
+
+        <div class="analogy-box border-blue-500 bg-blue-50">
+          <h3 class="font-bold text-blue-800 mb-2">
+            <i class="fas fa-id-card"></i> Analogi: KTP
+          </h3>
+          <p class="text-blue-900 text-sm">
+            Satu <strong>Penduduk</strong> hanya memiliki satu
+            <strong>KTP</strong>. Sebaliknya, satu KTP hanya milik satu
+            Penduduk. Hubungannya sangat eksklusif.
+          </p>
+        </div>
+
+        <p class="mb-3 text-sm text-gray-600">
+          Model A: <code>User</code> | Model B: <code>Phone</code>
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs font-bold text-slate-500 mb-1 uppercase">
+              Model User.php (Induk)
+            </p>
+            <div class="code-container !mt-0">
+              <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+              <pre><code>public function phone()
+{
+    // Saya memiliki satu Phone
+    return $this->hasOne(Phone::class);
+}</code></pre>
+            </div>
+          </div>
+          <div>
+            <p class="text-xs font-bold text-slate-500 mb-1 uppercase">
+              Model Phone.php (Anak)
+            </p>
+            <div class="code-container !mt-0">
+              <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+              <pre><code>public function user()
+{
+    // Saya milik User
+    return $this->belongsTo(User::class);
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="one-to-many" class="concept-card">
+        <div class="flex items-center gap-3 mb-4">
+          <div
+            class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold">
+            2
+          </div>
+          <h2 class="text-2xl font-bold text-slate-800">
+            One to Many (Satu ke Banyak)
+          </h2>
+        </div>
+
+        <div class="analogy-box border-emerald-500 bg-emerald-50">
+          <h3 class="font-bold text-emerald-800 mb-2">
+            <i class="fas fa-blog"></i> Analogi: Artikel Blog
+          </h3>
+          <p class="text-emerald-900 text-sm">
+            Satu <strong>Artikel Post</strong> bisa memiliki banyak
+            <strong>Komentar</strong>. Tapi, satu Komentar pasti hanya menempel
+            pada satu Artikel Post saja.
+          </p>
+        </div>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>// Model Post.php
+public function comments()
+{
+    return $this->hasMany(Comment::class);
+}
+
+// Model Comment.php
+public function post()
+{
+    return $this->belongsTo(Post::class);
+}</code></pre>
+        </div>
+
+        <p class="text-sm font-semibold mt-4 mb-2 text-slate-700">
+          Cara Mengambil Data:
+        </p>
+        <div class="code-container !bg-slate-900">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>$post = Post::find(1);
+
+// Loop semua komentar milik post ini
+foreach ($post->comments as $comment) {
+    echo $comment->message;
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="many-to-many" class="concept-card">
+        <div class="flex items-center gap-3 mb-4">
+          <div
+            class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold">
+            3
+          </div>
+          <h2 class="text-2xl font-bold text-slate-800">
+            Many to Many (Banyak ke Banyak)
+          </h2>
+        </div>
+
+        <div class="analogy-box border-purple-500 bg-purple-50">
+          <h3 class="font-bold text-purple-800 mb-2">
+            <i class="fas fa-users"></i> Analogi: Ekstrakurikuler
+          </h3>
+          <p class="text-purple-900 text-sm">
+            Satu <strong>Siswa</strong> bisa ikut banyak
+            <strong>Ekskul</strong> (Basket, Musik). Satu
+            <strong>Ekskul</strong> juga punya banyak <strong>Siswa</strong>.
+            <br /><br />
+            <strong>Wajib:</strong> Butuh tabel perantara (Pivot Table), misal:
+            <code>ekskul_siswa</code>.
+          </p>
+        </div>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>// Model Siswa.php
+public function ekskuls()
+{
+    // Parameter 2: nama tabel pivot (jika tidak standar)
+    return $this->belongsToMany(Ekskul::class, 'ekskul_siswa');
+}
+
+// Model Ekskul.php
+public function siswas()
+{
+    return $this->belongsToMany(Siswa::class, 'ekskul_siswa');
+}</code></pre>
+        </div>
+
+        <p class="text-sm font-semibold mt-4 mb-2 text-slate-700">
+          Attach & Detach (Menambah/Menghapus Relasi):
+        </p>
+        <div class="code-container !bg-slate-900">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>$siswa = Siswa::find(1);
+
+// Menambahkan siswa ke ekskul ID 5
+$siswa->ekskuls()->attach(5);
+
+// Menghapus siswa dari ekskul ID 5
+$siswa->ekskuls()->detach(5);
+
+// Sinkronisasi (Hapus yang lama, simpan yang baru di array ini)
+$siswa->ekskuls()->sync([1, 2, 5]);</code></pre>
+        </div>
+      </section>
+
+      <section id="has-many-through" class="concept-card">
+        <div class="flex items-center gap-3 mb-4">
+          <div
+            class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold">
+            4
+          </div>
+          <h2 class="text-2xl font-bold text-slate-800">Has Many Through</h2>
+        </div>
+
+        <div class="analogy-box border-orange-500 bg-orange-50">
+          <h3 class="font-bold text-orange-800 mb-2">
+            <i class="fas fa-route"></i> Analogi: Kakek - Ayah - Cucu
+          </h3>
+          <p class="text-orange-900 text-sm">
+            <strong>Negara</strong> punya banyak <strong>Provinsi</strong>.
+            <strong>Provinsi</strong> punya banyak <strong>Kota</strong>.
+            <br />
+            Jika Negara ingin mengambil data semua Kota secara langsung
+            (melewati Provinsi), gunakan relasi ini.
+          </p>
+        </div>
+
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>// Model Negara.php
+public function cities()
+{
+    // Ambil data City, melewati model Province
+    return $this->hasManyThrough(City::class, Province::class);
+}</code></pre>
+        </div>
+      </section>
+
+      <section id="polymorphic" class="concept-card">
+        <div class="flex items-center gap-3 mb-4">
+          <div
+            class="w-10 h-10 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-bold">
+            5
+          </div>
+          <h2 class="text-2xl font-bold text-slate-800">
+            Polymorphic (Si Serba Bisa)
+          </h2>
+        </div>
+
+        <div class="analogy-box border-pink-500 bg-pink-50">
+          <h3 class="font-bold text-pink-800 mb-2">
+            <i class="fas fa-sticky-note"></i> Analogi: Komentar Media Sosial
+          </h3>
+          <p class="text-pink-900 text-sm">
+            Di Facebook, Anda bisa komen di <strong>Status</strong>, bisa juga
+            komen di <strong>Foto</strong>, atau komen di
+            <strong>Video</strong>. Daripada membuat tabel
+            <code>status_comments</code>, <code>photo_comments</code>, dll, kita
+            buat satu tabel <strong>Comments</strong> yang bisa menempel ke
+            model apa saja.
+          </p>
+        </div>
+
+        <p class="text-sm font-semibold mb-2 text-slate-700">
+          Struktur Database (Migration):
+        </p>
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>$table->id();
+$table->text('body');
+// Ini akan membuat 2 kolom: commentable_id & commentable_type
+$table->morphs('commentable'); 
+$table->timestamps();</code></pre>
+        </div>
+
+        <p class="text-sm font-semibold mt-4 mb-2 text-slate-700">
+          Model Implementation:
+        </p>
+        <div class="code-container">
+          <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+          <pre><code>// Model Comment.php (Anak)
+public function commentable()
+{
+    // Saya bisa jadi milik siapa saja (Post, Video, dll)
+    return $this->morphTo();
+}
+
+// Model Post.php (Induk 1)
+public function comments()
+{
+    return $this->morphMany(Comment::class, 'commentable');
+}
+
+// Model Video.php (Induk 2)
+public function comments()
+{
+    return $this->morphMany(Comment::class, 'commentable');
+}</code></pre>
+        </div>
+      </section>
+
+      <section
+        id="eager-loading"
+        class="bg-slate-900 rounded-2xl p-6 text-white shadow-xl ring-4 ring-slate-800">
+        <div
+          class="flex items-center gap-3 mb-4 border-b border-slate-700 pb-4">
+          <i class="fas fa-tachometer-alt text-yellow-400 text-3xl"></i>
+          <div>
+            <h2 class="text-2xl font-bold">Eager Loading (N+1 Problem)</h2>
+            <p class="text-slate-400 text-sm">
+              Wajib dipahami agar aplikasi tidak lemot.
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="mb-6 p-4 bg-slate-800 rounded-lg border-l-4 border-yellow-500">
+          <h3 class="font-bold text-yellow-400 mb-2">Masalah N+1</h3>
+          <p class="text-slate-300 text-sm">
+            Bayangkan Anda disuruh membeli 10 buku.
+            <strong>Cara Salah (Lazy):</strong> Anda pergi ke toko, beli buku A,
+            pulang. Pergi lagi ke toko, beli buku B, pulang. (10x bolak-balik).
+            <br />
+            <strong>Cara Benar (Eager):</strong> Anda pergi sekali, beli semua
+            buku A-J, lalu pulang. (1x jalan).
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <p class="text-red-400 font-bold mb-2 text-sm">
+              <i class="fas fa-times-circle"></i> Jangan Lakukan Ini (Lazy):
+            </p>
+            <div class="code-container !bg-black !border-red-500">
+              <pre><code>// Query 1x
+$books = Book::all();
+
+foreach ($books as $book) {
+    // Query 100x (jika ada 100 buku)
+    // SELECT * FROM authors WHERE id = ?
+    echo $book->author->name;
+}</code></pre>
+            </div>
+          </div>
+          <div>
+            <p class="text-green-400 font-bold mb-2 text-sm">
+              <i class="fas fa-check-circle"></i> Lakukan Ini (Eager):
+            </p>
+            <div class="code-container !bg-black !border-green-500">
+              <pre><code>// Gunakan with()
+// SELECT * FROM books
+// SELECT * FROM authors WHERE id IN (1,2,3...)
+$books = Book::with('author')->get();
+
+foreach ($books as $book) {
+    echo $book->author->name;
+}</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+      <br />
+      <section class="mb-16">
+        <div class="flex items-center gap-3 mb-4">
+          <div
+            class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold">
+            6
+          </div>
+          <h2 class="text-2xl font-bold text-slate-800">
+            Fitur Lanjutan Relationship (Processing Data)
+          </h2>
+        </div>
+        <p class="mb-4 text-gray-600">
+          Setelah berhasil menghubungkan tabel, kita butuh cara efisien untuk
+          mengolah, menyaring, dan mengambil data tambahan dari hubungan
+          tersebut.
+        </p>
+
+        <div
+          class="concept-card bg-white border border-gray-200 p-6 rounded-xl mb-8">
+          <h3 class="text-xl font-bold text-slate-800 mb-3">
+            A. Extra Columns di Tabel Pivot
+          </h3>
+          <div class="analogy-box !border-blue-500 !bg-blue-50 mb-4">
+            <h3 class="font-bold text-blue-800 mb-2">
+              <i class="fas fa-plus-circle"></i> Analogi: Catatan di Buku Absen
+            </h3>
+            <p class="text-blue-900 text-sm">
+              Jika tabel Pivot adalah <strong>Buku Absen Ekskul</strong>,
+              terkadang kita tidak cuma mencatat "Siapa ikut apa", tapi juga
+              <strong>"Kapan dia bergabung"</strong> atau
+              <strong>"Apa jabatannya"</strong>. Data tambahan ini disimpan
+              langsung di tabel pivot.
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>// Di Model Siswa.php
+public function ekskuls() {
+    // Memberitahu Laravel bahwa ada kolom 'jabatan' di tabel pivot
+    return $this->belongsToMany(Ekskul::class)->withPivot('jabatan')->withTimestamps();
+}
+
+// Cara Menampilkan di Blade/Controller
+foreach ($siswa->ekskuls as $ekskul) {
+    echo $ekskul->nama_ekskul;
+    echo $ekskul->pivot->jabatan; // Mengakses kolom tambahan
+}</code></pre>
+          </div>
+        </div>
+
+        <div
+          class="concept-card bg-white border border-gray-200 p-6 rounded-xl mb-8">
+          <h3 class="text-xl font-bold text-slate-800 mb-3">
+            B. Menghitung Jumlah Relasi (withCount)
+          </h3>
+          <div class="analogy-box !border-emerald-500 !bg-emerald-50 mb-4">
+            <h3 class="font-bold text-emerald-800 mb-2">
+              <i class="fas fa-calculator"></i> Analogi: Counter di Rak Buku
+            </h3>
+            <p class="text-emerald-900 text-sm">
+              Daripada Anda menghitung satu per satu buku di rak (yang memakan
+              waktu), Anda cukup melihat <strong>Label Angka</strong> di depan
+              rak yang bertuliskan: "Rak ini berisi 50 buku". Sangat cepat dan
+              efisien.
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>// Di Controller: Ambil Post beserta jumlah komentarnya
+$posts = Post::withCount('comments')->get();
+
+// Di Blade: Otomatis muncul variabel {nama_relasi}_count
+@foreach($posts as $post)
+    &lt;div&gt;
+        &lt;h2&gt;{{ $post->title }}&lt;/h2&gt;
+        &lt;span&gt;Jumlah Komentar: {{ $post->comments_count }}&lt;/span&gt;
+    &lt;/div&gt;
+@endforeach</code></pre>
+          </div>
+        </div>
+
+        <div
+          class="concept-card bg-white border border-gray-200 p-6 rounded-xl">
+          <h3 class="text-xl font-bold text-slate-800 mb-3">
+            C. Menyaring Berdasarkan Anak (whereHas)
+          </h3>
+          <div class="analogy-box !border-purple-500 !bg-purple-50 mb-4">
+            <h3 class="font-bold text-purple-800 mb-2">
+              <i class="fas fa-filter"></i> Analogi: Filter Orang Tua
+            </h3>
+            <p class="text-purple-900 text-sm">
+              Anda ingin mencari <strong>Daftar Orang Tua</strong> yang memiliki
+              <strong>Anak dengan Nilai A</strong>. Sistem tidak akan
+              menampilkan semua orang tua, melainkan hanya mereka yang anaknya
+              memenuhi kriteria tersebut.
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>// Mencari User yang punya Postingan dengan kata kunci 'Laravel'
+                $users = User::whereHas('posts', function($query) {
+                    $query->where('title', 'like', '%Laravel%');
+                })->get();
+                // Kebalikannya: Mencari User yang TIDAK punya postingan sama sekali
+                $usersTanpaPost = User::doesntHave('posts')->get();</code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer
+      class="bg-white border-t border-gray-200 py-8 text-center text-gray-500 text-sm mt-10">
+      <p>
+        &copy; 2026 Kamus Coding - Rangkuman Eloquent Relationships Laravel 12
+      </p>
+    </footer>
+
+    <script>
+      function copyCode(button) {
+        const code = button.nextElementSibling.innerText;
+        navigator.clipboard.writeText(code).then(() => {
+          const originalText = button.innerHTML;
+          button.innerHTML = '<i class="fas fa-check"></i> Disalin';
+          button.classList.remove("text-gray-400");
+          button.classList.add("text-green-400", "border-green-500");
+
+          setTimeout(() => {
+            button.innerHTML = "Salin";
+            button.classList.add("text-gray-400");
+            button.classList.remove("text-green-400", "border-green-500");
+          }, 2000);
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -292,7 +292,7 @@ php artisan migrate:fresh</code></pre>
         <section class="mb-16">
           <h2
             class="text-2xl font-bold text-slate-800 border-b-2 border-slate-200 pb-2 mb-6">
-            6. Menghubungkan Antar Tabel (Foreign Key)
+            6. Menghubungkan Antar Tabel (Foreign Key & Pivot)
           </h2>
           <p class="mb-4">
             Untuk menghubungkan satu tabel ke tabel lain (misal: tabel
@@ -302,7 +302,7 @@ php artisan migrate:fresh</code></pre>
 
           <div class="analogy-box !border-blue-500 !bg-blue-50 mb-6">
             <h3 class="font-bold text-blue-800 mb-2">
-              <i class="fas fa-link"></i> Analogi Relasi
+              <i class="fas fa-link"></i> Analogi Relasi (One to Many)
             </h3>
             <p class="text-blue-900 text-sm">
               Bayangkan <strong>Tabel User</strong> adalah sebuah
@@ -322,12 +322,54 @@ php artisan migrate:fresh</code></pre>
         $table->id();
         
         // Menghubungkan ke tabel users
-        // constrained() otomatis mencari tabel 'users' berdasarkan nama kolom 'user_id'
-        // onDelete('cascade') artinya jika user dihapus, semua post miliknya ikut terhapus
         $table->foreignId('user_id')->constrained()->onDelete('cascade');
         
         $table->string('title');
         $table->text('content');
+        $table->timestamps();
+    });
+}</code></pre>
+          </div>
+
+          <h3 class="text-xl font-bold text-slate-800 mt-10 mb-4">
+            Relasi Many-to-Many (Tabel Pivot)
+          </h3>
+          <p class="mb-4 text-sm text-gray-600">
+            Digunakan ketika banyak data di tabel A bisa terhubung ke banyak
+            data di tabel B. Laravel membutuhkan
+            <strong>Tabel Perantara</strong> yang biasanya dinamai dengan urutan
+            alfabet (contoh: <code>role_user</code>).
+          </p>
+
+          [Image of many to many database relationship diagram]
+
+          <div class="analogy-box !border-purple-500 !bg-purple-50 mb-6">
+            <h3 class="font-bold text-purple-800 mb-2">
+              <i class="fas fa-exchange-alt"></i> Analogi Pivot Table
+            </h3>
+            <p class="text-purple-900 text-sm">
+              Bayangkan <strong>Tabel Siswa</strong> dan
+              <strong>Tabel Ekstrakurikuler</strong>. Satu siswa bisa ikut
+              banyak ekskul, dan satu ekskul punya banyak siswa. <br /><br />
+              <strong>Pivot Table</strong> adalah
+              <strong>Buku Absen Ekskul</strong>. Di buku itu hanya dicatat: "ID
+              Siswa 1 ikut ID Ekskul A". Tanpa buku absen ini, kita tidak tahu
+              siapa ikut apa.
+            </p>
+          </div>
+
+          <div class="code-container">
+            <button class="copy-btn" onclick="copyCode(this)">Salin</button>
+            <pre><code>public function up(): void
+{
+    // Contoh Tabel Pivot: role_user (Penamaan: tunggal_tunggal sesuai alfabet)
+    Schema::create('role_user', function (Blueprint $table) {
+        $table->id();
+        
+        // Menghubungkan kedua tabel utama
+        $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        $table->foreignId('role_id')->constrained()->onDelete('cascade');
+        
         $table->timestamps();
     });
 }</code></pre>
