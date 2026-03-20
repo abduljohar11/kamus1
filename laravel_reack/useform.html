@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 1: State & Form Management (useForm)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        pre {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+        }
+        .keyword { color: #569cd6; }
+        .function { color: #dcdcaa; }
+        .string { color: #ce9178; }
+        .comment { color: #6a9955; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans leading-relaxed">
+
+    <nav class="bg-indigo-600 p-4 text-white shadow-lg">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold italic">Inertia-React Mastery</h1>
+            <span class="text-sm bg-indigo-500 px-3 py-1 rounded-full text-indigo-100">Modul 1</span>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-10 max-w-4xl">
+        
+        <!-- Header Section -->
+        <header class="mb-12 border-b pb-6">
+            <h2 class="text-4xl font-extrabold text-gray-900 mb-4">State & Form Management</h2>
+            <p class="text-lg text-gray-600">
+                Memahami penggunaan <span class="font-mono bg-gray-200 px-1 rounded text-indigo-700">useForm</span> sebagai standar industri untuk mengelola input, validasi, dan pengiriman data ke Laravel.
+            </p>
+        </header>
+
+        <!-- What is useForm Section -->
+        <section class="mb-12">
+            <h3 class="text-2xl font-bold mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">01</span>
+                Apa itu useForm?
+            </h3>
+            <div class="bg-white p-6 rounded-lg shadow-sm border-l-4 border-indigo-500">
+                <p>
+                    <span class="font-bold text-indigo-600 text-lg">useForm</span> adalah <i>helper hook</i> eksklusif dari <span class="font-semibold text-gray-800 underline decoration-indigo-300">@inertiajs/react</span>. Ia menggabungkan fungsi <span class="italic text-gray-500">useState</span> dan <span class="italic text-gray-500">router</span> menjadi satu paket yang mengelola siklus hidup formulir secara otomatis.
+                </p>
+            </div>
+        </section>
+
+        <!-- Technical Code Section -->
+        <section class="mb-12">
+            <h3 class="text-2xl font-bold mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">02</span>
+                Implementasi Kode (Logic)
+            </h3>
+            <pre><code><span class="comment">// 1. Import hook dari library</span>
+<span class="keyword">import</span> { useForm } <span class="keyword">from</span> <span class="string">'@inertiajs/react'</span>;
+
+<span class="keyword">export default function</span> <span class="function">CreatePost</span>() {
+    <span class="comment">// 2. Destrukturisasi objek useForm</span>
+    <span class="keyword">const</span> { data, setData, post, processing, errors, reset } = <span class="function">useForm</span>({
+        title: <span class="string">''</span>,
+        content: <span class="string">''</span>,
+    });
+
+    <span class="keyword">const</span> <span class="function">submit</span> = (e) => {
+        e.<span class="function">preventDefault</span>();
+        
+        <span class="comment">// 3. Kirim data ke endpoint Laravel</span>
+        <span class="function">post</span>(<span class="string">'/posts'</span>, {
+            onSuccess: () => <span class="function">reset</span>(), <span class="comment">// Bersihkan form jika berhasil</span>
+        });
+    };
+
+    <span class="comment">// ... return JSX ...</span>
+}</code></pre>
+        </section>
+
+        <!-- Attribute Table Section -->
+        <section class="mb-12">
+            <h3 class="text-2xl font-bold mb-4 flex items-center">
+                <span class="bg-indigo-100 text-indigo-600 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm">03</span>
+                Atribut Utama useForm
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left bg-white rounded-lg shadow-sm">
+                    <thead class="bg-indigo-50 border-b">
+                        <tr>
+                            <th class="px-6 py-4 font-bold text-indigo-700">Atribut</th>
+                            <th class="px-6 py-4 font-bold text-indigo-700">Fungsi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr>
+                            <td class="px-6 py-4 font-mono text-sm text-pink-600">data</td>
+                            <td class="px-6 py-4 text-gray-600 text-sm italic underline underline-offset-4 decoration-pink-300">Objek penampung input user (Real-time).</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-mono text-sm text-pink-600">setData</td>
+                            <td class="px-6 py-4 text-gray-600 text-sm">Fungsi untuk mengupdate 'data' per field.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-mono text-sm text-pink-600">processing</td>
+                            <td class="px-6 py-4 text-gray-600 text-sm">Status Boolean (Loading). Mencegah double-click.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-mono text-sm text-pink-600">errors</td>
+                            <td class="px-6 py-4 text-gray-600 text-sm italic underline underline-offset-4 decoration-pink-300 font-bold">Menampung pesan kegagalan validasi dari Laravel.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 font-mono text-sm text-pink-600">post/put/delete</td>
+                            <td class="px-6 py-4 text-gray-600 text-sm">Metode pengiriman data (HTTP Methods).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Security Note -->
+        <section class="bg-indigo-900 text-white p-8 rounded-2xl shadow-xl">
+            <h3 class="text-xl font-bold mb-3 flex items-center">
+                🛡️ Catatan Cyber Security
+            </h3>
+            <p class="text-indigo-200 text-sm italic">
+                Selalu gunakan atribut <span class="bg-indigo-800 px-2 py-0.5 rounded text-white font-mono">disabled={processing}</span> pada tombol submit. Hal ini mencegah serangan sederhana berulang (Spam) dan menjaga integritas database agar tidak terjadi duplikasi data akibat ketidaksabaran pengguna.
+            </p>
+        </section>
+
+    </main>
+
+    <footer class="mt-20 py-10 border-t bg-white text-center text-gray-400 text-sm">
+        <p>&copy; 2026 kangajo - Built with React & Inertia Logic</p>
+    </footer>
+
+</body>
+</html>
