@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <title>Materi: HTTP Methods, Payload Structure & Postman Testing</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      code, pre {
+        font-family: 'JetBrains Mono', monospace;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50/50 text-slate-800 min-h-screen pb-20">
+
+    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 px-6 py-4">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <a href="../index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-blue-600 transition">
+          <i class="fas fa-arrow-left text-xs"></i> Kembali ke Daftar Isi
+        </a>
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1 bg-red-50 text-red-600 text-xs font-bold rounded-full uppercase tracking-wider">API Testing</span>
+          <span class="text-slate-300">|</span>
+          <span class="text-xs font-medium text-slate-400">Modul 07</span>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      
+      <header class="mb-10">
+        <div class="flex items-center gap-3 text-red-500 mb-3">
+          <i class="fas fa-flask text-2xl"></i>
+          <span class="text-sm font-bold tracking-widest uppercase">Panduan Integrasi & Pengujian</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+          HTTP Methods Cheat Sheet & Postman Integration
+        </h1>
+        <p class="text-slate-500 text-lg leading-relaxed max-w-3xl">
+          Panduan komprehensif struktur request API. Memahami apa yang harus dikirim pada metode GET, POST, PUT, dan PATCH lengkap dengan visualisasi payload JSON standar industri.
+        </p>
+      </header>
+
+      <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 mb-10">
+        <h3 class="font-bold text-amber-900 mb-2 flex items-center gap-2 text-sm">
+          <i class="fas fa-exclamation-triangle"></i> HEADER WAJIB PADA POSTMAN (PENTING!)
+        </h3>
+        <p class="text-amber-800 text-sm leading-relaxed mb-4">
+          Sebelum menembak endpoint apa pun di Postman (kecuali login publik), Anda <strong>wajib</strong> menyertakan komponen Headers berikut agar tidak terkena error CORS, batasan hak akses, atau dialihkan ke halaman login web biasa:
+        </p>
+        <div class="bg-white/80 p-4 rounded-xl border border-amber-300/60 text-xs font-mono text-slate-700 space-y-1.5">
+          <div><strong class="text-slate-900">Accept:</strong> <span class="text-blue-600">application/json</span> <span class="text-slate-400">(Memaksa Laravel selalu merespons format JSON murni)</span></div>
+          <div><strong class="text-slate-900">Content-Type:</strong> <span class="text-blue-600">application/json</span> <span class="text-slate-400">(Wajib ada jika mengirim data Body/Payload)</span></div>
+          <div><strong class="text-slate-900">Authorization:</strong> <span class="text-red-600">Bearer {token_sanctum_anda}</span> <span class="text-slate-400">(Kunci masuk rute terproteksi)</span></div>
+        </div>
+      </div>
+
+      <div class="space-y-10">
+        
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+            <div class="flex items-center gap-3">
+              <span class="px-3 py-1 bg-emerald-500 text-white text-xs font-mono font-bold rounded-md">GET</span>
+              <h2 class="text-lg font-bold text-slate-900">Membaca Data (Read)</h2>
+            </div>
+            <span class="text-xs text-slate-400 font-medium">Idempotent</span>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Digunakan untuk mengambil informasi dari server. Metode GET <strong>tidak boleh memiliki Request Body/Payload JSON</strong>. Parameter penyaringan atau pencarian wajib diletakkan pada segmen URL (Query String).
+          </p>
+          <div class="space-y-2">
+            <span class="text-xs font-bold text-slate-400 block uppercase tracking-wider">Contoh Struktur URL di Postman:</span>
+            <div class="bg-slate-900 text-slate-200 rounded-xl p-3 text-xs font-mono">
+              <span class="text-emerald-400">GET</span> https://api.ajocell.com/api/users<span class="text-amber-400">?role=guru&search=ahmad&per_page=15</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+            <div class="flex items-center gap-3">
+              <span class="px-3 py-1 bg-blue-600 text-white text-xs font-mono font-bold rounded-md">POST</span>
+              <h2 class="text-lg font-bold text-slate-900">Membuat Data Baru (Create)</h2>
+            </div>
+            <span class="text-xs text-slate-400 font-medium">Non-Idempotent</span>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Digunakan untuk mengirimkan payload data baru ke server untuk disimpan ke dalam database. Data dikirim melalui tab <strong>Body ➔ raw ➔ JSON</strong> di Postman.
+          </p>
+          
+          <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Contoh Payload JSON (Pendaftaran Guru Baru):</span>
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-sm leading-relaxed">
+            <pre><code>{
+    "name": "Arif Rahman, S.Pd",
+    "email": "arif.rahman@sekolah.sch.id",
+    "password": "sandiRahasia123",
+    "role": "guru",
+    "nomor_induk": "199208152018021004"
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+            <div class="flex items-center gap-3">
+              <span class="px-3 py-1 bg-amber-500 text-white text-xs font-mono font-bold rounded-md">PUT</span>
+              <h2 class="text-lg font-bold text-slate-900">Mengganti Data Total (Replace)</h2>
+            </div>
+            <span class="text-xs text-slate-400 font-medium">Idempotent</span>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Digunakan untuk memperbarui data secara menyeluruh. Filosofi PUT adalah <strong>mengganti seluruh objek lama dengan objek baru yang dikirim</strong>. Jika ada kolom wajib yang tidak Anda kirimkan, database berpotensi mengosongkan atau me-reset kolom tersebut menjadi nilai default.
+          </p>
+          
+          <div class="mb-3 font-mono text-xs text-slate-600">URL Target: <span class="font-bold text-slate-900">PUT /api/users/01J6G9XB...</span></div>
+          <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Contoh Payload JSON (Wajib Mengirimkan Seluruh Kolom Properti):</span>
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-sm leading-relaxed">
+            <pre><code>{
+    "name": "Arif Rahman Hakim, M.Pd", 
+    "email": "arif.rahman@sekolah.sch.id",
+    "role": "guru",
+    "nomor_induk": "199208152018021004"
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+            <div class="flex items-center gap-3">
+              <span class="px-3 py-1 bg-purple-600 text-white text-xs font-mono font-bold rounded-md">PATCH</span>
+              <h2 class="text-lg font-bold text-slate-900">Mengubah Data Parsial (Modify)</h2>
+            </div>
+            <span class="text-xs text-slate-400 font-medium">Non-Idempotent</span>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Digunakan untuk melakukan modifikasi data secara sebagian (parsial). Anda <strong>hanya perlu mengirimkan properti kolom yang ingin Anda ubah saja</strong> tanpa mengganggu nilai kolom lainnya di database (Sangat cocok untuk fitur ubah password atau ganti nama profil).
+          </p>
+          
+          <div class="mb-3 font-mono text-xs text-slate-600">URL Target: <span class="font-bold text-slate-900">PATCH /api/users/01J6G9XB...</span></div>
+          <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Contoh Payload JSON (Hanya Mengubah Password Saja):</span>
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-sm leading-relaxed">
+            <pre><code>{
+    "password": "SandiBaruGuru2026"
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-slate-900 rounded-2xl p-6 text-slate-100 border border-slate-800 shadow-xl">
+          <h3 class="text-base font-bold text-amber-400 mb-2 flex items-center gap-2">
+            <i class="fas fa-wallet"></i> STUDI KASUS NYATA: PAYLOAD TRANSAKSI PPOB (AJOCELL)
+          </h3>
+          <p class="text-slate-400 text-xs mb-4 leading-relaxed">
+            Sebagai gambaran arsitektur tingkat lanjut pada sistem PPOB h2h (Host-to-Host) Ajocell v2, berikut adalah bentuk kueri payload yang dikirim menggunakan metode **POST** saat agen melakukan pembelian token listrik pintar atau pulsa reguler:
+          </p>
+          
+          <div class="font-mono text-xs text-emerald-400 mb-2">POST /api/v2/transactions/purchase</div>
+          <div class="bg-slate-950/80 rounded-xl p-4 border border-slate-800 text-xs overflow-x-auto leading-relaxed text-slate-300">
+            <pre><code>{
+    "master_product_sku": "PLN20",          // SKU tunggal internal Ajocell
+    "customer_target_id": "53102488912",    // Nomor HP atau ID Pelanggan PLN
+    "client_reference_id": "TRX-88231-XYZ", // ID unik transaksi dari sisi aplikasi client
+    "payment_method": "SALDO_KEAGENAN"
+}</code></pre>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </body>
+</html>

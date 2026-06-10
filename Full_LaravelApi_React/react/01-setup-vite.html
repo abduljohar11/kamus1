@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <title>Materi: Modern Frontend Setup - Vite, Tailwind v4 & shadcn/ui</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      code, pre {
+        font-family: 'JetBrains Mono', monospace;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50/50 text-slate-800 min-h-screen pb-20">
+
+    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 px-6 py-4">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <a href="../index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-blue-600 transition">
+          <i class="fas fa-arrow-left text-xs"></i> Kembali ke Daftar Isi
+        </a>
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full uppercase tracking-wider">React FE</span>
+          <span class="text-slate-300">|</span>
+          <span class="text-xs font-medium text-slate-400">Modul 01</span>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      
+      <header class="mb-10">
+        <div class="flex items-center gap-3 text-blue-600 mb-3">
+          <i class="fab fa-react text-3xl animate-spin-slow"></i>
+          <span class="text-sm font-bold tracking-widest uppercase">Inisialisasi Project Frontend</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+          Setup Environment: Vite, Tailwind CSS v4 & shadcn/ui
+        </h1>
+        <p class="text-slate-500 text-lg leading-relaxed max-w-3xl">
+          Panduan langkah demi langkah membangun pondasi aplikasi React Modern yang cepat, optimal, dan siap diintegrasikan dengan REST API backend.
+        </p>
+      </header>
+
+      <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-10">
+        <h3 class="font-bold text-blue-900 mb-2 flex items-center gap-2 text-sm">
+          <i class="fas fa-tools"></i> MODERN FRONTEND STACK
+        </h3>
+        <p class="text-blue-800 text-sm leading-relaxed mb-2">
+          Kita meninggalkan CRA (Create React App) yang lambat dan beralih ke ekosistem modern:
+        </p>
+        <ul class="list-disc list-inside text-blue-800 text-sm space-y-1">
+          <li><strong>Vite:</strong> Build tool super cepat berbasis Esbuild untuk core aplikasi React.</li>
+          <li><strong>Tailwind CSS v4:</strong> Engine baru yang lebih cepat dengan konfigurasi berbasis CSS native.</li>
+          <li><strong>shadcn/ui:</strong> Komponen UI premium yang kodenya di-copy langsung ke dalam project kita (bukan node_modules dependency).</li>
+        </ul>
+      </div>
+
+      <div class="space-y-12">
+        
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="p-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono">01</span>
+            Buat Project React via Vite
+          </h2>
+          <p class="text-slate-500 text-sm mb-4">
+            Buka terminal pada environment Linux Mint atau OS Anda, lalu jalankan perintah instalasi Vite berikut:
+          </p>
+
+          <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Terminal CLI</span>
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 text-sm font-mono space-y-2 mb-4">
+            <div><span class="text-slate-500"># Buat project baru (pilih React & TypeScript/JavaScript sesuai preferensi)</span></div>
+            <div>npm create vite@latest ajocell-frontend -- --template react</div>
+            <div class="pt-2"><span class="text-slate-500"># Masuk ke direktori dan install base dependency</span></div>
+            <div>cd ajocell-frontend</div>
+            <div>npm install</div>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="p-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono">02</span>
+            Install & Konfigurasi Tailwind CSS v4
+          </h2>
+          <p class="text-slate-500 text-sm mb-4">
+            Tailwind v4 hadir dengan arsitektur baru tanpa memerlukan file <code class="font-mono text-xs">tailwind.config.js</code> tersendiri. Referensi instalasi resmi dapat Anda pelajari langsung di 
+            <a href="https://tailwindcss.com/docs/installation/using-vite" target="_blank" class="text-blue-600 hover:underline inline-flex items-center gap-1 font-semibold">Dokumentasi Resmi Tailwind Vite <i class="fas fa-external-link-alt text-[10px]"></i></a>.
+          </p>
+
+          <div class="space-y-6">
+            <div>
+              <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Langkah A: Jalankan Package v4 + Plugin Vite</span>
+              <div class="bg-slate-900 text-slate-200 rounded-xl p-4 text-sm font-mono">
+                npm install tailwindcss @tailwindcss/vite
+              </div>
+            </div>
+
+            <div>
+              <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Langkah B: Daftarkan Plugin di vite.config.js</span>
+              <div class="bg-slate-900 text-slate-200 rounded-xl p-4 text-sm font-mono overflow-x-auto">
+                <pre><code>import { defineConfig } from 'vite'
+import react from '@vitejs/react-swc'
+import tailwindcss from '@tailwindcss/vite'
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(), // Tambahkan plugin tailwind disini
+  ],
+})</code></pre>
+              </div>
+            </div>
+
+            <div>
+              <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Langkah C: Inject Direktif Baru di src/index.css</span>
+              <p class="text-slate-500 text-xs mb-2">Hapus seluruh isi <code class="font-mono text-xs">src/index.css</code> bawaan dan ganti dengan satu baris import baru versi 4:</p>
+              <div class="bg-slate-900 text-slate-200 rounded-xl p-4 text-sm font-mono">
+                @import "tailwindcss";
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="p-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono">03</span>
+            Inisialisasi Komponen shadcn/ui
+          </h2>
+          <p class="text-slate-500 text-sm mb-4">
+            shadcn/ui membutuhkan konfigurasi path alias agar file komponen bisa di-generate secara otomatis ke dalam folder aplikasi kita.
+          </p>
+
+          <div class="space-y-6">
+            <div>
+              <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Langkah A: Pasang Node Types (Untuk Keamanan Path)</span>
+              <div class="bg-slate-900 text-slate-200 rounded-xl p-4 text-sm font-mono">
+                npm install -D @types/node
+              </div>
+            </div>
+
+            <div>
+              <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Langkah B: Sesuaikan tsconfig.json / jsconfig.json</span>
+              <p class="text-slate-500 text-xs mb-2">Tambahkan compiler options untuk alias path `@/` agar mengarah ke folder src:</p>
+              <div class="bg-slate-900 text-slate-200 rounded-xl p-4 text-sm font-mono overflow-x-auto">
+                <pre><code>{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}</code></pre>
+              </div>
+            </div>
+
+            <div>
+              <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Langkah C: Jalankan CLI shadcn/ui Init</span>
+              <div class="bg-slate-900 text-slate-200 rounded-xl p-4 text-sm font-mono">
+                npx shadcn@latest init
+              </div>
+              <p class="text-slate-400 text-xs mt-2 italic">
+                * Ikuti instruksi wizard di terminal. Pilih tema warna default (Slate/Zinc) dan pastikan path alias diatur ke <code class="font-mono text-xs">@/*</code>.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-slate-900 rounded-2xl p-6 text-slate-100 border border-slate-800 shadow-xl">
+          <h3 class="text-base font-bold text-amber-400 mb-2 flex items-center gap-2">
+            <i class="fas fa-cubes"></i> CARA PENGGUNAAN KOMPONEN SHADCN
+          </h3>
+          <p class="text-slate-400 text-xs mb-4 leading-relaxed">
+            Ingat, shadcn/ui bukan library komponen biasa. Komponen dipasang per kebutuhan. Misalnya, jika Anda membutuhkan elemen Button premium, jalankan perintah di bawah ini:
+          </p>
+          
+          <div class="bg-slate-950/80 rounded-xl p-4 border border-slate-800 text-xs font-mono text-slate-300 mb-4">
+            npx shadcn@latest add button
+          </div>
+
+          <p class="text-slate-400 text-xs leading-relaxed">
+            File baru akan otomatis terbuat di dalam <code class="text-emerald-400 font-mono">src/components/ui/button.jsx</code>. Anda dapat menggunakannya langsung di file komponen Anda seperti ini:
+          </p>
+          <pre class="bg-slate-950/40 p-3 rounded-lg text-xs font-mono mt-2 border border-slate-800/60 text-blue-400"><code>import { Button } from "@/components/ui/button"
+
+export default function Dashboard() {
+  return &lt;Button variant="default"&gt;Simpan Data&lt;/Button&gt;
+}</code></pre>
+        </section>
+
+      </div>
+    </main>
+  </body>
+</html>

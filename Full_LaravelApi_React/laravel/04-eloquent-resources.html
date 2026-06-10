@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <title>Materi: Eloquent Resources & Transformasi JSON</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      code, pre {
+        font-family: 'JetBrains Mono', monospace;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50/50 text-slate-800 min-h-screen pb-20">
+
+    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 px-6 py-4">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <a href="../index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-blue-600 transition">
+          <i class="fas fa-arrow-left text-xs"></i> Kembali ke Daftar Isi
+        </a>
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1 bg-red-50 text-red-600 text-xs font-bold rounded-full uppercase tracking-wider">Laravel API</span>
+          <span class="text-slate-300">|</span>
+          <span class="text-xs font-medium text-slate-400">Modul 04</span>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      
+      <header class="mb-10">
+        <div class="flex items-center gap-3 text-red-500 mb-3">
+          <i class="fas fa-exchange-alt text-2xl"></i>
+          <span class="text-sm font-bold tracking-widest uppercase">Transformasi Data Outbound</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+          Eloquent Resources & Aturan Validasi Mutasi Data
+        </h1>
+        <p class="text-slate-500 text-lg leading-relaxed max-w-3xl">
+          Bagaimana mengamankan payload input pendaftaran/perubahan data Guru & Murid, lalu memformat ulang struktur JSON response-nya agar konsisten dikonsumsi oleh React Frontend.
+        </p>
+      </header>
+
+      <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-10">
+        <h3 class="font-bold text-blue-900 mb-2 flex items-center gap-2 text-sm">
+          <i class="fas fa-layer-group"></i> LOGIKA DATA FLOW (INPUT ➔ OUTPUT)
+        </h3>
+        <p class="text-blue-800 text-sm leading-relaxed mb-3">
+          Arsitektur API yang matang wajib memisahkan validasi data masuk dan standardisasi data keluar. 
+          <strong>Form Request</strong> memastikan payload dari client bersih dan valid. Setelah diproses database, 
+          <strong>Eloquent Resource</strong> bertindak sebagai <em>presenter layer</em> yang bertugas menyembunyikan kolom sensitif DB (seperti password) dan menyatukan format data keluar.
+        </p>
+      </div>
+
+      <div class="space-y-12">
+        
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+            <div class="p-2 bg-red-50 rounded-lg text-red-500 text-xs font-mono font-bold">INPUT LAYER</div>
+            <h2 class="text-lg font-bold text-slate-900">1. Form Request: Validasi Mutasi Data</h2>
+          </div>
+          <p class="text-slate-500 text-sm mb-6">
+            Berikut adalah aturan validasi untuk memastikan data Guru (NIP) dan Murid (NISN) dikirim dengan benar, termasuk penanganan *ignore rule* berbasis ULID saat operasi update profil dilakukan.
+          </p>
+
+          <div class="mb-6">
+            <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Aksi Create: app/Http/Requests/StoreUserRequest.php</span>
+            <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-sm leading-relaxed">
+              <pre><code>&lt;?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class StoreUserRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name'        => ['required', 'string', 'max:255'],
+            'email'       => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password'    => ['required', 'string', 'min:8'],
+            'role'        => ['required', 'string', Rule::in(['guru', 'murid'])],
+            
+            // Validasi Nomor Induk: Wajib diisi dan tidak boleh kembar di DB
+            'nomor_induk' => ['required', 'string', 'max:50', 'unique:users,nomor_induk'],
+        ];
+    }
+}</code></pre>
+            </div>
+          </div>
+
+          <div>
+            <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Aksi Update: app/Http/Requests/UpdateUserRequest.php</span>
+            <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-sm leading-relaxed">
+              <pre><code>&lt;?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
+class UpdateUserRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        // Menangkap ULID user dari segmen route URL api/users/{user}
+        $userId = $this->route('user');
+
+        return [
+            'name'        => ['sometimes', 'required', 'string', 'max:255'],
+            
+            // Mengabaikan pengecekan unik jika email/nomor induk adalah milik user ini sendiri
+            'email'       => ['sometimes', 'required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($userId)],
+            'role'        => ['sometimes', 'required', 'string', Rule::in(['guru', 'murid'])],
+            'nomor_induk' => ['sometimes', 'required', 'string', 'max:50', Rule::unique('users', 'nomor_induk')->ignore($userId)],
+            
+            // Password nullable: jika form dikosongkan frontend, password lama tidak berubah
+            'password'    => ['nullable', 'string', 'min:8'],
+        ];
+    }
+}</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+            <div class="p-2 bg-emerald-50 rounded-lg text-emerald-600 text-xs font-mono font-bold">OUTPUT LAYER</div>
+            <h2 class="text-lg font-bold text-slate-900">2. Eloquent Resource: UserResource</h2>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Mengubah data mentah hasil query menjadi payload JSON siap pakai untuk React. Di sini kita membuat logika visual penamaan label identitas secara otomatis berdasarkan peran (*role*) user.
+          </p>
+
+          <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">File: app/Http/Resources/UserResource.php</span>
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-sm leading-relaxed">
+            <pre><code>&lt;?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class UserResource extends JsonResource
+{
+    /**
+     * Transformasikan data model menjadi array JSON.
+     */
+    public function toArray(Request $request): array
+    {
+        $isGuru = $this->role === 'guru';
+
+        return [
+            'uid'             => $this->id, // Meng-expose string ULID
+            'nama_lengkap'    => $this->name,
+            'email_aktif'     => $this->email,
+            'peran_user'      => strtoupper($this->role), // Mengubah 'guru' -> 'GURU'
+            
+            // Pemetaan Seragam untuk Frontend React
+            'nomor_identitas' => $this->nomor_induk,
+            'tipe_identitas'  => $isGuru ? 'NIP (Nomor Induk Pegawai)' : 'NISN (Nomor Induk Siswa Nasional)',
+            
+            'terdaftar_pada'  => $this->created_at->toIso8601String(),
+        ];
+    }
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+            <div class="p-2 bg-blue-50 rounded-lg text-blue-600 text-xs font-mono font-bold">ORCHESTRATION</div>
+            <h2 class="text-lg font-bold text-slate-900">3. Implementasi Gabungan di UserController</h2>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Lihat bagaimana data mengalir masuk melalui Form Request, diproses, lalu keluar dengan aman dibungkus oleh Resource Transformer.
+          </p>
+
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-sm leading-relaxed">
+            <pre><code>// Panggil di baris atas file controller Anda:
+// use App\Http\Requests\StoreUserRequest;
+// use App\Http\Requests\UpdateUserRequest;
+// use App\Http\Resources\UserResource;
+
+/**
+ * Aksi Simpan User Baru (Store)
+ */
+public function store(StoreUserRequest $request): JsonResponse
+{
+    // 1. Data lolos sensor Form Request diambil via $request->validated()
+    // 2. Dilempar ke Service layer untuk diinsert ke database
+    $user = $this->userService->create($request->validated());
+
+    // 3. Output dikembalikan dengan bungkus UserResource tunggal
+    return response()->json([
+        'success' => true,
+        'message' => 'Akun baru berhasil di-indeks ke sistem',
+        'data'    => new UserResource($user)
+    ], 201); // 201: HTTP Created
+}
+
+/**
+ * Aksi Perbarui Profile User (Update)
+ */
+public function update(UpdateUserRequest $request, string $id): JsonResponse
+{
+    // 1. Validasi otomatis mengecek unique email & nomor induk dengan mengabaikan ID ini
+    // 2. Update via Service Layer
+    $user = $this->userService->update($id, $request->validated());
+
+    // 3. Response JSON terformat kembali ke Frontend React
+    return response()->json([
+        'success' => true,
+        'message' => 'Data profil berhasil diperbarui',
+        'data'    => new UserResource($user)
+    ], 200);
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+            <i class="fas fa-brain text-amber-500"></i> Analisis Proteksi & Alur Data
+          </h2>
+          <div class="space-y-4 text-sm leading-relaxed">
+            <div class="border-l-4 border-red-500 pl-4">
+              <strong class="text-slate-900 block font-mono text-xs">$request->validated() vs $request->all()</strong>
+              <p class="text-slate-500">Selalu gunakan <code class="font-mono text-xs">validated()</code>. Jika hacker mencoba menyuntikkan payload tambahan secara ilegal (seperti kolom <code class="font-mono text-xs">is_admin = true</code>), Laravel akan membuang key tersebut karena tidak terdaftar secara resmi di dalam rules Form Request.</p>
+            </div>
+            <div class="border-l-4 border-slate-400 pl-4">
+              <strong class="text-slate-900 block font-mono text-xs">Rule::unique()->ignore($userId)</strong>
+              <p class="text-slate-500">Sangat krusial untuk mencegah kegagalan sistem saat update. Tanpa adanya fungsi pengecualian ini, jika seorang Guru melakukan pembaruan nama profil tanpa mengubah NIP-nya, database akan menolak dan memicu error karena nomor induk tersebut sudah terpakai (oleh dirinya sendiri).</p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </body>
+</html>

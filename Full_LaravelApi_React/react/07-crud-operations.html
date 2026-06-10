@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <title>Materi: Studi Kasus CRUD Operations Lengkap - React TS</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      code, pre {
+        font-family: 'JetBrains Mono', monospace;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50/50 text-slate-800 min-h-screen pb-20">
+
+    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 px-6 py-4">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <a href="../index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-blue-600 transition">
+          <i class="fas fa-arrow-left text-xs"></i> Kembali ke Daftar Utama
+        </a>
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full uppercase tracking-wider">React TS</span>
+          <span class="text-slate-300">|</span>
+          <span class="text-xs font-medium text-slate-400">Modul 07</span>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      
+      <header class="mb-10">
+        <div class="flex items-center gap-3 text-blue-600 mb-3">
+          <i class="fas fa-database text-2xl"></i>
+          <span class="text-sm font-bold tracking-widest uppercase">Full Application Flow</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+          Studi Kasus: Implementasi Siklus CRUD Utuh & Manajemen State Modal
+        </h1>
+        <p class="text-slate-500 text-lg leading-relaxed max-w-3xl">
+          Integrasi komprehensif menyatukan API layer, custom hooks, penanganan form validasi asinkronus backend, hingga aksi manipulasi baris tabel dalam satu modul aplikasi.
+        </p>
+      </header>
+
+      <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-10">
+        <h3 class="font-bold text-blue-900 mb-2 flex items-center gap-2 text-sm">
+          <i class="fas fa-code-branch"></i> ARSITEKTUR RE-USE FORM UNTUK CREATE & UPDATE
+        </h3>
+        <p class="text-blue-800 text-sm leading-relaxed">
+          Praktik terbaik (*best practice*) dalam aplikasi berskala besar adalah menggunakan **satu komponen Form yang sama** untuk aksi Tambah (Create) dan Edit (Update). Perbedaannya dikontrol melalui status pengiriman objek data aktif (<code class="font-mono text-xs">selectedGuru</code>). Jika objek aktif terisi, maka tombol beralih fungsi menjadi PUT/PATCH request menuju database.
+        </p>
+      </div>
+
+      <div class="space-y-12">
+        
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="p-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono">01</span>
+            API Service Lengkap (`src/api/userApi.ts`)
+          </h2>
+          <p class="text-slate-500 text-sm mb-4">
+            Pastikan seluruh metode HTTP (GET, POST, PUT, DELETE) terpetakan dengan kontrak parameter type data yang jelas.
+          </p>
+
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>import axiosInstance from './axiosInstance';
+import { User, ApiResponse } from '../types/user';
+
+export const userApi = {
+  // READ
+  getAllUsers: async (role: string = ''): Promise&lt;ApiResponse&lt;User[]&gt;&gt; => {
+    const response = await axiosInstance.get&lt;ApiResponse&lt;User[]&gt;&gt;(`/api/users?role=${role}`);
+    return response.data;
+  },
+
+  // CREATE
+  createUser: async (payload: Omit&lt;User, 'uid'&gt;): Promise&lt;ApiResponse&lt;User&gt;&gt; => {
+    const response = await axiosInstance.post&lt;ApiResponse&lt;User&gt;&gt;('/api/users', payload);
+    return response.data;
+  },
+
+  // UPDATE
+  updateUser: async (uid: string, payload: Partial&lt;User&gt;): Promise&lt;ApiResponse&lt;User&gt;&gt; => {
+    const response = await axiosInstance.put&lt;ApiResponse&lt;User&gt;&gt;(`/api/users/${uid}`, payload);
+    return response.data;
+  },
+
+  // DELETE
+  deleteUser: async (uid: string): Promise&lt;ApiResponse&lt;null&gt;&gt; => {
+    const response = await axiosInstance.delete&lt;ApiResponse&lt;null&gt;&gt;(`/api/users/${uid}`);
+    return response.data;
+  }
+};</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="p-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono">02</span>
+            Orchestrator Logic Layer (`src/pages/guru/useGuruLogic.ts`)
+          </h2>
+          <p class="text-slate-500 text-sm mb-4">
+            Custom hook di bawah mengontrol state data daftar guru, melacak objek mana yang sedang diedit, serta menampung pemicu buka-tutup jendela dialog modal.
+          </p>
+
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import { userApi } from '../../api/userApi';
+import { User } from '../../types/user';
+
+export function useGuruLogic() {
+  const queryClient = useQueryClient();
+  const [selectedGuru, setSelectedGuru] = useState&lt;User | null&gt;(null);
+  const [isModalOpen, setIsModalOpen] = useState&lt;boolean&gt;(false);
+
+  // Read Query
+  const { data, isLoading } = useQuery({
+    queryKey: ['users', 'guru'],
+    queryFn: () => userApi.getAllUsers('guru'),
+  });
+
+  // Create Mutation
+  const createMutation = useMutation({
+    mutationFn: userApi.createUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users', 'guru'] });
+      closeModal();
+    }
+  });
+
+  // Update Mutation
+  const updateMutation = useMutation({
+    mutationFn: ({ uid, payload }: { uid: string; payload: Partial&lt;User&gt; }) => 
+      userApi.updateUser(uid, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users', 'guru'] });
+      closeModal();
+    }
+  });
+
+  // Delete Mutation
+  const deleteMutation = useMutation({
+    mutationFn: userApi.deleteUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users', 'guru'] });
+    }
+  });
+
+  const openCreateModal = () => {
+    setSelectedGuru(null); // Bersihkan form agar kosong
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (guru: User) => {
+    setSelectedGuru(guru); // Isi data form dengan rekor baris terpilih
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedGuru(null);
+    setIsModalOpen(false);
+  };
+
+  return {
+    guruList: data?.data || [],
+    isLoading,
+    selectedGuru,
+    isModalOpen,
+    openCreateModal,
+    openEditModal,
+    closeModal,
+    saveGuru: (payload: Omit&lt;User, 'uid'&gt;) => {
+      if (selectedGuru) {
+        updateMutation.mutate({ uid: selectedGuru.uid, payload });
+      } else {
+        createMutation.mutate(payload);
+      }
+    },
+    removeGuru: (uid: string) => {
+      if (confirm('Apakah Anda yakin ingin menghapus rekor staff ini?')) {
+        deleteMutation.mutate(uid);
+      }
+    }
+  };
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="p-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono">03</span>
+            Main View & Render Modal Component (`src/pages/guru/GuruList.tsx`)
+          </h2>
+          <p class="text-slate-500 text-sm mb-4">
+            Komponen utama yang menyatukan komponen tabel aksi tombol pemicu dengan form dialog mengambang (*Popup Form Modal*).
+          </p>
+
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>import React from 'react';
+import { useGuruLogic } from './useGuruLogic';
+import GuruFormModal from './GuruFormModal';
+
+export default function GuruList(): React.JSX.Element {
+  const { 
+    guruList, isLoading, isModalOpen, selectedGuru, 
+    openCreateModal, openEditModal, closeModal, saveGuru, removeGuru 
+  } = useGuruLogic();
+
+  if (isLoading) return &lt;div class="p-6 text-slate-500 text-sm"&gt;Sinkronisasi database...&lt;/div&gt;;
+
+  return (
+    &lt;div class="space-y-6 bg-white p-6 rounded-2xl border border-slate-100 shadow-sm"&gt;
+      &lt;div class="flex justify-between items-center"&gt;
+        &lt;h2 class="text-xl font-bold text-slate-900"&gt;Daftar Staf Pengajar&lt;/h2&gt;
+        &lt;button onClick={openCreateModal} class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-4 py-2 rounded-xl font-semibold transition shadow-sm"&gt;
+          Tambah Guru Baru
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      {/* Komponen Tabel CRUD */}
+      &lt;table class="w-full text-left text-sm"&gt;
+        &lt;thead class="bg-slate-50 text-slate-400 text-xs font-bold uppercase border-b border-slate-100"&gt;
+          &lt;tr&gt;
+            &lt;th class="p-3"&gt;Nama Lengkap&lt;/th&gt;
+            &lt;th class="p-3"&gt;NUPTK / Identitas&lt;/th&gt;
+            &lt;th class="p-3 text-center"&gt;Aksi Manajemen&lt;/th&gt;
+          &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody class="divide-y divide-slate-100"&gt;
+          {guruList.map((guru) => (
+            &lt;tr key={guru.uid} class="hover:bg-slate-50/50"&gt;
+              &lt;td class="p-3 font-medium text-slate-900"&gt;{guru.nama_lengkap}&lt;/td&gt;
+              &lt;td class="p-3 font-mono text-xs text-slate-500"&gt;{guru.nomor_identitas}&lt;/td&gt;
+              &lt;td class="p-3 flex justify-center gap-2"&gt;
+                &lt;button onClick={() => openEditModal(guru)} class="text-xs bg-amber-50 text-amber-600 px-2.5 py-1 rounded-md font-medium hover:bg-amber-100 transition"&gt;
+                  Edit
+                &lt;/button&gt;
+                &lt;button onClick={() => removeGuru(guru.uid)} class="text-xs bg-red-50 text-red-600 px-2.5 py-1 rounded-md font-medium hover:bg-red-100 transition"&gt;
+                  Hapus
+                &lt;/button&gt;
+              &lt;/td&gt;
+            &lt;/tr&gt;
+          ))}
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+
+      {/* Render Jendela Dialog Modal Hanya Jika Status Open Bernilai True */}
+      {isModalOpen && (
+        &lt;GuruFormModal 
+          isOpen={isModalOpen} 
+          onClose={closeModal} 
+          onSave={saveGuru} 
+          currentData={selectedGuru} 
+        /&gt;
+      )}
+    &lt;/div&gt;
+  );
+}</code></pre>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </body>
+</html>

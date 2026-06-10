@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <title>Materi: Install & Setup Laravel</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      code, pre {
+        font-family: 'JetBrains Mono', monospace;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50/50 text-slate-800 min-h-screen pb-20">
+
+    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 px-6 py-4">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <a href="../index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-blue-600 transition">
+          <i class="fas fa-arrow-left text-xs"></i> Kembali ke Daftar Isi
+        </a>
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1 bg-red-50 text-red-600 text-xs font-bold rounded-full uppercase tracking-wider">Laravel API</span>
+          <span class="text-slate-300">|</span>
+          <span class="text-xs font-medium text-slate-400">Modul 01</span>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      
+      <header class="mb-10">
+        <div class="flex items-center gap-3 text-red-500 mb-3">
+          <i class="fab fa-laravel text-3xl"></i>
+          <span class="text-sm font-bold tracking-widest uppercase">Dokumentasi Internal</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+          Install & Setup Environment Laravel
+        </h1>
+        <p class="text-slate-500 text-lg leading-relaxed max-w-3xl">
+          Panduan langkah demi langkah inisialisasi project Laravel baru menggunakan Composer tradisional maupun Laravel Sail berbasis Docker.
+        </p>
+      </header>
+
+      <div class="bg-gradient-to-r from-red-500 to-pink-600 rounded-2xl p-6 text-white shadow-sm mb-12 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h3 class="font-bold text-lg mb-1">Butuh Referensi Lebih Detail?</h3>
+          <p class="text-red-100 text-sm">Buka rujukan instalasi, konfigurasi server, dan prasyarat sistem langsung dari core developer.</p>
+        </div>
+        <a href="https://laravel.com/docs/11.x/installation" target="_blank" class="inline-flex items-center justify-center bg-white text-red-600 hover:bg-red-50 px-5 py-3 rounded-xl font-bold text-sm transition shadow-md whitespace-nowrap">
+          Dokumentasi Resmi Laravel <i class="fas fa-external-link-alt text-xs ml-2"></i>
+        </a>
+      </div>
+
+      <div class="space-y-12">
+        
+        <section class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+            <div class="p-2.5 bg-blue-50 rounded-xl text-blue-600">
+              <i class="fas fa-box text-lg"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-extrabold text-slate-900">Metode 1: Via Composer (Tradisional)</h2>
+              <p class="text-slate-400 text-xs mt-0.5">Cocok jika local machine sudah terinstall PHP dan MySQL secara native.</p>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <div>
+              <h3 class="font-bold text-slate-800 mb-2 flex items-center gap-2 text-sm">
+                <span class="flex items-center justify-center w-5 h-5 bg-slate-100 rounded-full text-xs font-bold text-slate-500">1</span>
+                Prasyarat Sistem
+              </h3>
+              <p class="text-sm text-slate-500 ml-7">Pastikan komputer Anda sudah terinstall <strong>PHP >= 8.2</strong> dan <strong>Composer</strong> terbaru.</p>
+            </div>
+
+            <div>
+              <h3 class="font-bold text-slate-800 mb-2 flex items-center gap-2 text-sm">
+                <span class="flex items-center justify-center w-5 h-5 bg-slate-100 rounded-full text-xs font-bold text-slate-500">2</span>
+                Jalankan Perintah Create-Project
+              </h3>
+              <p class="text-sm text-slate-500 ml-7 mb-3">Buka terminal/CLI, arahkan ke direktori web server Anda, lalu jalankan perintah berikut:</p>
+              <div class="ml-7 bg-slate-900 text-slate-200 rounded-xl p-4 relative group">
+                <pre class="text-sm overflow-x-auto"><code>composer create-project laravel/laravel laravel-api</code></pre>
+                <button onclick="copyToClipboard('composer create-project laravel/laravel laravel-api')" class="absolute top-3 right-3 text-slate-500 hover:text-white transition text-xs opacity-0 group-hover:opacity-100">
+                  <i class="far fa-copy"></i> Copy
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-bold text-slate-800 mb-2 flex items-center gap-2 text-sm">
+                <span class="flex items-center justify-center w-5 h-5 bg-slate-100 rounded-full text-xs font-bold text-slate-500">3</span>
+                Nyalakan Server Local
+              </h3>
+              <p class="text-sm text-slate-500 ml-7 mb-3">Masuk ke folder hasil install, lalu jalankan server bawaan Artisan:</p>
+              <div class="ml-7 bg-slate-900 text-slate-200 rounded-xl p-4 space-y-2">
+                <pre class="text-sm overflow-x-auto text-slate-400"><code>cd laravel-api</code></pre>
+                <pre class="text-sm overflow-x-auto"><code>php artisan serve</code></pre>
+              </div>
+              <p class="text-sm text-slate-500 ml-7 mt-2">Aplikasi kini bisa diakses melalui URL <code class="text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded font-semibold">http://127.0.0.1:8000</code>.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-6 border-b border-slate-100 pb-4">
+            <div class="p-2.5 bg-cyan-50 rounded-xl text-cyan-600">
+              <i class="fab fa-docker text-lg"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-extrabold text-slate-900">Metode 2: Via Laravel Sail (Docker)</h2>
+              <p class="text-slate-400 text-xs mt-0.5">Solusi isolasi environment modern tanpa perlu menginstall PHP/MySQL secara lokal di OS utama.</p>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <div>
+              <h3 class="font-bold text-slate-800 mb-2 flex items-center gap-2 text-sm">
+                <span class="flex items-center justify-center w-5 h-5 bg-slate-100 rounded-full text-xs font-bold text-slate-500">1</span>
+                Prasyarat Sistem
+              </h3>
+              <p class="text-sm text-slate-500 ml-7">Pastikan runtime <strong>Docker Desktop</strong> sudah terpasang dan sedang berjalan di latar belakang.</p>
+            </div>
+
+            <div>
+              <h3 class="font-bold text-slate-800 mb-2 flex items-center gap-2 text-sm">
+                <span class="flex items-center justify-center w-5 h-5 bg-slate-100 rounded-full text-xs font-bold text-slate-500">2</span>
+                Inisialisasi Menggunakan curl / bash
+              </h3>
+              <p class="text-sm text-slate-500 ml-7 mb-3">Jalankan perintah ini di terminal untuk mengunduh container Laravel Sail dengan service database <code class="bg-slate-100 px-1 rounded text-xs text-slate-700">mysql</code>:</p>
+              
+              <div class="ml-7 mb-4">
+                <span class="text-xs font-bold text-slate-400 block mb-1 uppercase tracking-wider">Linux / macOS / WSL2:</span>
+                <div class="bg-slate-900 text-slate-200 rounded-xl p-4 relative group">
+                  <pre class="text-sm overflow-x-auto"><code>curl -s "https://laravel.build/laravel-api?with=mysql" | bash</code></pre>
+                </div>
+              </div>
+
+              <div class="ml-7">
+                <span class="text-xs font-bold text-slate-400 block mb-1 uppercase tracking-wider">Windows (PowerShell):</span>
+                <div class="bg-slate-900 text-slate-200 rounded-xl p-4 relative group">
+                  <pre class="text-sm overflow-x-auto"><code>Invoke-WebRequest -Uri "https://laravel.build/laravel-api?with=mysql" -OutFile laravel-api.ps1; ./laravel-api.ps1</code></pre>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="font-bold text-slate-800 mb-2 flex items-center gap-2 text-sm">
+                <span class="flex items-center justify-center w-5 h-5 bg-slate-100 rounded-full text-xs font-bold text-slate-500">3</span>
+                Menyalakan Environment Sail
+              </h3>
+              <p class="text-sm text-slate-500 ml-7 mb-3">Masuk ke folder project, lalu nyalakan Docker container menggunakan binary Sail bawaan:</p>
+              <div class="ml-7 bg-slate-900 text-slate-200 rounded-xl p-4 space-y-2">
+                <pre class="text-sm overflow-x-auto text-slate-400"><code>cd laravel-api</code></pre>
+                <pre class="text-sm overflow-x-auto"><code>./vendor/bin/sail up</code></pre>
+              </div>
+              <p class="text-xs text-amber-600 bg-amber-50 border border-amber-100 p-3 rounded-lg ml-7 mt-3 flex items-start gap-2">
+                <i class="fas fa-exclamation-triangle mt-0.5"></i>
+                <span><strong>Tips Pro:</strong> Tambahkan flag <code class="bg-amber-100 px-1 rounded font-mono">-d</code> (contoh: <code class="font-mono">./vendor/bin/sail up -d</code>) agar container berjalan di background mode, membebaskan terminal Anda untuk eksekusi perintah lain.</span>
+              </p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <script>
+      function copyToClipboard(text) {
+        navigator.clipboard.writeText(text);
+        alert('Perintah disalin ke clipboard!');
+      }
+    </script>
+  </body>
+</html>

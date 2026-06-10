@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <title>Materi: Otentikasi & Protected Routes React TS</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      code, pre {
+        font-family: 'JetBrains Mono', monospace;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50/50 text-slate-800 min-h-screen pb-20">
+
+    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 px-6 py-4">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <a href="../index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-blue-600 transition">
+          <i class="fas fa-arrow-left text-xs"></i> Kembali ke Daftar Utama
+        </a>
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full uppercase tracking-wider">React TS</span>
+          <span class="text-slate-300">|</span>
+          <span class="text-xs font-medium text-slate-400">Modul 06</span>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      
+      <header class="mb-10">
+        <div class="flex items-center gap-3 text-blue-600 mb-3">
+          <i class="fas fa-user-shield text-2xl"></i>
+          <span class="text-sm font-bold tracking-widest uppercase">Client-Side Guards</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+          Protected Routes: Implementasi Guard Token Sanctum di React Router DOM
+        </h1>
+        <p class="text-slate-500 text-lg leading-relaxed max-w-3xl">
+          Amankan rute internal dashboard dari akses ilegal. Deteksi token otentikasi secara reaktif, kelola rute publik vs terproteksi, dan tendang otomatis pengguna tak dikenal langsung ke halaman login.
+        </p>
+      </header>
+
+      <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-10">
+        <h3 class="font-bold text-blue-900 mb-2 flex items-center gap-2 text-sm">
+          <i class="fas fa-door-closed"></i> BAGAIMANA CARA KERJA CLIENT-SIDE ROUTE GUARD?
+        </h3>
+        <p class="text-blue-800 text-sm leading-relaxed mb-2">
+          Sebelum sebuah halaman dashboard (seperti data guru atau laporan keuangan) dimuat oleh React Router, komponen peninjau akan memeriksa keberadaan token otentikasi (misalnya token Sanctum/Bearer):
+        </p>
+        <ul class="list-disc list-inside text-blue-800 text-sm space-y-1">
+          <li><strong>Token Eksis:</strong> Komponen mengizinkan anak rute (<code class="font-mono text-xs">&lt;Outlet /&gt;</code>) untuk di-render dan ditampilkan ke layar pengguna.</li>
+          <li><strong>Token Kosong / Null:</strong> Komponen langsung mencegat eksekusi dan mengembalikan instruksi <code class="font-mono text-xs">&lt;Navigate to="/login" replace /&gt;</code> untuk membuang paksa sesi pengguna ke gerbang login luar.</li>
+        </ul>
+      </div>
+
+      <div class="space-y-12">
+        
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="p-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono">01</span>
+            Mendeteksi Status Token (`src/hooks/useAuth.ts`)
+          </h2>
+          <p class="text-slate-500 text-sm mb-4">
+            Buatlah sebuah fungsi pengawas terpusat untuk membaca token dari media penyimpanan lokal browser (*localStorage*) serta memeriksa status login pengguna secara cepat.
+          </p>
+
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>import { useState } from 'react';
+
+export function useAuth() {
+  // Memeriksa token Sanctum dari localStorage secara real-time
+  const [token, setToken] = useState&lt;string | null&gt;(() => {
+    return localStorage.getItem('ajocell_token');
+  });
+
+  const isAuthenticated = !!token; // Konversi string menjadi boolean (true jika token ada)
+
+  const logout = (): void => {
+    localStorage.removeItem('ajocell_token');
+    setToken(null);
+  };
+
+  return {
+    token,
+    isAuthenticated,
+    logout
+  };
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="p-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono">02</span>
+            Membuat Komponen Tameng Guard (`src/components/ProtectedRoute.tsx`)
+          </h2>
+          <p class="text-slate-500 text-sm mb-4">
+            Komponen ini bertugas memeriksa status otentikasi. Jika <code class="font-mono text-xs">isAuthenticated</code> bernilai salah (*false*), ia akan langsung memicu penendangan ke rute login menggunakan properti <code class="font-mono text-xs">replace</code> agar riwayat URL palsu tersebut tidak bisa diakses via tombol *back* browser.
+          </p>
+
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>import React from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+
+export default function ProtectedRoute(): React.JSX.Element {
+  const { isAuthenticated } = useAuth();
+
+  // JIKA TIDAK ADA TOKEN: Langsung ditendang ke halaman login luar
+  if (!isAuthenticated) {
+    return &lt;Navigate to="/login" replace /&gt;;
+  }
+
+  // JIKA ADA TOKEN: Izinkan lewat menuju sub-halaman dashboard di dalam layout
+  return &lt;Outlet /&gt;;
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="p-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono">03</span>
+            Penerapan Sarang Proteksi Pada Arsitektur URL (`src/router/AppRouter.tsx`)
+          </h2>
+          <p class="text-slate-500 text-sm mb-4">
+            Bungkus komponen <code class="font-mono text-xs">Layout</code> dan rute-rute penting internal dashboard di dalam sarang <code class="font-mono text-xs">&lt;Route element={&lt;ProtectedRoute /&gt;}&gt;</code>.
+          </p>
+
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Layout from '../components/Layout';
+import ProtectedRoute from '../components/ProtectedRoute';
+import Dashboard from '../pages/Dashboard';
+import GuruList from '../pages/guru/GuruList';
+
+export default function AppRouter(): React.JSX.Element {
+  return (
+    &lt;BrowserRouter&gt;
+      &lt;Routes&gt;
+        {/* Rute Terbuka (Public Route) */}
+        &lt;Route path="/login" element={&lt;div&gt;Halaman Login Form Sanctum&lt;/div&gt;} /&gt;
+
+        {/* BUNGKUSAN PROTEKSI UTAMA: Mengamankan Seluruh Halaman Dashboard */}
+        &lt;Route element={&lt;ProtectedRoute /&gt;}&gt;
+          &lt;Route path="/" element={&lt;Layout /&gt;}&gt;
+            &lt;Route index element={&lt;Dashboard /&gt;} /&gt;
+            &lt;Route path="guru" element={&lt;GuruList /&gt;} /&gt;
+          &lt;/Route&gt;
+        &lt;/Route&gt;
+
+        {/* Tangkap sisa rute tidak dikenal */}
+        &lt;Route path="*" element={&lt;Navigate to="/" replace /&gt;} /&gt;
+      &lt;/Routes&gt;
+    &lt;/BrowserRouter&gt;
+  );
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-slate-900 rounded-2xl p-6 text-slate-100 border border-slate-800 shadow-xl">
+          <h3 class="text-base font-bold text-amber-400 mb-2 flex items-center gap-2">
+            <i class="fas fa-triangle-exclamation"></i> CATATAN KEAMANAN FRONTEND DEVELOPMENT
+          </h3>
+          <p class="text-slate-400 text-xs mb-3 leading-relaxed">
+            Perlu diingat bahwa mengamankan rute via JavaScript di sisi frontend *bukanlah* sistem keamanan absolut. Seseorang masih bisa memanipulasi kode lokal browser untuk memaksa masuk ke layout dashboard secara visual. 
+          </p>
+          <div class="bg-amber-500/10 border border-amber-500/20 p-3 rounded-xl text-xs text-amber-200">
+            <strong>Keamanan Sejati:</strong> Terletak pada backend server (Middleware Laravel Sanctum). Jika ada pengguna ilegal berhasil menembus UI visual React tetapi tidak membawa Token Bearer asli di headers Axios-nya, API Laravel Anda harus tetap mengembalikan status <strong>HTTP 401 Unauthorized</strong> dan menolak pengiriman database.
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <title>Materi: Arsitektur Struktur Folder React TypeScript Modern</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      code, pre {
+        font-family: 'JetBrains Mono', monospace;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50/50 text-slate-800 min-h-screen pb-20">
+
+    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 px-6 py-4">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <a href="../index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-blue-600 transition">
+          <i class="fas fa-arrow-left text-xs"></i> Kembali ke Daftar Utama
+        </a>
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full uppercase tracking-wider">React TS</span>
+          <span class="text-slate-300">|</span>
+          <span class="text-xs font-medium text-slate-400">Modul 02</span>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      
+      <header class="mb-10">
+        <div class="flex items-center gap-3 text-blue-600 mb-3">
+          <i class="fas fa-folder-tree text-2xl"></i>
+          <span class="text-sm font-bold tracking-widest uppercase">Arsitektur Aplikasi SPA TSX</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+          Separation of Concerns: Struktur Folder React TypeScript
+        </h1>
+        <p class="text-slate-500 text-lg leading-relaxed max-w-3xl">
+          Panduan menyusun arsitektur folder berskala besar menggunakan TypeScript. Memisahkan UI, logika bisnis, dan integrasi API dengan jaminan kontrak data (*Type Safety*) yang ketat.
+        </p>
+      </header>
+
+      <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-10">
+        <h3 class="font-bold text-blue-900 mb-2 flex items-center gap-2 text-sm">
+          <i class="fas fa-shield-halved"></i> MENGAPA WAJIB TYPESCRIPT DI SCALABLE FRONTEND?
+        </h3>
+        <p class="text-blue-800 text-sm leading-relaxed mb-2">
+          Dengan bermigrasi dari `.js/.jsx` ke `.ts/.tsx`, kita mendapatkan proteksi penuh saat melakukan integrasi API:
+        </p>
+        <ul class="list-disc list-inside text-blue-800 text-sm space-y-1">
+          <li><strong>Mencegah Undefined Error:</strong> TypeScript mendeteksi eror saat compile jika komponen mengakses properti objek backend yang typo atau tidak eksis.</li>
+          <li><strong>Kontrak Data API (Types/Interfaces):</strong> Struktur respons JSON dari backend Laravel dipetakan menjadi tipe data statis di frontend.</li>
+          <li><strong>Autocompletion Sempurna:</strong> IDE/VS Code otomatis memberikan saran properti data saat mengetik kode.</li>
+        </ul>
+      </div>
+
+      <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm mb-10">
+        <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+          <i class="fas fa-sitemap text-slate-400"></i> Cetak Biru Pohon Direktori TypeScript <code class="text-xs font-mono bg-slate-100 px-1.5 py-0.5 rounded text-blue-600">src/</code>
+        </h2>
+        <p class="text-slate-500 text-sm mb-4">
+          Perhatikan perubahan ekstensi file menjadi **`.ts`** untuk file logika/murni kode, dan **`.tsx`** untuk file yang mengandung elemen UI (JSX):
+        </p>
+
+        <div class="bg-slate-900 text-slate-200 rounded-xl p-5 font-mono text-xs leading-relaxed overflow-x-auto">
+          <pre><code>src/
+├── <span class="text-cyan-400">types/</span>               <span class="text-slate-500"># LAYER KONTRAK DATA: Berisi interface cetak biru model data</span>
+│   ├── apiResponse.ts   <span class="text-slate-500"># Mapping tipe data dari ApiResponder Laravel (success, fail, errors)</span>
+│   └── user.ts          <span class="text-slate-500"># Interface blueprint objek User (id, nama, role, nomor_induk)</span>
+│
+├── <span class="text-blue-400">api/</span>                 <span class="text-slate-500"># LAYER API: Tempat komunikasi Axios terisolasi</span>
+│   ├── axiosInstance.ts <span class="text-slate-500"># Konfigurasi token interceptor & Base URL</span>
+│   └── userApi.ts       <span class="text-slate-500"># Fungsi HTTP Request dengan jaminan return type Promise</span>
+│
+├── <span class="text-purple-400">components/</span>          <span class="text-slate-500"># VIEW LAYER (REUSABLE COMPONENTS)</span>
+│   ├── ui/              <span class="text-slate-500"># Komponen atomic dari shadcn/ui otomatis berbasis TSX</span>
+│   │   ├── button.tsx
+│   │   └── dialog.tsx
+│   └── Layout.tsx       <span class="text-slate-500"># Kerangka dashboard layout (.tsx)</span>
+│
+├── <span class="text-emerald-400">hooks/</span>               <span class="text-slate-500"># LOGIC LAYER (GLOBAL CUSTOM HOOKS)</span>
+│   └── useAuth.ts       <span class="text-slate-500"># Custom hook handling session & guard login (.ts)</span>
+│
+├── <span class="text-amber-400">pages/</span>               <span class="text-slate-500"># VIEW LAYER (PAGES)</span>
+│   ├── Dashboard.tsx
+│   └── guru/
+│       ├── GuruList.tsx    <span class="text-slate-500"># Hanya me-render JSX tabel dengan props tipe data aman</span>
+│       └── <span class="text-emerald-400">useGuruLogic.ts</span> <span class="text-slate-500"># LOGIC LAYER (LOCAL): State management khusus internal halaman guru</span>
+│
+├── <span class="text-slate-400">router/</span>              <span class="text-slate-500"># Sistem Routing</span>
+│   └── AppRouter.tsx    <span class="text-slate-500"># Konfigurasi React Router DOM (.tsx)</span>
+│
+├── App.tsx              <span class="text-slate-500"># Root Component</span>
+├── index.css            <span class="text-slate-500"># Global Styling (Tailwind v4 Directive)</span>
+├── main.tsx             <span class="text-slate-500"># Entry point aplikasi</span>
+└── vite-env.d.ts        <span class="text-slate-500"># TypeScript environment declaration</span></code></pre>
+        </div>
+      </section>
+
+      <div class="space-y-12">
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+            <div class="p-1.5 bg-cyan-50 text-cyan-600 rounded-lg text-xs font-mono font-bold">TYPES CONTRACT</div>
+            <h3 class="text-base font-bold text-slate-900">1. Mapping Model Data (`src/types/user.ts`)</h3>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Mendefinisikan tipe data statis agar React mengetahui secara pasti properti apa saja yang dimiliki oleh objek guru hasil kiriman backend.
+          </p>
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>// Definisi tipe data kaku untuk model User
+export interface User {
+  uid: string;
+  nama_lengkap: string;
+  email: string;
+  role: 'admin' | 'guru' | 'developer';
+  nomor_identitas: string;
+}
+
+// Interface global yang menyelaraskan format ApiResponder dari Laravel
+export interface ApiResponse&lt;T&gt; {
+  status: 'success' | 'fail' | 'error';
+  message: string;
+  data: T; // Menggunakan Generics agar tipe data dalam 'data' bisa dinamis (User, Product, dll)
+  errors?: Record&lt;string, string[]&gt;;
+}</code></pre>
+          </div>
+        </section>
+        
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+            <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-mono font-bold">LAYER API</div>
+            <h3 class="text-base font-bold text-slate-900">2. Data Layer: Implementasi Return Type (`src/api/userApi.ts`)</h3>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Mengikat fungsi HTTP Request menggunakan contract type. Fungsi di bawah dijamin mengembalikan data bertipe <code class="font-mono text-xs">ApiResponse</code> penampung array <code class="font-mono text-xs">User</code>.
+          </p>
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>import axiosInstance from './axiosInstance';
+import { User, ApiResponse } from '../types/user';
+
+export const userApi = {
+  // Promise&lt;ApiResponse&lt;User[]&gt;&gt; memastikan output data adalah array dari object User sesuai type contract
+  getAllUsers: async (role: string = ''): Promise&lt;ApiResponse&lt;User[]&gt;&gt; => {
+    const response = await axiosInstance.get&lt;ApiResponse&lt;User[]&gt;&gt;(`/api/users?role=${role}`);
+    return response.data;
+  },
+
+  createUser: async (payload: Omit&lt;User, 'uid'&gt;): Promise&lt;ApiResponse&lt;User&gt;&gt; => {
+    const response = await axiosInstance.post&lt;ApiResponse&lt;User&gt;&gt;('/api/users', payload);
+    return response.data;
+  }
+};</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+            <div class="p-1.5 bg-purple-50 text-purple-600 rounded-lg text-xs font-mono font-bold">LAYER LOGIC</div>
+            <h3 class="text-base font-bold text-slate-900">3. Logic Layer: Type State Guard (`src/pages/guru/useGuruLogic.ts`)</h3>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Inisialisasi state <code class="font-mono text-xs">useState</code> dikunci menggunakan type data array User agar tidak bisa diisi oleh sembarang tipe data lain.
+          </p>
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>import { useState, useEffect } from 'react';
+import { userApi } from '../../api/userApi';
+import { User } from '../../types/user';
+
+export function useGuruLogic() {
+  // Mengunci tipe data array User pada state list
+  const [guruList, setGuruList] = useState&lt;User[]&gt;([]);
+  const [isLoading, setIsLoading] = useState&lt;boolean&gt;(false);
+  const [errorMessages, setErrorMessages] = useState&lt;string | null&gt;(null);
+
+  const fetchGuru = async (): Promise&lt;void&gt; => {
+    setIsLoading(true);
+    try {
+      const result = await userApi.getAllUsers('guru');
+      setGuruList(result.data); // Valid karena result.data bertipe User[]
+    } catch (err) {
+      setErrorMessages('Gagal memuat data guru dari server.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchGuru();
+  }, []);
+
+  return { guruList, isLoading, errorMessages, refreshData: fetchGuru };
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+            <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-mono font-bold">LAYER VIEW</div>
+            <h3 class="text-base font-bold text-slate-900">4. View Layer: Autocompletion JSX (`src/pages/guru/GuruList.tsx`)</h3>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Saat menuliskan fungsi looping <code class="font-mono text-xs">guru.nama_lengkap</code>, text editor Anda akan secara otomatis mengenali properti tersebut dan melindunginya dari kesalahan pengetikan huruf kapital.
+          </p>
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>import React from 'react';
+import { useGuruLogic } from './useGuruLogic';
+import { Button } from '@/components/ui/button';
+
+export default function GuruList(): React.JSX.Element {
+  // Destructuring state dengan inferensi tipe data otomatis dari custom hook
+  const { guruList, isLoading, errorMessages } = useGuruLogic();
+
+  if (isLoading) return &lt;div className="text-slate-500 text-sm"&gt;Sedang menyinkronkan data...&lt;/div&gt;;
+  if (errorMessages) return &lt;div className="text-red-500 text-sm"&gt;{errorMessages}&lt;/div&gt;;
+
+  return (
+    &lt;div className="space-y-4"&gt;
+      &lt;div className="flex justify-between items-center"&gt;
+        &lt;h1 className="text-xl font-bold"&gt;Daftar Manajemen Guru (TSX v4)&lt;/h1&gt;
+        &lt;Button variant="default"&gt;Tambah Rekor Guru&lt;/Button&gt;
+      &lt;/div&gt;
+
+      &lt;ul className="divide-y divide-slate-100"&gt;
+        {guruList.map((guru) => (
+          &lt;li key={guru.uid} className="py-3 flex justify-between text-sm"&gt;
+            {/* Kebal Eror Typo karena properti dikawal ketat oleh Interface User */}
+            &lt;span className="font-medium text-slate-900"&gt;{guru.nama_lengkap}&lt;/span&gt;
+            &lt;span className="text-slate-500 font-mono"&gt;{guru.nomor_identitas}&lt;/span&gt;
+          &lt;/li>
+        ))}
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+          </div>
+        </section>
+
+      </div>
+      <div class="mt-12 space-y-12">
+        
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+            <div class="p-1.5 bg-cyan-50 text-cyan-600 rounded-lg text-xs font-mono font-bold">ALUR DATA</div>
+            <h3 class="text-base font-bold text-slate-900">5. Anatomi JSON Backend vs Interface Frontend</h3>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Ketika API Backend (misal dari controller Laravel) mengirimkan format JSON standar, TypeScript akan memetakan skema objek tersebut melalui keyword <code class="font-mono text-xs bg-slate-100 px-1 rounded text-red-600">interface</code> agar dikenali oleh sistem frontend.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Muntahan JSON dari API Backend:</span>
+              <div class="bg-slate-900 text-slate-300 rounded-xl p-4 font-mono text-xs overflow-x-auto leading-relaxed">
+<pre><code>{
+  "status": "success",
+  "message": "Data berhasil dimuat",
+  "data": {
+    "uid": "01J6G9XB...",
+    "nama_lengkap": "Abdul Johar, S.Kom",
+    "email": "abdul.johar@sekolah.sch.id",
+    "role": "guru",
+    "nomor_identitas": "199402112026031001"
+  }
+}</code></pre>
+              </div>
+            </div>
+
+            <div>
+              <span class="text-xs font-bold text-slate-400 block mb-2 uppercase tracking-wider">Ditangkap TypeScript Interface:</span>
+              <div class="bg-slate-900 text-cyan-400 rounded-xl p-4 font-mono text-xs overflow-x-auto leading-relaxed">
+<pre><code>// src/types/user.ts
+export interface User {
+  uid: string;
+  nama_lengkap: string;
+  email: string;
+  role: 'admin' | 'guru' | 'developer';
+  nomor_identitas: string;
+}
+
+export interface ApiResponse&lt;T&gt; {
+  status: string;
+  message: string;
+  data: T; // Generics mengikat objek User
+}</code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+            <div class="p-1.5 bg-blue-50 text-blue-600 rounded-lg text-xs font-mono font-bold">AXIOS SETUP</div>
+            <h3 class="text-base font-bold text-slate-900">6. Konfigurasi Penembak API (`src/api/axiosInstance.ts`)</h3>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Gunakan interceptor untuk menyuntikkan token Bearer secara otomatis ke dalam komponen *headers* sebelum request terbang ke backend server.
+          </p>
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+<pre><code>import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
+
+const axiosInstance: AxiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://api.ajocell.com',
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  },
+  timeout: 10000, // Otomatis putus jika server macet lebih dari 10 detik
+});
+
+// Interceptor menyuntikkan Token keamanan dari LocalStorage secara dinamis
+axiosInstance.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    const token = localStorage.getItem('ajocell_token');
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export default axiosInstance;</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+            <div class="p-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-mono font-bold">COMPONENTS .TSX</div>
+            <h3 class="text-base font-bold text-slate-900">7. Konsumsi Data Aman Pada File View (`src/pages/guru/GuruList.tsx`)</h3>
+          </div>
+          <p class="text-slate-500 text-sm mb-4">
+            Ini adalah implementasi penuh di dalam berkas UI. Menggunakan custom hook yang mengembalikan state beralias tipe data kaku. Proteksi ini mematikan celah kesalahan pemanggilan variabel data.
+          </p>
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+<pre><code>import React from 'react';
+import { useGuruLogic } from './useGuruLogic';
+import { Button } from '@/components/ui/button';
+
+export default function GuruList(): React.JSX.Element {
+  // TypeScript otomatis mendeteksi bahwa guruList bertipe User[]
+  const { guruList, isLoading, errorMessages, refreshData } = useGuruLogic();
+
+  return (
+    &lt;div class="p-6 bg-white rounded-xl shadow-sm border border-slate-100"&gt;
+      &lt;div class="flex justify-between items-center mb-6"&gt;
+        &lt;h2 class="text-xl font-bold text-slate-800"&gt;Sistem Buku Guru - Data Staff&lt;/h2&gt;
+        &lt;Button onClick={refreshData} variant="outline" size="sm" disabled={isLoading}&gt;
+          {isLoading ? 'Menyinkronkan...' : 'Refresh Data'}
+        &lt;/Button&gt;
+      &lt;/div&gt;
+
+      {errorMessages && (
+        &lt;div class="p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm mb-4"&gt;
+          {errorMessages}
+        &lt;/div&gt;
+      )}
+
+      &lt;div class="overflow-x-auto"&gt;
+        &lt;table class="w-full text-left text-sm border-collapse"&gt;
+          &lt;thead class="bg-slate-50 text-slate-400 font-semibold uppercase text-xs"&gt;
+            &lt;tr&gt;
+              &lt;th class="p-3"&gt;Nama Lengkap&lt;/th&gt;
+              &lt;th class="p-3"&gt;Identitas (NUPTK)&lt;/th&gt;
+              &lt;th class="p-3"&gt;Hak Akses Akun&lt;/th&gt;
+            &lt;/tr&gt;
+          &lt;/thead&gt;
+          &lt;tbody class="divide-y divide-slate-100 text-slate-700"&gt;
+            {guruList.length === 0 && !isLoading ? (
+              &lt;tr&gt;&lt;td colSpan={3} class="p-4 text-center text-slate-400"&gt;Kosong. Tidak ada data guru.&lt;/td&gt;&lt;/tr&gt;
+            ) : (
+              guruList.map((guru) => (
+                &lt;tr key={guru.uid} class="hover:bg-slate-50/80 transition"&gt;
+                  {/* IDE Anda akan memberikan autocompletion untuk nama_lengkap, nomor_identitas, & role */}
+                  &lt;td class="p-3 font-medium text-slate-900"&gt;{guru.nama_lengkap}&lt;/td&gt;
+                  &lt;td class="p-3 font-mono text-xs"&gt;{guru.nomor_identitas}&lt;/td&gt;
+                  &lt;td class="p-3"&gt;
+                    &lt;span class="px-2 py-0.5 bg-blue-50 text-blue-600 rounded text-xs font-semibold capitalize"&gt;
+                      {guru.role}
+                    &lt;/span&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+              ))
+            )}
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-amber-500/10 rounded-2xl p-6 border border-amber-500/20">
+          <h4 class="font-bold text-amber-900 text-sm mb-2 flex items-center gap-2">
+            <i class="fas fa-lightbulb"></i> GOLDEN RULES UNTUK ARSITEKTUR TYPESCRIPT FRONTEND
+          </h4>
+          <ul class="list-decimal list-inside text-amber-900/90 text-xs space-y-2 leading-relaxed">
+            <li><strong>Jangan Pernah Menggunakan tipe <code class="font-mono bg-white px-1 py-0.5 rounded text-red-600">any</code>:</strong> Menggunakan <code class="font-mono">any</code> sama saja mematikan fungsi pengawasan utama dari TypeScript.</li>
+            <li><strong>Gunakan Omit / Pick Utility:</strong> Saat mengirim payload data baru di mana properti <code class="font-mono text-xs">uid</code> belum dibuat oleh backend database, manfaatkan <code class="font-mono text-xs">Omit&lt;User, 'uid'&gt;</code> untuk membuang properti tersebut secara aman dari validasi.</li>
+            <li><strong>Selalu Sinkronkan Enum:</strong> Jika di database Laravel Anda menggunakan tipe kolom enum (seperti kategori data type prefix PPOB Ajocell atau Role User), pastikan tipe string literal di berkas <code class="font-mono text-xs">.ts</code> frontend disamakan persis (Case-Sensitive).</li>
+          </ul>
+        </section>
+
+      </div>
+    </main>
+    
+  </body>
+</html>

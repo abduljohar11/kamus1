@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <title>Materi: Integrasi Axios Mutations & Validasi Error</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      code, pre {
+        font-family: 'JetBrains Mono', monospace;
+      }
+    </style>
+  </head>
+  <body class="bg-slate-50/50 text-slate-800 min-h-screen pb-20">
+
+    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50 px-6 py-4">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <a href="../index.html" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-blue-600 transition">
+          <i class="fas fa-arrow-left text-xs"></i> Kembali ke Daftar Utama
+        </a>
+        <div class="flex items-center gap-2">
+          <span class="px-3 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-full uppercase tracking-wider">React TS</span>
+          <span class="text-slate-300">|</span>
+          <span class="text-xs font-medium text-slate-400">Modul 05</span>
+        </div>
+      </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 py-12">
+      
+      <header class="mb-10">
+        <div class="flex items-center gap-3 text-blue-600 mb-3">
+          <i class="fas fa-cloud-arrow-up text-2xl"></i>
+          <span class="text-sm font-bold tracking-widest uppercase">Data Mutation & Validation</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-4">
+          Advanced Axios: CUD Operations & Async Validation Handling
+        </h1>
+        <p class="text-slate-500 text-lg leading-relaxed max-w-3xl">
+          Menguasai siklus mutasi data (POST/PUT/DELETE) menggunakan <code class="font-mono text-base">useMutation</code> TanStack Query, menangkap error validasi field dari backend, dan strategi otomatisasi penyegaran state UI.
+        </p>
+      </header>
+
+      <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-10">
+        <h3 class="font-bold text-blue-900 mb-2 flex items-center gap-2 text-sm">
+          <i class="fas fa-sync"></i> PERBEDAAN QUERY VS MUTATION
+        </h3>
+        <p class="text-blue-800 text-sm leading-relaxed">
+          Jika <code class="font-mono text-xs">useQuery</code> digunakan murni untuk **membaca data (GET)** secara otomatis saat komponen di-mount, maka <code class="font-mono text-xs">useMutation</code> digunakan untuk **mengubah/memanipulasi data (POST/PUT/DELETE)** yang dipicu oleh aksi manual user (seperti klik tombol submit form).
+        </p>
+      </div>
+
+      <div class="space-y-12">
+        
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="p-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono">01</span>
+            Ekstensi API Layer Untuk Mutasi (`src/api/userApi.ts`)
+          </h2>
+          <p class="text-slate-500 text-sm mb-4">
+            Kita tambahkan fungsi penembak payload data baru dan penghapusan data. Gunakan utility <code class="font-mono text-xs">Omit</code> untuk membuang properti id otomatis dari type contract jika diperlukan.
+          </p>
+
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>import axiosInstance from './axiosInstance';
+import { User, ApiResponse } from '../types/user';
+
+export const userApi = {
+  // ... fungsi GET dari modul sebelumnya
+  
+  // POST: Membuat rekor baru
+  createUser: async (payload: Omit&lt;User, 'uid'&gt;): Promise&lt;ApiResponse&lt;User&gt;&gt; => {
+    const response = await axiosInstance.post&lt;ApiResponse&lt;User&gt;&gt;('/api/users', payload);
+    return response.data;
+  },
+
+  // DELETE: Menghapus rekor berdasarkan parameter UID unik
+  deleteUser: async (uid: string): Promise&lt;ApiResponse&lt;null&gt;&gt; => {
+    const response = await axiosInstance.delete&lt;ApiResponse&lt;null&gt;&gt;(`/api/users/${uid}`);
+    return response.data;
+  }
+};</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="p-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono">02</span>
+            Implementasi useMutation & Cache Invalidation (`src/pages/guru/useGuruLogic.ts`)
+          </h2>
+          <p class="text-slate-500 text-sm mb-4">
+            Perhatikan bagaimana fungsi <code class="font-mono text-xs text-blue-600">queryClient.invalidateQueries</code> digunakan di dalam callback <code class="font-mono text-xs">onSuccess</code>. Ini akan memaksa tabel data mendownload ulang list terbaru secara instan begitu proses simpan/hapus sukses.
+          </p>
+
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
+import { userApi } from '../../api/userApi';
+import { User } from '../../types/user';
+import axios from 'axios';
+
+export function useGuruLogic() {
+  const queryClient = useQueryClient();
+  const [validationErrors, setValidationErrors] = useState&lt;Record&lt;string, string[]&gt; | null&gt;(null);
+
+  // Read Operation
+  const { data } = useQuery({
+    queryKey: ['users', 'guru'],
+    queryFn: () => userApi.getAllUsers('guru'),
+  });
+
+  // Write Operation (Create)
+  const createUserMutation = useMutation({
+    mutationFn: userApi.createUser,
+    onSuccess: () => {
+      // Invalidation: Otomatis memicu re-fetch data list guru di latar belakang
+      queryClient.invalidateQueries({ queryKey: ['users', 'guru'] });
+      setValidationErrors(null); // Bersihkan error lama jika sukses
+    },
+    onError: (error: unknown) => {
+      // Menangkap error validasi form (HTTP 422) dari backend Laravel
+      if (axios.isAxiosError(error) && error.response?.status === 422) {
+        setValidationErrors(error.response.data.errors);
+      }
+    }
+  });
+
+  // Delete Operation
+  const deleteUserMutation = useMutation({
+    mutationFn: userApi.deleteUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users', 'guru'] });
+    }
+  });
+
+  return {
+    guruList: data?.data || [],
+    isSaving: createUserMutation.isPending,
+    isDeleting: deleteUserMutation.isPending,
+    validationErrors,
+    addNewGuru: createUserMutation.mutate,
+    deleteGuru: deleteUserMutation.mutate,
+  };
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+          <h2 class="text-lg font-bold text-slate-900 mb-2 flex items-center gap-2">
+            <span class="p-1.5 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono">03</span>
+            Handling Error Form Pada Layer Tampilan (`src/pages/guru/GuruForm.tsx`)
+          </h2>
+          <p class="text-slate-500 text-sm mb-4">
+            Petakan objek <code class="font-mono text-xs">validationErrors</code> langsung di bawah input text field masing-masing untuk memberikan feedback visual merah jika input tidak memenuhi kriteria validasi backend.
+          </p>
+
+          <div class="bg-slate-900 text-slate-200 rounded-xl p-4 overflow-x-auto text-xs leading-relaxed">
+            <pre><code>import React, { useState } from 'react';
+import { useGuruLogic } from './useGuruLogic';
+import { Button } from '@/components/ui/button';
+
+export default function GuruForm(): React.JSX.Element {
+  const { addNewGuru, isSaving, validationErrors } = useGuruLogic();
+  
+  const [formData, setFormData] = useState({
+    nama_lengkap: '',
+    email: '',
+    role: 'guru' as const,
+    nomor_identitas: ''
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    addNewGuru(formData); // Kirim mutasi data ke server
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit} class="space-y-4 max-w-md bg-white p-6 rounded-xl border border-slate-100"&gt;
+      &lt;h3 class="font-bold text-base text-slate-900"&gt;Tambah Rekor Staff Baru&lt;/h3&gt;
+      
+      {/* Input Nama */}
+      &lt;div class="flex flex-col gap-1"&gt;
+        &lt;label class="text-xs font-semibold text-slate-600"&gt;Nama Lengkap&lt;/label&gt;
+        &lt;input 
+          type="text" 
+          value={formData.nama_lengkap}
+          onChange={(e) => setFormData({...formData, nama_lengkap: e.target.value})}
+          class={`p-2 border text-sm rounded-lg outline-none ${validationErrors?.nama_lengkap ? 'border-red-500' : 'border-slate-200'}`}
+        /&gt;
+        {/* Render pesan eror spesifik field nama_lengkap jika dikembalikan dari server */}
+        {validationErrors?.nama_lengkap && (
+          &lt;span class="text-red-500 text-xs mt-0.5"&gt;{validationErrors.nama_lengkap[0]}&lt;/span&gt;
+        )}
+      &lt;/div&gt;
+
+      {/* Input Nomor Identitas (NUPTK / Token Prefix) */}
+      &lt;div class="flex flex-col gap-1"&gt;
+        &lt;label class="text-xs font-semibold text-slate-600"&gt;Nomor Identitas&lt;/label&gt;
+        &lt;input 
+          type="text" 
+          value={formData.nomor_identitas}
+          onChange={(e) => setFormData({...formData, nomor_identitas: e.target.value})}
+          class={`p-2 border text-sm rounded-lg outline-none ${validationErrors?.nomor_identitas ? 'border-red-500' : 'border-slate-200'}`}
+        /&gt;
+        {validationErrors?.nomor_identitas && (
+          &lt;span class="text-red-500 text-xs mt-0.5"&gt;{validationErrors.nomor_identitas[0]}&lt;/span&gt;
+        )}
+      &lt;/div&gt;
+
+      &lt;Button type="submit" disabled={isSaving} class="w-full"&gt;
+        {isSaving ? 'Menyimpan ke Server...' : 'Simpan Rekor Data'}
+      &lt;/Button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-slate-900 rounded-2xl p-6 text-slate-100 border border-slate-800 shadow-xl">
+          <h3 class="text-base font-bold text-amber-400 mb-2 flex items-center gap-2">
+            <i class="fas fa-shield-halved"></i> MITIGASI PROSES ASYNC & MUTATION SECURITY
+          </h3>
+          <ul class="list-disc list-inside text-slate-400 text-xs space-y-2 leading-relaxed">
+            <li><strong>Mencegah Race Condition (Double Submit):</strong> Selalu kunci atau nonaktifkan (<code class="font-mono text-amber-400">disabled={isPending}</code>) tombol kirim form agar user tidak dapat melakukan penekanan tombol ganda saat request HTTP sedang berjalan.</li>
+            <li><strong>Skema Data Kosong (Null-Safe Mapping):</strong> Saat menginisialisasi input, pastikan nilai awal tidak bernilai <code class="font-mono text-amber-400">undefined</code> melainkan string kosong (<code class="font-mono text-amber-400">''</code>) untuk menghindari peringatan un-controlled component dari React.</li>
+          </ul>
+        </section>
+
+      </div>
+    </main>
+  </body>
+</html>
