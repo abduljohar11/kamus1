@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dokumentasi Universal Enum Extractor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      pre::-webkit-scrollbar {
+        height: 6px;
+      }
+      pre::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen font-sans">
+    
+    <nav class="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-50 shadow-sm">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <a href="../index.html" class="text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-2 transition">
+          <i class="fas fa-arrow-left text-sm"></i> Kembali ke Dashboard
+        </a>
+        <span class="bg-emerald-100 text-emerald-700 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">
+          <i class="fas fa-shield-alt mr-1"></i> Safe Casting Engine
+        </span>
+      </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-10">
+      
+      <div class="mb-10">
+        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight flex items-center gap-3">
+          <i class="fas fa-tags text-emerald-600"></i> Implementasi EnumExtractor Trait
+        </h1>
+        <p class="text-gray-500 mt-1">
+          Panduan ekstraksi nilai string murni dari BackedEnum guna menghindari *Fatal Error* konversi objek di Ajocell v2.
+        </p>
+      </div>
+
+      <div class="space-y-12">
+        
+        <section class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <i class="fas fa-microchip text-emerald-600"></i> Sensor Polymorphic Layer
+          </h2>
+          <p class="text-gray-600 text-sm mb-6 leading-relaxed">
+            Metode <code>extractEnumValue</code> dirancang kebal 100% dari kegagalan sistem data dengan melewati 5 lapis sensor validasi tipe data sebelum mengeluarkan output string murni:
+          </p>
+          
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-center text-xs">
+            <div class="p-3 bg-gray-50 border border-gray-200 rounded-xl">
+              <span class="font-bold text-slate-700 block mb-1">1. Null Guard</span>
+              <span class="text-gray-400">Jika data kosong/null, langsung return null tanpa diproses.</span>
+            </div>
+            <div class="p-3 bg-gray-50 border border-gray-200 rounded-xl">
+              <span class="font-bold text-slate-700 block mb-1">2. Collection Sensor</span>
+              <span class="text-gray-400">Jika berupa kumpulan model, otomatis mengupas data item pertama.</span>
+            </div>
+            <div class="p-3 bg-gray-50 border border-gray-200 rounded-xl">
+              <span class="font-bold text-slate-700 block mb-1">3. Eloquent Raw</span>
+              <span class="text-gray-400">Membaca original value database sebelum diubah oleh Mutator.</span>
+            </div>
+            <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl">
+              <span class="font-bold text-emerald-700 block mb-1">4. BackedEnum core</span>
+              <span class="text-emerald-600 font-medium">Mengambil properti ->value asli dari enum PHP.</span>
+            </div>
+            <div class="p-3 bg-gray-50 border border-gray-200 rounded-xl">
+              <span class="font-bold text-slate-700 block mb-1">5. Safe String Cast</span>
+              <span class="text-gray-400">Fallback terakhir melakukan paksa casting string secara aman.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-sm">
+                <i class="fas fa-exchange-alt"></i>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-gray-800">1. Penerapan pada API Resource / Controller Transformer</h2>
+                <p class="text-xs text-gray-400">Memastikan output JSON hanya berisi string murni untuk dikonsumsi JavaScript/React.</p>
+              </div>
+            </div>
+            <span class="text-xs font-mono bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">ProductResource.php</span>
+          </div>
+
+          <div class="p-6 bg-slate-900">
+            <pre class="text-slate-300 text-xs font-mono leading-relaxed"><code><?php
+
+namespace App\Http\Resources\API;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use App\Traits\EnumExtractor;
+
+class ProductResource extends JsonResource
+{
+    // Daftarkan trait extractor agar dapat memanggil method internal
+    use EnumExtractor;
+
+    /**
+     * Transform data model menjadi Array JSON aman.
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'id'          => $this->id,
+            'product_name'=> $this->name,
+            
+            // 🎯 CONTOH NYATA EKSTRAKSI FIELD:
+            // Mengubah BackedEnum (misal: ProductType::PRABAYAR) menjadi string murni "prabayar"
+            'product_type'=> $this->extractEnumValue($this->resource, 'type'),
+            
+            // Mengubah status transaksi enum menjadi string murni "success", "pending", atau "error"
+            'status'      => $this->extractEnumValue($this->resource, 'status'),
+        ];
+    }
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+          <div class="bg-emerald-50/30 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center text-sm">
+                <i class="fas fa-code-branch"></i>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-gray-800">2. Kasus Nyata: Sinkronisasi Multi-Vendor SKU</h2>
+                <p class="text-xs text-gray-400">Pemanfaatan ekstraktor saat membandingkan prefix tipe produk untuk pengalihan vendor otomatis.</p>
+              </div>
+            </div>
+            <span class="text-xs font-mono bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">VendorMappingService.php</span>
+          </div>
+
+          <div class="p-6 bg-slate-900">
+            <pre class="text-slate-300 text-xs font-mono leading-relaxed"><code><?php
+
+namespace App\Services;
+
+use App\Models\ProductMaster;
+use App\Traits\EnumExtractor;
+
+class VendorMappingService
+{
+    use EnumExtractor;
+
+    /**
+     * Menentukan provider cadangan secara dinamis berdasarkan kategori bertipe string.
+     */
+    public function switchProviderIfFailed(ProductMaster $product)
+    {
+        // Mengekstrak nilai string kategori (misalnya data tipe 'pulsa', 'data', atau 'token')
+        $categoryType = $this->extractEnumValue($product, 'prefix_category');
+
+        // Aman digunakan dalam pengkondisian string murni / switch-case tanpa takut fatal error object casting
+        if ($categoryType === 'pulsa') {
+            // Arahkan jalur transaksi h2h ke Digiflazz
+            return 'digiflazz';
+        } elseif ($categoryType === 'token') {
+            // Arahkan jalur transaksi h2h ke IAK / OkeConnect
+            return 'iak';
+        }
+
+        return 'vendor-backup';
+    }
+}</code></pre>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-gray-400 text-xs mt-20">
+      <p>&copy; 2026 Kamus Coding - Encapsulated Enterprise Utility Toolkit.</p>
+    </footer>
+
+  </body>
+</html>

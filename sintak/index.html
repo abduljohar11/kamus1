@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Isi Dokumentasi Backend</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      .card-hover {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow:
+          0 10px 25px -5px rgba(0, 0, 0, 0.05),
+          0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen font-sans">
+
+    <header class="bg-slate-900 text-white py-12 px-6 shadow-xl mb-6">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-3xl font-extrabold mb-2 tracking-tight">
+          <i class="fas fa-folder-open text-indigo-400 mr-3"></i>Daftar Isi Dokumentasi Core Backend
+        </h1>
+        <p class="text-slate-400 text-sm md:text-base">
+          Indeks referensi cepat penerapan Trait, Manajemen Cache, dan Exception Handling di Ajocell v2
+        </p>
+      </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 pb-20">
+      
+      <div class="mb-6">
+        <a 
+          href="../index.html" 
+          class="inline-flex items-center gap-2 text-sm font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-4 py-2 rounded-xl transition shadow-xs border border-indigo-100">
+          <i class="fas fa-arrow-left text-xs"></i> Kembali ke Dashboard Utama
+        </a>
+      </div>
+
+      <div class="flex flex-col gap-4">
+
+        <a
+          href="Dasar/index.html"
+          class="card-hover bg-white rounded-xl p-5 border border-gray-200 flex items-center justify-between shadow-sm group">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-blue-600 text-white rounded-xl flex items-center justify-center text-xl shadow-md shadow-blue-100">
+              <i class="fas fa-book"></i>
+            </div>
+            <div>
+              <h2 class="font-bold text-gray-800 group-hover:text-indigo-600 transition">Logika & Sintaksis Dasar</h2>
+              <p class="text-gray-400 text-xs mt-0.5">Komparasi fundamental variabel, looping, dan data flow antara PHP, JS, dan React.</p>
+            </div>
+          </div>
+          <div class="text-gray-400 group-hover:text-indigo-600 transition pl-4">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </a>
+
+        <a
+          href="rangkuman_cache_management/index.html"
+          class="card-hover bg-white rounded-xl p-5 border border-gray-200 flex items-center justify-between shadow-sm group">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-violet-600 text-white rounded-xl flex items-center justify-center text-xl shadow-md shadow-violet-100">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <div>
+              <h2 class="font-bold text-gray-800 group-hover:text-indigo-600 transition">Dynamic Cache Management</h2>
+              <p class="text-gray-400 text-xs mt-0.5">Penerapan <code>InteractWithCache</code> untuk indexing group key di Redis/RAM.</p>
+            </div>
+          </div>
+          <div class="text-gray-400 group-hover:text-indigo-600 transition pl-4">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </a>
+
+        <a
+          href="rangkuman_enum_extractor/index.html"
+          class="card-hover bg-white rounded-xl p-5 border border-gray-200 flex items-center justify-between shadow-sm group">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-emerald-600 text-white rounded-xl flex items-center justify-center text-xl shadow-md shadow-emerald-100">
+              <i class="fas fa-tags"></i>
+            </div>
+            <div>
+              <h2 class="font-bold text-gray-800 group-hover:text-indigo-600 transition">Universal Enum Extractor</h2>
+              <p class="text-gray-400 text-xs mt-0.5">Penerapan <code>EnumExtractor</code> guna mengamankan casting tipe data objek BackedEnum.</p>
+            </div>
+          </div>
+          <div class="text-gray-400 group-hover:text-indigo-600 transition pl-4">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </a>
+
+        <a
+          href="rangkuman_exception_wrapper/index.html"
+          class="card-hover bg-white rounded-xl p-5 border border-gray-200 flex items-center justify-between shadow-sm group">
+          <div class="flex items-center gap-4">
+            <div class="w-12 h-12 bg-slate-800 text-white rounded-xl flex items-center justify-center text-xl shadow-md shadow-slate-200">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div>
+              <h2 class="font-bold text-gray-800 group-hover:text-indigo-600 transition">Exception Handler Wrapper</h2>
+              <p class="text-gray-400 text-xs mt-0.5">Penerapan <code>ErrorExcep</code> untuk proteksi query database & cybersecurity gate.</p>
+            </div>
+          </div>
+          <div class="text-gray-400 group-hover:text-indigo-600 transition pl-4">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </a>
+
+      </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-gray-400 text-xs">
+      <p>&copy; 2026 Kamus Coding - Core Engine Documentation Index.</p>
+    </footer>
+
+  </body>
+</html>

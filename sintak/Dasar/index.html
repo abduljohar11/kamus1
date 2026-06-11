@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cheat Sheet & Komparasi Sintaks Full-Stack</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+      pre::-webkit-scrollbar {
+        height: 6px;
+      }
+      pre::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 min-h-screen font-sans">
+    
+    <nav class="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-50 shadow-sm">
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <a href="../index.html" class="text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-2 transition">
+          <i class="fas fa-arrow-left text-sm"></i> Kembali ke Dashboard
+        </a>
+        <span class="bg-indigo-100 text-indigo-700 text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider">
+          <i class="fas fa-server mr-1"></i> API & Logic Cheat Sheet
+        </span>
+      </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-10">
+      
+      <div class="mb-10">
+        <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight flex items-center gap-3">
+          <i class="fas fa-exchange-alt text-indigo-600"></i> Komparasi Back-End vs Front-End
+        </h1>
+        <p class="text-gray-500 mt-1">Referensi manajemen data dari sisi server (PHP/Laravel/SQL) hingga penanganan di sisi klien (JS/React).</p>
+      </div>
+
+      <div class="space-y-12">
+        
+        <section class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">1</div>
+            <div>
+              <h2 class="text-lg font-bold text-gray-800">Definisi Data & Struktur Array</h2>
+              <p class="text-xs text-gray-400">Bagaimana data diinisialisasi di backend dan dikelola di frontend.</p>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 lg:divide-x divide-gray-200">
+            <div class="p-5">
+              <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase block mb-3"><i class="fab fa-php"></i> PHP (Assoc Array)</span>
+              <pre class="bg-gray-900 text-slate-300 text-xs p-3 rounded-xl overflow-x-auto font-mono"><code>$user = [
+    "nama" => "Johar",
+    "role" => "Admin"
+];</code></pre>
+            </div>
+            <div class="p-5">
+              <span class="text-xs font-bold text-red-600 tracking-wider uppercase block mb-3"><i class="fab fa-laravel"></i> Laravel (API Response)</span>
+              <pre class="bg-gray-900 text-slate-300 text-xs p-3 rounded-xl overflow-x-auto font-mono"><code>return response()->json([
+    'status' => 'success',
+    'data' => $user
+], 200);</code></pre>
+            </div>
+            <div class="p-5">
+              <span class="text-xs font-bold text-yellow-600 tracking-wider uppercase block mb-3"><i class="fab fa-js"></i> JavaScript (Object)</span>
+              <pre class="bg-gray-900 text-slate-300 text-xs p-3 rounded-xl overflow-x-auto font-mono"><code>const user = {
+    nama: "Johar",
+    role: "Admin"
+};</code></pre>
+            </div>
+            <div class="p-5">
+              <span class="text-xs font-bold text-cyan-600 tracking-wider uppercase block mb-3"><i class="fab fa-react"></i> React (State Fetch)</span>
+              <pre class="bg-gray-900 text-slate-300 text-xs p-3 rounded-xl overflow-x-auto font-mono"><code>const [user, setUser] = 
+  useState(null);
+// Diisi via Axios/Fetch API</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">2</div>
+            <div>
+              <h2 class="text-lg font-bold text-gray-800">Pengkondisian & Validasi (If / Else)</h2>
+              <p class="text-xs text-gray-400">Validasi keamanan di server berbanding kondisi rendering di browser.</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 lg:divide-x divide-gray-200">
+            <div class="p-5">
+              <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase block mb-3"><i class="fab fa-php"></i> PHP (Standard If)</span>
+              <pre class="bg-gray-900 text-slate-300 text-xs p-3 rounded-xl overflow-x-auto font-mono"><code>if (!$token) {
+    die("Unauthorized");
+}</code></pre>
+            </div>
+            <div class="p-5">
+              <span class="text-xs font-bold text-red-600 tracking-wider uppercase block mb-3"><i class="fab fa-laravel"></i> Laravel (Abort/Validation)</span>
+              <pre class="bg-gray-900 text-slate-300 text-xs p-3 rounded-xl overflow-x-auto font-mono"><code>if ($validator->fails()) {
+    abort(422, "Data Invalid");
+}
+// Atau Menggunakan Gate::allows()</code></pre>
+            </div>
+            <div class="p-5">
+              <span class="text-xs font-bold text-yellow-600 tracking-wider uppercase block mb-3"><i class="fab fa-js"></i> JavaScript</span>
+              <pre class="bg-gray-900 text-slate-300 text-xs p-3 rounded-xl overflow-x-auto font-mono"><code>if (!isLoggedIn) {
+    router.push('/login');
+}</code></pre>
+            </div>
+            <div class="p-5">
+              <span class="text-xs font-bold text-cyan-600 tracking-wider uppercase block mb-3"><i class="fab fa-react"></i> React (Guard Component)</span>
+              <pre class="bg-gray-900 text-slate-300 text-xs p-3 rounded-xl overflow-x-auto font-mono"><code>if (!user) return <Loading />;
+
+return <DashboardData />;</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div class="bg-gray-50 px-6 py-4 border-b border-gray-200 flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm font-bold">3</div>
+            <div>
+              <h2 class="text-lg font-bold text-gray-800">Pemrosesan Data Massal (Looping & Map)</h2>
+              <p class="text-xs text-gray-400">Manipulasi koleksi data di server vs mapping komponen di sisi client.</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 lg:divide-x divide-gray-200">
+            <div class="p-5">
+              <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase block mb-3"><i class="fab fa-php"></i> PHP (Foreach)</span>
+              <pre class="bg-gray-900 text-slate-300 text-xs p-3 rounded-xl overflow-x-auto font-mono"><code>foreach ($products as $p) {
+    $prices[] = $p['price'];
+}</code></pre>
+            </div>
+            <div class="p-5">
+              <span class="text-xs font-bold text-red-600 tracking-wider uppercase block mb-3"><i class="fab fa-laravel"></i> Laravel (Collections)</span>
+              <pre class="bg-gray-900 text-slate-300 text-xs p-3 rounded-xl overflow-x-auto font-mono"><code>$prices = collect($products)
+    ->map(fn($p) => $p->price)
+    ->filter(fn($price) => $price > 0);</code></pre>
+            </div>
+            <div class="p-5">
+              <span class="text-xs font-bold text-yellow-600 tracking-wider uppercase block mb-3"><i class="fab fa-js"></i> JavaScript (.map / .filter)</span>
+              <pre class="bg-gray-900 text-slate-300 text-xs p-3 rounded-xl overflow-x-auto font-mono"><code>const prices = products
+  .map(p => p.price)
+  .filter(p => p > 0);</code></pre>
+            </div>
+            <div class="p-5">
+              <span class="text-xs font-bold text-cyan-600 tracking-wider uppercase block mb-3"><i class="fab fa-react"></i> React (Render List)</span>
+              <pre class="bg-gray-900 text-slate-300 text-xs p-3 rounded-xl overflow-x-auto font-mono"><code>return (
+  prices.map((price, i) => (
+    &lt;span key={i}&gt;{price}&lt;/span&gt;
+  ))
+);</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden border-l-4 border-l-emerald-500">
+          <div class="bg-emerald-50/50 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-sm">
+                <i class="fas fa-database"></i>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-gray-800">Hubungan SQL Query & API Layer</h2>
+                <p class="text-xs text-gray-400">Bagaimana database menyediakan data mentah untuk dibungkus oleh Back-End API.</p>
+              </div>
+            </div>
+            <span class="text-xs font-mono bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">Database Architecture</span>
+          </div>
+          
+          <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50/30">
+            <div class="bg-white border border-gray-100 p-4 rounded-xl shadow-xs">
+              <h3 class="text-sm font-bold text-gray-700 mb-2 border-b pb-1 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> SQL Native Query (Relasi & Filter)
+              </h3>
+              <pre class="bg-gray-900 text-emerald-400 text-xs p-3 rounded-lg overflow-x-auto font-mono"><code>-- Mengambil produk berdasarkan relasi vendor & cek status aktif
+SELECT p.id, p.name, v.vendor_name, p.price 
+FROM products p
+LEFT JOIN vendors v ON p.vendor_id = v.id
+WHERE p.status = 'active'
+ORDER BY p.id DESC;</code></pre>
+            </div>
+
+            <div class="bg-white border border-gray-100 p-4 rounded-xl shadow-xs">
+              <h3 class="text-sm font-bold text-gray-700 mb-2 border-b pb-1 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-red-500"></span> Representasi Backend (Laravel Eloquent)
+              </h3>
+              <pre class="bg-gray-900 text-red-400 text-xs p-3 rounded-lg overflow-x-auto font-mono"><code>// Query Builder / Eloquent equivalents yang dieksekusi di Controller API
+$products = Product::with('vendor')
+    ->where('status', 'active')
+    ->latest()
+    ->get();</code></pre>
+            </div>
+          </div>
+        </section>
+<section class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden border-l-4 border-l-indigo-600">
+          <div class="bg-indigo-50/40 px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm">
+                <i class="fas fa-exchange-alt"></i>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-gray-800">Struktur Aliran Data: Search & Pagination (API to React TS)</h2>
+                <p class="text-xs text-gray-400">Implementasi pencarian dan paginasi data Guru dari Laravel API hingga di-mapping di React TypeScript.</p>
+              </div>
+            </div>
+            <span class="text-xs font-mono bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded font-bold">End-to-End Architecture</span>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-gray-200 bg-gray-50/20">
+            
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="bg-red-100 text-red-700 text-xs px-2 py-1 rounded font-bold uppercase"><i class="fab fa-laravel"></i> Laravel Backend</span>
+                <span class="text-xs text-gray-400 font-mono">GuruController.php</span>
+              </div>
+              <p class="text-xs text-gray-500 mb-2">Menangani *request* pencarian nama/NIP dan mengembalikan pagination standard JSON.</p>
+              
+              <pre class="bg-gray-900 text-slate-300 text-xs p-4 rounded-xl overflow-x-auto font-mono leading-relaxed"><code>public function index(Request $request)
+{
+    $query = Guru::query();
+
+    // Fitur Pencarian Dinamis
+    if ($request->has('search')) {
+        $search = $request->search;
+        $query->where('nama', 'like', "%{$search}%")
+              ->orWhere('nip', 'like', "%{$search}%");
+    }
+
+    // Paginasi otomatis (Contoh: 10 data per halaman)
+    $teachers = $query->paginate(10);
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Data Guru Berhasil Diambil',
+        'meta' => [
+            'current_page' => $teachers->currentPage(),
+            'last_page' => $teachers->lastPage(),
+            'per_page' => $teachers->perPage(),
+            'total' => $teachers->total(),
+        ],
+        'data' => $teachers->items() // Array objek Guru
+    ], 200);
+}</code></pre>
+            </div>
+
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-3">
+                <span class="bg-cyan-100 text-cyan-700 text-xs px-2 py-1 rounded font-bold uppercase"><i class="fab fa-react"></i> React TypeScript</span>
+                <span class="text-xs text-gray-400 font-mono">TeacherList.tsx</span>
+              </div>
+              <p class="text-xs text-gray-500 mb-2">Mendefinisikan *Interface TS* untuk validasi tipe data, melakukan fetch, dan melakukan *mapping* ke UI.</p>
+              
+              <pre class="bg-gray-900 text-slate-300 text-xs p-4 rounded-xl overflow-x-auto font-mono leading-relaxed"><code>import React, { useState, useEffect } from 'react';
+
+// 1. Definisi Tipe Data (TypeScript Interface)
+interface Teacher {
+  id: number;
+  nama: string;
+  nip: string;
+  mapel: string;
+}
+
+interface ApiMeta {
+  current_page: number;
+  last_page: number;
+  total: number;
+}
+
+export const TeacherList: React.FC = () => {
+  const [teachers, setTeachers] = useState&lt;Teacher[]&gt;([]);
+  const [meta, setMeta] = useState&lt;ApiMeta | null&gt;(null);
+  const [search, setSearch] = useState&lt;string&gt;('');
+  const [page, setPage] = useState&lt;number&gt;(1);
+
+  // 2. Fetch Data dari Laravel API
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      const res = await fetch(`/api/guru?search=${search}&page=${page}`);
+      const json = await res.json();
+      if (json.status === 'success') {
+        setTeachers(json.data);
+        setMeta(json.meta);
+      }
+    };
+    fetchTeachers();
+  }, [search, page]); // Triger ulang jika search atau page berubah
+
+  return (
+    &lt;div&gt;
+      {/* Input Search */}
+      &lt;input value={search} onChange={(e) =&gt; setSearch(e.target.value)} /&gt;
+
+      {/* 3. Mapping Data dengan TypeScript */}
+      &lt;ul&gt;
+        {teachers.map((teacher: Teacher) =&gt; (
+          &lt;li key={teacher.id}&gt;
+            {teacher.nama} - NIP: {teacher.nip} ({teacher.mapel})
+          &lt;/li>
+        ))}
+      &lt;/ul&gt;
+
+      {/* Tombol Paginasi */}
+      &lt;button onClick={() =&gt; setPage(p =&gt; Math.max(p - 1, 1))}&gt;Prev&lt;/button&gt;
+      &lt;button onClick={() =&gt; setPage(p =&gt; p + 1)}&gt;Next&lt;/button&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+            </div>
+
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-gray-400 text-xs mt-20">
+      <p>&copy; 2026 Kamus Coding Cheat Sheet. Arsitektur Decoupled API Berhasil Diterapkan.</p>
+    </footer>
+
+  </body>
+</html>
